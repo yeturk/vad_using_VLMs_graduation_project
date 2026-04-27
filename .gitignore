@@ -18,6 +18,7 @@ build/
 venv/
 env/
 .venv/
+grad2_env/
 
 # Conda
 *.conda
@@ -41,3 +42,9 @@ logs/
 
 /.claude
 /.codex
+
+data/
+
+# Debug / generated images
+qwen_vl/captured_frame.jpg
+qwen_vl/temporal_grid.jpg

@@ -24,7 +24,7 @@ dashscope.base_http_api_url = os.getenv(
     "DASHSCOPE_BASE_URL", "https://dashscope-intl.aliyuncs.com/api/v1"
 ).strip()
 
-VIDEO_PATH = "/home/yunus/projects/vad_using_VLMs_graduation_project/data/r01_clip06_angle_anomaly.mp4"
+VIDEO_PATH = "/mnt/c/Users/Alper Kaan/Desktop/vad_using_VLMs_graduation_project/data/r01_clip06_angle_anomaly.mp4"
 MODEL = "qwen-vl-max"
 
 PROMPT = """Watch this short video carefully.
