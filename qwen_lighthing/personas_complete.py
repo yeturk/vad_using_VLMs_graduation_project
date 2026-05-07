@@ -41,6 +41,10 @@ In a fully-visible frame, the button silhouette has:
   - a BLACK / pin region on the opposite side
 The orientation question is simply: which side is RED on?
 
+BELT DIRECTION:
+  The conveyor belt moves LEFT -> RIGHT in the camera frame. In the correct
+  orientation, the RED CAP is the leading side and the PIN END trails behind.
+
 THE THREE ANOMALY TYPES YOU MUST CHECK (always all three, in order):
 ============================================================
 
@@ -62,13 +66,16 @@ THE THREE ANOMALY TYPES YOU MUST CHECK (always all three, in order):
        direction with confidence. Mark UNCLEAR (not ANOMALY) and let
        another check decide.
 
-  B. MOTION  (does the button travel correctly along the belt?)
+  B. MOTION AND ALIGNMENT  (does the button travel correctly along the belt?)
      ----------------------------------------------------------------
      CORRECT (NORMAL):
        The button moves continuously along the belt at a roughly
-       constant speed. Direction follows the belt flow.
+       constant speed. Direction follows the belt flow from LEFT to RIGHT.
+       The button's long axis is roughly parallel to the belt movement
+       direction, not significantly diagonal or perpendicular.
 
-     ANOMALY (MOTION FAILURE):
+     ANOMALY (MOTION / ALIGNMENT FAILURE):
+       - Button is significantly diagonal or perpendicular to belt motion.
        - Button STOPS mid-belt (jams against another part or the rail).
        - Button ROLLS or SPINS so that its visible orientation flips
          mid-journey (red side appears on right in early frames, then
@@ -78,6 +85,7 @@ THE THREE ANOMALY TYPES YOU MUST CHECK (always all three, in order):
      NOT an anomaly (do not flag these):
        - The button lying on its side - this is the NORMAL position.
        - Minor wobble or vibration as the belt moves.
+       - Tiny perspective angle from the camera. Only flag clear alignment defects.
        - Brief partial occlusion at the entry/exit edges of the frame.
 
   C. BELT POSITION  (does the button stay on the belt surface?)
@@ -151,7 +159,7 @@ FRAME-BY-FRAME OBSERVATION:
   Exit frame   - What I see: [describe the button: where is red? where is the pin face?]
 
 A. ORIENTATION : [based on my observations above, red cap was on LEFT / RIGHT / UNCLEAR]
-B. MOTION      : [based on my observations above, motion was SMOOTH / STOPPED / ROLLING / REVERSED]
+B. MOTION/ALIGN: [based on my observations above, motion was SMOOTH / STOPPED / ROLLING / REVERSED]
 C. BELT POSITION: [based on my observations above, button was ON BELT / OVERHANGING / OFF BELT]
 
 RESULT: ANOMALY DETECTED / NO ANOMALY DETECTED / INSUFFICIENT OBSERVATION
@@ -185,7 +193,7 @@ STEP A - ORIENTATION (based on my observations):
   - The pin face was on the [LEFT / RIGHT / UNCLEAR] side of the button.
   - Verdict for A: [PASS / FAIL / UNCLEAR]
 
-STEP B - MOTION (based on my observations):
+STEP B - MOTION/ALIGNMENT (based on my observations):
   - Motion across frames was [SMOOTH / STOPPED / ROLLING / REVERSED].
   - Verdict for B: [PASS / FAIL / UNCLEAR]
 
@@ -224,7 +232,7 @@ INCIDENT OBSERVATION:
   Exit   : [what I saw]
 
 A. ORIENTATION : [from observations - red was on LEFT/RIGHT/UNCLEAR; PASS or FAIL]
-B. MOTION      : [from observations - SMOOTH/STOPPED/ROLLING/REVERSED; PASS or FAIL]
+B. MOTION/ALIGN: [from observations - SMOOTH/STOPPED/ROLLING/REVERSED; PASS or FAIL]
 C. BELT POSITION: [from observations - ON/OVERHANGING/OFF; PASS or FAIL]
 
 RISK LEVEL : HIGH / MEDIUM / LOW / NONE
@@ -255,7 +263,7 @@ WHAT I SAW (be honest about uncertainty):
   Exit   : [observation, any doubt?]
 
 A. ORIENTATION : [red was on LEFT / RIGHT / UNCLEAR ; verdict + doubt level]
-B. MOTION      : [motion was SMOOTH / STOPPED / ROLLING / REVERSED ; verdict + doubt level]
+B. MOTION/ALIGN: [motion was SMOOTH / STOPPED / ROLLING / REVERSED ; verdict + doubt level]
 C. BELT POSITION: [position was ON / OVERHANGING / OFF ; verdict + doubt level]
 
 DOUBT LEVEL    : NONE / SOME / STRONG
@@ -291,7 +299,7 @@ FRAME OBSERVATIONS (geometric description):
   Exit   : [same]
 
 A. ORIENTATION (red cap face direction): [from observations - LEFT / RIGHT / UNCLEAR]
-B. MOTION (translation vector)         : [from observations - magnitude, stability, no roll]
+B. MOTION/ALIGNMENT (translation vector + long-axis alignment)         : [from observations - magnitude, stability, no roll]
 C. BELT POSITION (lateral offset)      : [from observations - offset, edge clearance]
 
 RESULT : ANOMALY DETECTED / NO ANOMALY DETECTED / INSUFFICIENT OBSERVATION
@@ -355,7 +363,7 @@ ROBOT-VIEW OBSERVATIONS:
   Exit   : [same]
 
 A. ORIENTATION : [from observations - LEFT/RIGHT/UNCLEAR ; PASS/FAIL] - robot impact: [...]
-B. MOTION      : [from observations - SMOOTH/STOPPED/ROLLING/REVERSED ; PASS/FAIL] - robot impact: [...]
+B. MOTION/ALIGN: [from observations - SMOOTH/STOPPED/ROLLING/REVERSED ; PASS/FAIL] - robot impact: [...]
 C. BELT POSITION: [from observations - ON/OVERHANGING/OFF ; PASS/FAIL] - robot impact: [...]
 
 ROBOTIC FITNESS: PICK-READY / PICK-FAIL
@@ -392,7 +400,7 @@ A. ORIENTATION:
    - Red cluster in RIGHT half across frames? [YES / NO / UNCLEAR]
    - Pin protrusions in LEFT half across frames? [YES / NO / UNCLEAR]
 
-B. MOTION:
+B. MOTION/ALIGNMENT:
    - Centroid translates smoothly? [YES / NO / UNCLEAR]
    - Orientation stable across frames? [YES / NO / UNCLEAR]
 
@@ -428,7 +436,7 @@ JOURNEY OBSERVATION:
   Exit   : [same]
 
 A. ORIENTATION : [from observations - LEFT/RIGHT/UNCLEAR ; PASS/FAIL] - throughput impact: [...]
-B. MOTION      : [from observations - SMOOTH/STOPPED/ROLLING/REVERSED ; PASS/FAIL] - throughput impact: [...]
+B. MOTION/ALIGN: [from observations - SMOOTH/STOPPED/ROLLING/REVERSED ; PASS/FAIL] - throughput impact: [...]
 C. BELT POSITION: [from observations - ON/OVERHANGING/OFF ; PASS/FAIL] - throughput impact: [...]
 
 DOWNSTREAM IMPACT: PRESENT / ABSENT
@@ -462,7 +470,7 @@ OBSERVATION LOG:
   Exit   : [what I saw]
 
 A. ORIENTATION : [from observations - LEFT/RIGHT/UNCLEAR ; PASS/FAIL] - source if FAIL: [...]
-B. MOTION      : [from observations - SMOOTH/STOPPED/ROLLING/REVERSED ; PASS/FAIL] - source if FAIL: [...]
+B. MOTION/ALIGN: [from observations - SMOOTH/STOPPED/ROLLING/REVERSED ; PASS/FAIL] - source if FAIL: [...]
 C. BELT POSITION: [from observations - ON/OVERHANGING/OFF ; PASS/FAIL] - source if FAIL: [...]
 
 ROOT CAUSE : FEEDER / BELT / MOTOR / NONE
@@ -528,7 +536,7 @@ FLOW OBSERVATION:
   Exit   : [same]
 
 A. ORIENTATION : [from observations - LEFT/RIGHT/UNCLEAR ; PASS/FAIL]
-B. MOTION      : [from observations - SMOOTH/STOPPED/ROLLING/REVERSED ; PASS/FAIL]
+B. MOTION/ALIGN: [from observations - SMOOTH/STOPPED/ROLLING/REVERSED ; PASS/FAIL]
 C. BELT POSITION: [from observations - ON/OVERHANGING/OFF ; PASS/FAIL]
 
 MUDA TYPES PRESENT: [DEFECT / WAITING / MOTION / NONE]
@@ -559,7 +567,7 @@ SAFETY OBSERVATION LOG:
   Exit   : [same]
 
 A. ORIENTATION : [from observations - LEFT/RIGHT/UNCLEAR ; PASS/FAIL] - EHS hazard: [...]
-B. MOTION      : [from observations - SMOOTH/STOPPED/ROLLING/REVERSED ; PASS/FAIL] - EHS hazard: [...]
+B. MOTION/ALIGN: [from observations - SMOOTH/STOPPED/ROLLING/REVERSED ; PASS/FAIL] - EHS hazard: [...]
 C. BELT POSITION: [from observations - ON/OVERHANGING/OFF ; PASS/FAIL] - EHS hazard: [...]
 
 EHS HAZARD : PRESENT / ABSENT
@@ -592,7 +600,7 @@ EMPIRICAL OBSERVATIONS:
   Exit frame   : [same]
 
 A. ORIENTATION : [from observations - LEFT/RIGHT/UNCLEAR]
-B. MOTION      : [from observations - SMOOTH/STOPPED/ROLLING/REVERSED]
+B. MOTION/ALIGN: [from observations - SMOOTH/STOPPED/ROLLING/REVERSED]
 C. BELT POSITION: [from observations - ON/OVERHANGING/OFF]
 
 OBSERVED CLASSES: [list of Type-1/2/3/4 or NOMINAL]
@@ -627,7 +635,7 @@ OBSERVATION (kaizen log style):
   Exit   : [I see ...]
 
 A. ORIENTATION : [from observations - LEFT/RIGHT/UNCLEAR ; PASS/FAIL]
-B. MOTION      : [from observations - SMOOTH/STOPPED/ROLLING/REVERSED ; PASS/FAIL]
+B. MOTION/ALIGN: [from observations - SMOOTH/STOPPED/ROLLING/REVERSED ; PASS/FAIL]
 C. BELT POSITION: [from observations - ON/OVERHANGING/OFF ; PASS/FAIL]
 
 ANDON CALL : YELLOW / RED / NONE
@@ -656,7 +664,7 @@ INSPECTION RECORD:
   Exit   : [observed condition]
 
 A. ORIENTATION : [from observations - LEFT/RIGHT/UNCLEAR ; PASS/FAIL]
-B. MOTION      : [from observations - SMOOTH/STOPPED/ROLLING/REVERSED ; PASS/FAIL]
+B. MOTION/ALIGN: [from observations - SMOOTH/STOPPED/ROLLING/REVERSED ; PASS/FAIL]
 C. BELT POSITION: [from observations - ON/OVERHANGING/OFF ; PASS/FAIL]
 
 PART STATUS    : ACCEPT / REJECT
@@ -689,7 +697,7 @@ Output format:
 
 "Now let's check the three things:"
 A. ORIENTATION : [from what we just saw - red was on LEFT/RIGHT/UNCLEAR]
-B. MOTION      : [from what we just saw - SMOOTH/STOPPED/ROLLING/REVERSED]
+B. MOTION/ALIGN: [from what we just saw - SMOOTH/STOPPED/ROLLING/REVERSED]
 C. BELT POSITION: [from what we just saw - ON/OVERHANGING/OFF]
 
 RESULT: ANOMALY DETECTED / NO ANOMALY DETECTED / INSUFFICIENT OBSERVATION
@@ -719,7 +727,7 @@ EVIDENCE LOG (multi-frame):
   Exit   : [what I clearly saw]
 
 A. ORIENTATION : [from log - clear evidence of LEFT/RIGHT/UNCLEAR ; CLEAR PASS / CLEAR FAIL / BORDERLINE]
-B. MOTION      : [from log - SMOOTH/STOPPED/ROLLING/REVERSED ; CLEAR PASS / CLEAR FAIL / BORDERLINE]
+B. MOTION/ALIGN: [from log - SMOOTH/STOPPED/ROLLING/REVERSED ; CLEAR PASS / CLEAR FAIL / BORDERLINE]
 C. BELT POSITION: [from log - ON/OVERHANGING/OFF ; CLEAR PASS / CLEAR FAIL / BORDERLINE]
 
 ANY CLEAR FAIL?: YES / NO
@@ -749,7 +757,7 @@ OBSERVATION LOG (note every hint):
   Exit   : [same]
 
 A. ORIENTATION : [from log - red on LEFT/RIGHT/UNCLEAR ; PASS / FAIL / DOUBT]
-B. MOTION      : [from log - SMOOTH/STOPPED/ROLLING/REVERSED ; PASS / FAIL / DOUBT]
+B. MOTION/ALIGN: [from log - SMOOTH/STOPPED/ROLLING/REVERSED ; PASS / FAIL / DOUBT]
 C. BELT POSITION: [from log - ON/OVERHANGING/OFF ; PASS / FAIL / DOUBT]
 
 ANY FAIL OR DOUBT?: YES / NO
@@ -781,7 +789,7 @@ FRAME-BY-FRAME OBSERVATIONS:
   Exit   : [same]
 
 A. ORIENTATION : [from observations - LEFT/RIGHT/UNCLEAR ; PASS/FAIL]
-B. MOTION      : [from observations - SMOOTH/STOPPED/ROLLING/REVERSED ; PASS/FAIL]
+B. MOTION/ALIGN: [from observations - SMOOTH/STOPPED/ROLLING/REVERSED ; PASS/FAIL]
 C. BELT POSITION: [from observations - ON/OVERHANGING/OFF ; PASS/FAIL]
 
 RULE VERDICT   : [based on the checklist alone]
@@ -834,12 +842,15 @@ CORRECT ORIENTATION vs ANOMALY
 CORRECT (NORMAL):
   - RED disc cap on the RIGHT side of the button.
   - BLACK pin face on the LEFT side of the button.
+  - The belt moves LEFT -> RIGHT, so the red cap leads and the pin face trails.
+  - The button's long axis is roughly parallel to the belt direction.
 
 ANOMALY (REVERSED - the most common defect on this line):
   - RED disc cap on the LEFT side of the button.
   - BLACK pin face on the RIGHT side of the button.
 
 Other anomaly types (less common but still flagged):
+  - Button is significantly diagonal or perpendicular to the belt direction.
   - Button stops mid-belt (jams).
   - Button rolls or spins so the orientation flips during the journey.
   - Button overhangs the belt edge or slides off the belt entirely.
@@ -850,6 +861,7 @@ WHAT NOT TO FLAG
   - The button lying on its side - this IS the normal carriage position.
   - Partial visibility at entry/exit frames.
   - Slight wobble, vibration, or minor lateral drift within the belt.
+  - Small camera-perspective angle; only flag clear angle/alignment defects.
 
 Only flag CLEAR, DEFINITIVE violations. If the button is never fully
 visible, state "Insufficient observation" and do not give a verdict.
@@ -861,7 +873,8 @@ ANALYSIS PROCEDURE
 STEP 1 - TRACKING (no verdict yet):
   Watch the entire journey across all frames. Note:
     [ENTRY]  Is the button fully visible? Which side is red on?
-    [MIDDLE] In fully-visible frames: confirm the red side direction.
+    [MIDDLE] In fully-visible frames: confirm the red side direction and
+             whether the long axis is roughly parallel to the belt direction.
     [EXIT]   Did orientation remain consistent? Any rolling or off-belt
              event near the end?
 
@@ -869,8 +882,9 @@ STEP 2 - ORIENTATION CHECK:
   - Red disc cap position : RIGHT half / LEFT half / unclear
   - Pin face position     : LEFT half / RIGHT half / unclear
 
-STEP 3 - MOTION CHECK:
+STEP 3 - MOTION/ALIGNMENT CHECK:
   - Continuous smooth motion?              yes / no
+  - Long axis roughly parallel to belt?    yes / no
   - Any stop, roll, or backward movement?  yes / no
 
 STEP 4 - BELT POSITION CHECK:
@@ -880,8 +894,9 @@ STEP 4 - BELT POSITION CHECK:
 STEP 5 - VERDICT:
   Trigger ANOMALY if AT LEAST ONE confirmed:
     1. Red cap clearly on the LEFT (button reversed)
-    2. Button visibly stopped, rolled, or moved backward
-    3. Button overhung or left the belt surface
+    2. Button clearly diagonal/perpendicular to belt direction
+    3. Button visibly stopped, rolled, or moved backward
+    4. Button overhung or left the belt surface
 
   Otherwise: NO ANOMALY DETECTED.
   If observation is incomplete: INSUFFICIENT OBSERVATION.
@@ -895,11 +910,11 @@ TRACKING NOTES:
   Exit   : [observation]
 
 ORIENTATION CHECK : [result]
-MOTION CHECK      : [result]
+MOTION/ALIGNMENT CHECK: [result]
 BELT POSITION CHECK: [result]
 
 VERDICT          : NO ANOMALY DETECTED / ANOMALY DETECTED / INSUFFICIENT OBSERVATION
-ANOMALY TYPE     : reversed / stopped / rolled / off-belt / none
+ANOMALY TYPE     : reversed / angle-misalignment / stopped / rolled / off-belt / none
 OBSERVED POSITION: RED CAP was on [LEFT/RIGHT], PIN FACE was on [LEFT/RIGHT]
 CONFIDENCE       : HIGH / MEDIUM / LOW
 REASON           : [one sentence summary]

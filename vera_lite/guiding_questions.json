@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "source": "manual_refinement_after_qwen36_description_and_optimizer_run_20260507_214236",
+  "questions": [
+    "In fully visible frames, does the component maintain the normal upright/stable posture, with the red cap facing upward or visible on top rather than sideways?",
+    "Is the component free from side-lying posture, falling, tumbling, rolling, or strong unstable wobbling?",
+    "Are the red cap and pin side in a standard upright relationship, with no clear 90-degree sideways rotation or flipped posture compared with the normal reference?",
+    "Does the component translate smoothly from LEFT to RIGHT without stopping, moving backward, or drifting erratically?",
+    "Does the component remain fully on the belt surface, without overhanging, falling, or leaving the conveyor?"
+  ]
+}

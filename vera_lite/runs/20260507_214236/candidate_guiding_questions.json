@@ -1,0 +1,11 @@
+{
+  "version": "candidate",
+  "source": "optimizer_qwen3.6-plus_20260507_214236",
+  "questions": [
+    "Does the component maintain an upright posture with its designated base flat against the belt, avoiding any sideways, tilted, or inverted positions?",
+    "Are the red cap and pin side correctly positioned at their standard opposite ends, with no visible 90-degree rotation or flipped orientation relative to the conveyor's travel direction?",
+    "Does the component translate consistently from LEFT to RIGHT without tumbling, rolling, or erratic lateral drift along the path?",
+    "Is the entire component footprint fully contained within the belt boundaries throughout the video, with no overhanging edges or partial detachment from the conveyor surface?"
+  ],
+  "reasoning": "The original questions contained logical overlaps and ambiguous thresholds that allowed false-positive YES answers. Specifically, Q3 only checked if the cap and pins were 'visible as opposite ends', which caused the VLM to answer YES even during a 90-degree sideways rotation because both features were still technically visible. Q2 focused exclusively on dynamic instability (tumbling/wobbling) and missed static posture/alignment failures. VLMs perform better when abstract terms like 'normal posture' or 'smoothly' are replaced with explicit, spatially grounded visual checks. The revised questions decouple static posture from dynamic motion, explicitly penalize 90-degree rotations or inverted alignments, enforce consistent LEFT-to-RIGHT translation without lateral drift, and mandate full footprint containment within belt boundaries. This closes perceptual loopholes observed in the experiment and directly aligns with the defined production-line constraints."
+}

@@ -1,0 +1,38 @@
+{
+  "model": "qwen3.6-plus",
+  "previous_questions": {
+    "version": 0,
+    "source": "manual_initial_vera_lite_questions",
+    "questions": [
+      "In fully visible frames, does the component keep the normal upright/stable posture instead of lying on its side?",
+      "Does the component avoid tumbling, strong wobbling, rolling, or unstable rotation while moving?",
+      "Are the red cap and black pin side visible as opposite ends of the same component, with no clear reversed-orientation evidence?",
+      "Does the component move smoothly from LEFT to RIGHT across the video?",
+      "Does the component stay fully on the belt surface without overhanging, falling, or leaving the belt?"
+    ]
+  },
+  "raw_text": "{\n  \"reasoning\": \"The original questions contained logical overlaps and ambiguous thresholds that allowed false-positive YES answers. Specifically, Q3 only checked if the cap and pins were 'visible as opposite ends', which caused the VLM to answer YES even during a 90-degree sideways rotation because both features were still technically visible. Q2 focused exclusively on dynamic instability (tumbling/wobbling) and missed static posture/alignment failures. VLMs perform better when abstract terms like 'normal posture' or 'smoothly' are replaced with explicit, spatially grounded visual checks. The revised questions decouple static posture from dynamic motion, explicitly penalize 90-degree rotations or inverted alignments, enforce consistent LEFT-to-RIGHT translation without lateral drift, and mandate full footprint containment within belt boundaries. This closes perceptual loopholes observed in the experiment and directly aligns with the defined production-line constraints.\",\n  \"new_questions\": [\n    \"Does the component maintain an upright posture with its designated base flat against the belt, avoiding any sideways, tilted, or inverted positions?\",\n    \"Are the red cap and pin side correctly positioned at their standard opposite ends, with no visible 90-degree rotation or flipped orientation relative to the conveyor's travel direction?\",\n    \"Does the component translate consistently from LEFT to RIGHT without tumbling, rolling, or erratic lateral drift along the path?\",\n    \"Is the entire component footprint fully contained within the belt boundaries throughout the video, with no overhanging edges or partial detachment from the conveyor surface?\"\n  ]\n}",
+  "parsed": {
+    "reasoning": "The original questions contained logical overlaps and ambiguous thresholds that allowed false-positive YES answers. Specifically, Q3 only checked if the cap and pins were 'visible as opposite ends', which caused the VLM to answer YES even during a 90-degree sideways rotation because both features were still technically visible. Q2 focused exclusively on dynamic instability (tumbling/wobbling) and missed static posture/alignment failures. VLMs perform better when abstract terms like 'normal posture' or 'smoothly' are replaced with explicit, spatially grounded visual checks. The revised questions decouple static posture from dynamic motion, explicitly penalize 90-degree rotations or inverted alignments, enforce consistent LEFT-to-RIGHT translation without lateral drift, and mandate full footprint containment within belt boundaries. This closes perceptual loopholes observed in the experiment and directly aligns with the defined production-line constraints.",
+    "new_questions": [
+      "Does the component maintain an upright posture with its designated base flat against the belt, avoiding any sideways, tilted, or inverted positions?",
+      "Are the red cap and pin side correctly positioned at their standard opposite ends, with no visible 90-degree rotation or flipped orientation relative to the conveyor's travel direction?",
+      "Does the component translate consistently from LEFT to RIGHT without tumbling, rolling, or erratic lateral drift along the path?",
+      "Is the entire component footprint fully contained within the belt boundaries throughout the video, with no overhanging edges or partial detachment from the conveyor surface?"
+    ]
+  },
+  "usage": {
+    "input_tokens": 2255,
+    "output_tokens": 3747,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 2255
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 3424,
+      "text_tokens": 3747
+    },
+    "total_tokens": 6002
+  },
+  "request_id": "7310a101-292b-9a5c-affd-42c7d428d1f1"
+}

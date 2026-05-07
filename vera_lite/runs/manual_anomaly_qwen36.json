@@ -1,0 +1,64 @@
+{
+  "video": "data/r01_clip06_angle_anomaly.mp4",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "In fully visible frames, does the component keep the normal upright/stable posture instead of lying on its side?",
+    "Does the component avoid tumbling, strong wobbling, rolling, or unstable rotation while moving?",
+    "Are the red cap and black pin side visible as opposite ends of the same component, with no clear reversed-orientation evidence?",
+    "Does the component move smoothly from LEFT to RIGHT across the video?",
+    "Does the component stay fully on the belt surface without overhanging, falling, or leaving the belt?"
+  ],
+  "raw_text": "{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"NO\",\n      \"evidence\": \"The component enters lying on its side and subsequently tumbles/rolls, never maintaining a stable upright posture.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"The component is clearly tumbling and rolling along the belt surface from 00:05 onwards.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"The red cap and metal pins are visible as distinct parts of the component, though the orientation changes due to tumbling.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"NO\",\n      \"evidence\": \"The motion is not smooth translation; the component tumbles and rotates uncontrollably.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The component remains on the green belt surface throughout the clip, although it is unstable.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"posture_alignment_failure\",\n  \"anomaly_score\": 0.95,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The component fails to maintain an upright stable posture; it enters lying on its side and then tumbles/rolls along the conveyor belt.\"\n}",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "NO",
+        "evidence": "The component enters lying on its side and subsequently tumbles/rolls, never maintaining a stable upright posture."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "The component is clearly tumbling and rolling along the belt surface from 00:05 onwards."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "The red cap and metal pins are visible as distinct parts of the component, though the orientation changes due to tumbling."
+      },
+      {
+        "question_id": 4,
+        "answer": "NO",
+        "evidence": "The motion is not smooth translation; the component tumbles and rotates uncontrollably."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The component remains on the green belt surface throughout the clip, although it is unstable."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "posture_alignment_failure",
+    "anomaly_score": 0.95,
+    "confidence": "HIGH",
+    "reason": "The component fails to maintain an upright stable posture; it enters lying on its side and then tumbles/rolls along the conveyor belt."
+  },
+  "usage": {
+    "input_tokens": 1331,
+    "output_tokens": 2937,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 753,
+      "video_tokens": 578
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 2401,
+      "text_tokens": 536
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 4268,
+    "video_tokens": 578
+  },
+  "request_id": "27297e58-f369-943b-9655-31e5c1941f0d"
+}

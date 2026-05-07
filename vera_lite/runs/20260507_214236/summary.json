@@ -1,0 +1,9 @@
+{
+  "run_id": "20260507_214236",
+  "model": "qwen3.6-plus",
+  "optimizer_model": "qwen3.6-plus",
+  "manifest": "/home/yunus/projects/vad_using_VLMs_graduation_project/vera_lite/dataset_manifest.json",
+  "questions": "/home/yunus/projects/vad_using_VLMs_graduation_project/vera_lite/guiding_questions.json",
+  "learner_results_path": "/home/yunus/projects/vad_using_VLMs_graduation_project/vera_lite/runs/20260507_214236/learner_results.json",
+  "optimizer_result_written": true
+}

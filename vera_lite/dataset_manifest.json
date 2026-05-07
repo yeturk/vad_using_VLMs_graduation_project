@@ -1,0 +1,16 @@
+[
+  {
+    "id": "normal_01",
+    "video": "data/r01_clip09_normal.mp4",
+    "expected": "NORMAL",
+    "anomaly_type": "none",
+    "description": "Normal push-button component moving left to right on the conveyor belt."
+  },
+  {
+    "id": "angle_anomaly_01",
+    "video": "data/r01_clip06_angle_anomaly.mp4",
+    "expected": "ANOMALY",
+    "anomaly_type": "angle_misalignment",
+    "description": "Push-button component with angle/alignment anomaly while moving on the conveyor belt."
+  }
+]
