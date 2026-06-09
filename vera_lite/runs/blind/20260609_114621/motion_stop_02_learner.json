@@ -1,0 +1,69 @@
+{
+  "video": "data/pens_small/pens_conveyor_stops_and_continues.mp4",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully in view, are there exactly three pens on it (no missing pen and no empty gap)?",
+    "Do all three pens point the same direction, with none flipped or reversed relative to the other two?",
+    "Are all three pens the same color as each other, with none differing in color?",
+    "Is every pen complete and capped, with none showing a bare/exposed writing tip or looking clearly shorter than the others?",
+    "Does the board move smoothly and continuously from left to right, without stopping, freezing, pausing, reversing, or jamming at any point?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"At timestamps 00:10-00:15, the board is fully visible and clearly shows exactly three pens arranged in a row.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens are oriented with the cap end pointing downwards relative to the camera frame; none are flipped.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens appear to have identical dark barrels and caps, showing no color variation between them.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"Each pen has a cap on the bottom end, and all appear to be full length with no exposed tips or missing parts.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board translates smoothly and continuously from the left side of the frame to the right side without pausing or jamming.\"\n    }\n  ],\n  \"verdict\": \"NORMAL\",\n  \"anomaly_type\": \"none\",\n  \"anomaly_score\": 0.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The video shows three identical pens on a board moving smoothly across the frame. All pens are capped, oriented in the same direction, and match in color and size.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "At timestamps 00:10-00:15, the board is fully visible and clearly shows exactly three pens arranged in a row."
+      },
+      {
+        "question_id": 2,
+        "answer": "YES",
+        "evidence": "All three pens are oriented with the cap end pointing downwards relative to the camera frame; none are flipped."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All three pens appear to have identical dark barrels and caps, showing no color variation between them."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "Each pen has a cap on the bottom end, and all appear to be full length with no exposed tips or missing parts."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board translates smoothly and continuously from the left side of the frame to the right side without pausing or jamming."
+      }
+    ],
+    "verdict": "NORMAL",
+    "anomaly_type": "none",
+    "anomaly_score": 0.0,
+    "confidence": "HIGH",
+    "reason": "The video shows three identical pens on a board moving smoothly across the frame. All pens are capped, oriented in the same direction, and match in color and size."
+  },
+  "usage": {
+    "input_tokens": 16978,
+    "output_tokens": 939,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 938,
+      "video_tokens": 16040
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 569,
+      "text_tokens": 370
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 17917,
+    "video_tokens": 16040
+  },
+  "request_id": "f327d691-3253-9e6a-84da-d7f8e2ebd14e",
+  "id": "motion_stop_02",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "motion_failure",
+  "description": "The board pauses mid-travel, then continues.",
+  "correct": false
+}

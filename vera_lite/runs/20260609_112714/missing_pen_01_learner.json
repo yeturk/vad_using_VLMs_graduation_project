@@ -1,0 +1,67 @@
+{
+  "video": "data/pens_small/pens_no_pen.mp4",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully in view, are there exactly three pens on it (no missing pen and no empty gap)?",
+    "Do all three pens point the same direction, with none flipped or reversed relative to the other two?",
+    "Are all three pens the same color as each other, with none differing in color?",
+    "Is every pen complete and capped, with none showing a bare/exposed writing tip or looking clearly shorter than the others?",
+    "Does the board move smoothly and continuously from left to right, without stopping, freezing, pausing, reversing, or jamming at any point?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"NO\",\n      \"evidence\": \"The white board is completely empty; there are zero pens visible on its surface as it moves across the frame.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"Since there are no pens on the board, the condition that all three point the same direction cannot be met.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"NO\",\n      \"evidence\": \"There are no pens present to verify if they share the same color.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"NO\",\n      \"evidence\": \"There are no pens present to verify if they are capped and complete.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves smoothly and continuously from left to right without stopping or jamming.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"missing_pen\",\n  \"anomaly_score\": 1.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The board is completely empty with no pens visible, which violates the requirement for exactly three pens.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "NO",
+        "evidence": "The white board is completely empty; there are zero pens visible on its surface as it moves across the frame."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "Since there are no pens on the board, the condition that all three point the same direction cannot be met."
+      },
+      {
+        "question_id": 3,
+        "answer": "NO",
+        "evidence": "There are no pens present to verify if they share the same color."
+      },
+      {
+        "question_id": 4,
+        "answer": "NO",
+        "evidence": "There are no pens present to verify if they are capped and complete."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves smoothly and continuously from left to right without stopping or jamming."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "missing_pen",
+    "anomaly_score": 1.0,
+    "confidence": "HIGH",
+    "reason": "The board is completely empty with no pens visible, which violates the requirement for exactly three pens."
+  },
+  "usage": {
+    "input_tokens": 12256,
+    "output_tokens": 1799,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 968,
+      "video_tokens": 11288
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 1471,
+      "text_tokens": 328
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 14055,
+    "video_tokens": 11288
+  },
+  "request_id": "c03d02ce-9e18-9b8f-9b70-bd57fcc367c3",
+  "id": "missing_pen_01",
+  "anomaly_type": "missing_pen",
+  "description": "A pen is missing; fewer than three pens on the board."
+}

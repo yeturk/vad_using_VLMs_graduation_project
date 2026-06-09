@@ -1,0 +1,67 @@
+{
+  "video": "data/pens_small/pens_missing_cap_2.mp4",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully in view, are there exactly three pens on it (no missing pen and no empty gap)?",
+    "Do all three pens point the same direction, with none flipped or reversed relative to the other two?",
+    "Are all three pens the same color as each other, with none differing in color?",
+    "Is every pen complete and capped, with none showing a bare/exposed writing tip or looking clearly shorter than the others?",
+    "Does the board move smoothly and continuously from left to right, without stopping, freezing, pausing, reversing, or jamming at any point?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"When the board is fully in the frame (around 00:08), there are clearly three writing instruments lined up.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"The left and right pens have their caps at the bottom. The middle pen (which looks like a pencil) has its writing tip pointing down, meaning it is oriented differently or is a different object entirely.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"NO\",\n      \"evidence\": \"The left and right pens are black/dark grey. The middle pen is distinctly lighter grey/silver, appearing to be a mechanical pencil.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"NO\",\n      \"evidence\": \"The middle pen appears to be a mechanical pencil or an uncapped pen showing a tip, whereas the outer two are capped pens. It is not identical to the others.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board slides smoothly from left to right across the entire duration without pausing or reversing.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"multiple\",\n  \"anomaly_score\": 1.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The middle writing instrument is different from the other two: it appears to be a grey mechanical pencil (wrong color) with a tip exposed (missing cap/wrong orientation), while the outer two are identical black capped pens.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "When the board is fully in the frame (around 00:08), there are clearly three writing instruments lined up."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "The left and right pens have their caps at the bottom. The middle pen (which looks like a pencil) has its writing tip pointing down, meaning it is oriented differently or is a different object entirely."
+      },
+      {
+        "question_id": 3,
+        "answer": "NO",
+        "evidence": "The left and right pens are black/dark grey. The middle pen is distinctly lighter grey/silver, appearing to be a mechanical pencil."
+      },
+      {
+        "question_id": 4,
+        "answer": "NO",
+        "evidence": "The middle pen appears to be a mechanical pencil or an uncapped pen showing a tip, whereas the outer two are capped pens. It is not identical to the others."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board slides smoothly from left to right across the entire duration without pausing or reversing."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "multiple",
+    "anomaly_score": 1.0,
+    "confidence": "HIGH",
+    "reason": "The middle writing instrument is different from the other two: it appears to be a grey mechanical pencil (wrong color) with a tip exposed (missing cap/wrong orientation), while the outer two are identical black capped pens."
+  },
+  "usage": {
+    "input_tokens": 11662,
+    "output_tokens": 2294,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 968,
+      "video_tokens": 10694
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 1883,
+      "text_tokens": 411
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 13956,
+    "video_tokens": 10694
+  },
+  "request_id": "5e5036b2-3cf0-9370-a3d9-7014188a8d3c",
+  "id": "missing_cap_02",
+  "anomaly_type": "missing_cap",
+  "description": "One pen is missing its cap (variant)."
+}

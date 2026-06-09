@@ -1,0 +1,69 @@
+{
+  "video": "data/pens_small/pens_missing_cap.mp4",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully in view, are there exactly three pens on it (no missing pen and no empty gap)?",
+    "Do all three pens point the same direction, with none flipped or reversed relative to the other two?",
+    "Are all three pens the same color as each other, with none differing in color?",
+    "Is every pen complete and capped, with none showing a bare/exposed writing tip or looking clearly shorter than the others?",
+    "Does the board move smoothly and continuously from left to right, without stopping, freezing, pausing, reversing, or jamming at any point?"
+  ],
+  "raw_text": "{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"When the board is fully in view (e.g., 00:08-00:13), there are exactly three items (pens/pencil) on it.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"The leftmost item is a pencil with a tip pointing down, while the other two are pens with caps at the bottom (implying tips are up inside the caps), so they are not all aligned the same way.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"NO\",\n      \"evidence\": \"The leftmost item is a solid dark grey pencil, while the other two are translucent light grey pens with black caps.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"NO\",\n      \"evidence\": \"The leftmost item is a pencil with an exposed tip (or an uncapped pen), while the other two are clearly capped.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"NO\",\n      \"evidence\": \"The board moves into the frame, then pauses/stops in the center for several seconds (00:08-00:13) before continuing to move right.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"multiple\",\n  \"anomaly_score\": 1.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The video shows multiple anomalies: the board pauses mid-travel in the center of the frame, and the leftmost item is a dark grey pencil (uncapped/different color) while the other two are identical translucent capped pens.\"\n}",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "When the board is fully in view (e.g., 00:08-00:13), there are exactly three items (pens/pencil) on it."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "The leftmost item is a pencil with a tip pointing down, while the other two are pens with caps at the bottom (implying tips are up inside the caps), so they are not all aligned the same way."
+      },
+      {
+        "question_id": 3,
+        "answer": "NO",
+        "evidence": "The leftmost item is a solid dark grey pencil, while the other two are translucent light grey pens with black caps."
+      },
+      {
+        "question_id": 4,
+        "answer": "NO",
+        "evidence": "The leftmost item is a pencil with an exposed tip (or an uncapped pen), while the other two are clearly capped."
+      },
+      {
+        "question_id": 5,
+        "answer": "NO",
+        "evidence": "The board moves into the frame, then pauses/stops in the center for several seconds (00:08-00:13) before continuing to move right."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "multiple",
+    "anomaly_score": 1.0,
+    "confidence": "HIGH",
+    "reason": "The video shows multiple anomalies: the board pauses mid-travel in the center of the frame, and the leftmost item is a dark grey pencil (uncapped/different color) while the other two are identical translucent capped pens."
+  },
+  "usage": {
+    "input_tokens": 11632,
+    "output_tokens": 7146,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 938,
+      "video_tokens": 10694
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 6717,
+      "text_tokens": 429
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 18778,
+    "video_tokens": 10694
+  },
+  "request_id": "8e4d5c70-4240-9161-ae17-0d010f01732c",
+  "id": "missing_cap_01",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "missing_cap",
+  "description": "One pen is missing its cap while the others are capped.",
+  "correct": true
+}

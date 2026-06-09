@@ -1,0 +1,67 @@
+{
+  "video": "data/pens_small/pens_wrong_direction.mp4",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully in view, are there exactly three pens on it (no missing pen and no empty gap)?",
+    "Do all three pens point the same direction, with none flipped or reversed relative to the other two?",
+    "Are all three pens the same color as each other, with none differing in color?",
+    "Is every pen complete and capped, with none showing a bare/exposed writing tip or looking clearly shorter than the others?",
+    "Does the board move smoothly and continuously from left to right, without stopping, freezing, pausing, reversing, or jamming at any point?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"When the board is fully in view (around 00:09), there are exactly three pens visible in a row.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"The middle pen is oriented with its cap at the top, while the left and right pens have their caps at the bottom. They are not all pointing the same direction.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens have black caps and translucent barrels, appearing identical in color.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens appear to have caps on them; none shows a bare writing tip relative to its own orientation (the middle pen is capped at the top, implying it is flipped).\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves smoothly and continuously from left to right throughout the clip without stopping or jamming.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"wrong_orientation\",\n  \"anomaly_score\": 1.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The middle pen is flipped upside down relative to the other two pens, violating the orientation consistency requirement.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "When the board is fully in view (around 00:09), there are exactly three pens visible in a row."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "The middle pen is oriented with its cap at the top, while the left and right pens have their caps at the bottom. They are not all pointing the same direction."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All three pens have black caps and translucent barrels, appearing identical in color."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "All three pens appear to have caps on them; none shows a bare writing tip relative to its own orientation (the middle pen is capped at the top, implying it is flipped)."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves smoothly and continuously from left to right throughout the clip without stopping or jamming."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "wrong_orientation",
+    "anomaly_score": 1.0,
+    "confidence": "HIGH",
+    "reason": "The middle pen is flipped upside down relative to the other two pens, violating the orientation consistency requirement."
+  },
+  "usage": {
+    "input_tokens": 11068,
+    "output_tokens": 2405,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 968,
+      "video_tokens": 10100
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 2034,
+      "text_tokens": 371
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 13473,
+    "video_tokens": 10100
+  },
+  "request_id": "270404eb-24c1-92ff-b328-71306b06e2a3",
+  "id": "wrong_orientation_01",
+  "anomaly_type": "wrong_orientation",
+  "description": "One pen is flipped 180 degrees relative to the other two."
+}

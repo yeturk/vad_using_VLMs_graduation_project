@@ -1,0 +1,75 @@
+{
+  "video": "data/pens_small/pens_missing_cap_2.mp4",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+    "Are all three pens aligned identically, all pointing the same way, including any pen near the left or right frame edge as it enters or exits?",
+    "Do all three pens share identical barrel and cap colors, with no mismatch?",
+    "Is every pen fully capped with no exposed writing tip, and are all three pens equal in length?",
+    "Does the board advance steadily from left to right at EVERY moment, never halting, freezing, or pausing even briefly (1-3 seconds) at any point in the video?",
+    "Do all pens stay fixed in their positions on the board, with no pen shifting, sliding, or moving on its own relative to the board mid-clip?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"When the board is centered (around 00:08-00:10), exactly three pens are visible in a row.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"The middle pen points its writing tip downwards, while the left and right pens have their caps facing downwards. They are not all aligned identically.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens appear to have dark grey/translucent barrels and black components (caps or grip/tip), sharing the same color scheme.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"NO\",\n      \"evidence\": \"The middle pen shows a bare writing tip (or pencil lead) at the bottom, whereas the left and right pens have thick caps at the bottom. The middle pen is not capped like the others.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves continuously from left to right throughout the clip without stopping or jamming.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"YES\",\n      \"evidence\": \"The pens remain fixed in their positions on the board as it moves.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"missing_cap\",\n  \"anomaly_score\": 0.95,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The middle pen is uncapped and shows a writing tip, while the other two pens are capped. This violates the condition that all pens must be identical and fully capped.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "When the board is centered (around 00:08-00:10), exactly three pens are visible in a row."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "The middle pen points its writing tip downwards, while the left and right pens have their caps facing downwards. They are not all aligned identically."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All three pens appear to have dark grey/translucent barrels and black components (caps or grip/tip), sharing the same color scheme."
+      },
+      {
+        "question_id": 4,
+        "answer": "NO",
+        "evidence": "The middle pen shows a bare writing tip (or pencil lead) at the bottom, whereas the left and right pens have thick caps at the bottom. The middle pen is not capped like the others."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves continuously from left to right throughout the clip without stopping or jamming."
+      },
+      {
+        "question_id": 6,
+        "answer": "YES",
+        "evidence": "The pens remain fixed in their positions on the board as it moves."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "missing_cap",
+    "anomaly_score": 0.95,
+    "confidence": "HIGH",
+    "reason": "The middle pen is uncapped and shows a writing tip, while the other two pens are capped. This violates the condition that all pens must be identical and fully capped."
+  },
+  "usage": {
+    "input_tokens": 11674,
+    "output_tokens": 3860,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 980,
+      "video_tokens": 10694
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 3418,
+      "text_tokens": 442
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 15534,
+    "video_tokens": 10694
+  },
+  "request_id": "b33ca1e1-01e3-9c84-b684-8d5a3af4de6b",
+  "id": "missing_cap_02",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "missing_cap",
+  "description": "One pen is missing its cap (variant).",
+  "correct": true
+}

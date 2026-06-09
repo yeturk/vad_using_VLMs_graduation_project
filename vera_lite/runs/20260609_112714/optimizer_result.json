@@ -1,0 +1,39 @@
+{
+  "model": "qwen3.6-plus",
+  "previous_questions": {
+    "version": 2,
+    "source": "rewritten_for_pens_scene_after_describe_runs_20260609",
+    "questions": [
+      "When the board is fully in view, are there exactly three pens on it (no missing pen and no empty gap)?",
+      "Do all three pens point the same direction, with none flipped or reversed relative to the other two?",
+      "Are all three pens the same color as each other, with none differing in color?",
+      "Is every pen complete and capped, with none showing a bare/exposed writing tip or looking clearly shorter than the others?",
+      "Does the board move smoothly and continuously from left to right, without stopping, freezing, pausing, reversing, or jamming at any point?"
+    ]
+  },
+  "raw_text": "{\n  \"reasoning\": \"While the current questions achieved high accuracy on the provided samples, they rely heavily on negative phrasing (e.g., 'no missing pen', 'without stopping', 'none differing') and implicit spatial references. VLMs frequently struggle with logical negation, which can lead to missed subtle violations or confusion between the conveyor's horizontal motion and the pens' vertical placement. Additionally, combining multiple checks into parenthetical clauses increases prompt parsing complexity. The revised questions are converted to direct, positive verification statements that explicitly define the expected visual standard. This isolates each anomaly type (count, orientation, color, completeness, motion) into atomic, frame-independent checks, reduces cognitive load, eliminates directional ambiguity, and improves generalization to varying lighting, camera angles, and line speeds.\",\n  \"new_questions\": [\n    \"When the board is fully visible, does it hold exactly three pens arranged in a single row?\",\n    \"Are all three pens aligned identically along their vertical axis, with caps pointing the same way and no tilted or flipped pens?\",\n    \"Do all three pens share identical barrel and cap colors without any mismatch?\",\n    \"Is every pen fully capped with no exposed writing tips, and are all three pens equal in length?\",\n    \"Does the board maintain a steady, uninterrupted left-to-right trajectory across the entire video without pausing or reversing?\"\n  ]\n}",
+  "parsed": {
+    "reasoning": "While the current questions achieved high accuracy on the provided samples, they rely heavily on negative phrasing (e.g., 'no missing pen', 'without stopping', 'none differing') and implicit spatial references. VLMs frequently struggle with logical negation, which can lead to missed subtle violations or confusion between the conveyor's horizontal motion and the pens' vertical placement. Additionally, combining multiple checks into parenthetical clauses increases prompt parsing complexity. The revised questions are converted to direct, positive verification statements that explicitly define the expected visual standard. This isolates each anomaly type (count, orientation, color, completeness, motion) into atomic, frame-independent checks, reduces cognitive load, eliminates directional ambiguity, and improves generalization to varying lighting, camera angles, and line speeds.",
+    "new_questions": [
+      "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+      "Are all three pens aligned identically along their vertical axis, with caps pointing the same way and no tilted or flipped pens?",
+      "Do all three pens share identical barrel and cap colors without any mismatch?",
+      "Is every pen fully capped with no exposed writing tips, and are all three pens equal in length?",
+      "Does the board maintain a steady, uninterrupted left-to-right trajectory across the entire video without pausing or reversing?"
+    ]
+  },
+  "usage": {
+    "input_tokens": 13535,
+    "output_tokens": 3076,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 13535
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 2782,
+      "text_tokens": 3076
+    },
+    "total_tokens": 16611
+  },
+  "request_id": "00b6041b-c362-913f-9fba-7d65f17abd5c"
+}

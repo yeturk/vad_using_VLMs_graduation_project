@@ -1,0 +1,12 @@
+{
+  "version": "candidate",
+  "source": "optimizer_qwen3.6-plus_20260609_112714",
+  "questions": [
+    "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+    "Are all three pens aligned identically along their vertical axis, with caps pointing the same way and no tilted or flipped pens?",
+    "Do all three pens share identical barrel and cap colors without any mismatch?",
+    "Is every pen fully capped with no exposed writing tips, and are all three pens equal in length?",
+    "Does the board maintain a steady, uninterrupted left-to-right trajectory across the entire video without pausing or reversing?"
+  ],
+  "reasoning": "While the current questions achieved high accuracy on the provided samples, they rely heavily on negative phrasing (e.g., 'no missing pen', 'without stopping', 'none differing') and implicit spatial references. VLMs frequently struggle with logical negation, which can lead to missed subtle violations or confusion between the conveyor's horizontal motion and the pens' vertical placement. Additionally, combining multiple checks into parenthetical clauses increases prompt parsing complexity. The revised questions are converted to direct, positive verification statements that explicitly define the expected visual standard. This isolates each anomaly type (count, orientation, color, completeness, motion) into atomic, frame-independent checks, reduces cognitive load, eliminates directional ambiguity, and improves generalization to varying lighting, camera angles, and line speeds."
+}

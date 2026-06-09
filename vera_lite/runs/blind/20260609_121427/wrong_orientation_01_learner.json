@@ -1,0 +1,75 @@
+{
+  "video": "data/pens_small/pens_wrong_direction.mp4",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+    "Are all three pens aligned identically, all pointing the same way, including any pen near the left or right frame edge as it enters or exits?",
+    "Do all three pens share identical barrel and cap colors, with no mismatch?",
+    "Is every pen fully capped with no exposed writing tip, and are all three pens equal in length?",
+    "Does the board advance steadily from left to right at EVERY moment, never halting, freezing, or pausing even briefly (1-3 seconds) at any point in the video?",
+    "Do all pens stay fixed in their positions on the board, with no pen shifting, sliding, or moving on its own relative to the board mid-clip?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"At timestamps 00:08-00:10, the board is fully visible and clearly holds three pens arranged in a horizontal row.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"The middle pen is oriented with its black cap at the top end, while the left and right pens have their black caps at the bottom end. They are not all pointing the same way.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens appear to have translucent barrels and black components (caps/ends), sharing the same color scheme.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"All pens appear to have caps on (no exposed tips visible) and are of similar length.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves continuously from left to right throughout the clip without stopping or jamming.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"YES\",\n      \"evidence\": \"The pens remain stationary relative to the board as it moves across the frame.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"wrong_orientation\",\n  \"anomaly_score\": 0.9,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The middle pen is flipped relative to the other two pens (cap facing up vs. caps facing down), which violates the nominal condition that all pens must point the same direction.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "At timestamps 00:08-00:10, the board is fully visible and clearly holds three pens arranged in a horizontal row."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "The middle pen is oriented with its black cap at the top end, while the left and right pens have their black caps at the bottom end. They are not all pointing the same way."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All three pens appear to have translucent barrels and black components (caps/ends), sharing the same color scheme."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "All pens appear to have caps on (no exposed tips visible) and are of similar length."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves continuously from left to right throughout the clip without stopping or jamming."
+      },
+      {
+        "question_id": 6,
+        "answer": "YES",
+        "evidence": "The pens remain stationary relative to the board as it moves across the frame."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "wrong_orientation",
+    "anomaly_score": 0.9,
+    "confidence": "HIGH",
+    "reason": "The middle pen is flipped relative to the other two pens (cap facing up vs. caps facing down), which violates the nominal condition that all pens must point the same direction."
+  },
+  "usage": {
+    "input_tokens": 11080,
+    "output_tokens": 1406,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 980,
+      "video_tokens": 10100
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 978,
+      "text_tokens": 428
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 12486,
+    "video_tokens": 10100
+  },
+  "request_id": "1c5431d5-d2fb-9e8c-9354-588034c7bfa2",
+  "id": "wrong_orientation_01",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "wrong_orientation",
+  "description": "One pen is flipped 180 degrees relative to the other two.",
+  "correct": true
+}

@@ -1,0 +1,69 @@
+{
+  "video": "data/pens_small/pens_wrong_direction_and_missing_cap.mp4",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully in view, are there exactly three pens on it (no missing pen and no empty gap)?",
+    "Do all three pens point the same direction, with none flipped or reversed relative to the other two?",
+    "Are all three pens the same color as each other, with none differing in color?",
+    "Is every pen complete and capped, with none showing a bare/exposed writing tip or looking clearly shorter than the others?",
+    "Does the board move smoothly and continuously from left to right, without stopping, freezing, pausing, reversing, or jamming at any point?"
+  ],
+  "raw_text": "{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"At 00:07-00:10, the board is fully visible and carries exactly three pens.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"The pens are not aligned. The right pen has its cap at the top, while the middle pen has its cap at the bottom.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens appear to have the same dark/black color and translucent barrels.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"NO\",\n      \"evidence\": \"The leftmost pen shows a bare, exposed writing tip at the bottom, while the other two are capped.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves continuously from left to right without stopping or jamming.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"multiple\",\n  \"anomaly_score\": 0.95,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The leftmost pen is uncapped (missing cap), and the pens have inconsistent orientations (the right pen is flipped relative to the middle pen).\"\n}",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "At 00:07-00:10, the board is fully visible and carries exactly three pens."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "The pens are not aligned. The right pen has its cap at the top, while the middle pen has its cap at the bottom."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All three pens appear to have the same dark/black color and translucent barrels."
+      },
+      {
+        "question_id": 4,
+        "answer": "NO",
+        "evidence": "The leftmost pen shows a bare, exposed writing tip at the bottom, while the other two are capped."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves continuously from left to right without stopping or jamming."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "multiple",
+    "anomaly_score": 0.95,
+    "confidence": "HIGH",
+    "reason": "The leftmost pen is uncapped (missing cap), and the pens have inconsistent orientations (the right pen is flipped relative to the middle pen)."
+  },
+  "usage": {
+    "input_tokens": 11038,
+    "output_tokens": 3656,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 938,
+      "video_tokens": 10100
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 3308,
+      "text_tokens": 348
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 14694,
+    "video_tokens": 10100
+  },
+  "request_id": "af12b430-1370-9cfc-a75f-61daf51595ef",
+  "id": "combined_01",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "multiple",
+  "description": "One pen is flipped and a pen is missing its cap (combined anomaly).",
+  "correct": true
+}

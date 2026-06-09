@@ -2,44 +2,48 @@ from __future__ import annotations
 
 
 SYSTEM_CONTEXT = """
-You are an industrial quality-control vision system.
+You are an industrial quality-control vision system for a production line.
 
 Scene:
-- A small push-button component moves on a green conveyor belt.
-- The conveyor belt moves LEFT to RIGHT in the camera frame.
-- The component has two distinct ends:
-  - RED CAP: the red button cap.
-  - PIN SIDE: black base with small metal pins.
+- A white rectangular board slides on a linear rail (steel guide rails with a
+  central lead screw) over a light wooden surface.
+- The board moves LEFT to RIGHT in the camera frame and carries a row of pens.
+- The pens are slender cylindrical writing instruments with a translucent barrel
+  and a darker capped end. They are all meant to be identical to one another.
 
-Nominal condition:
-- The component enters from the left and moves to the right.
-- The component remains upright/stable on the belt, like the normal reference.
-- In the current normal reference, the red cap appears upward/visible on top,
-  while the black pin side remains part of the stable upright component posture.
-- The red cap and black pin side are visible as distinct parts of the same component.
-- Small perspective tilt, mild diagonal appearance, or slight rotation can happen
-  in normal video and must not be flagged alone.
-- The component moves smoothly and stays on the belt surface.
+Nominal (NORMAL) condition:
+- The board carries exactly THREE pens, evenly spaced in a row.
+- All three pens are identical to EACH OTHER: same color, same length, same parts.
+- All three pens point the SAME direction (same end up, same end down).
+- Every pen is complete and capped: no pen shows a bare/exposed writing tip while
+  the others are capped, and none looks clearly shorter than the others.
+- The board moves smoothly and continuously from left to right, without stopping,
+  freezing, pausing, reversing, or jamming.
 
-Anomaly conditions:
-- Posture/alignment anomaly: component is lying on its side, fallen, tumbling,
-  strongly wobbling, rolling, or visibly unstable compared with the normal
-  upright/stable reference.
-- Reversed orientation: red cap and pin side appear clearly swapped compared
-  with the normal reference. Do not infer this from a partial or blurry frame.
-- Motion anomaly: stopped, jammed, rolling/spinning, or moving backward.
-- Position anomaly: overhanging, falling, or leaving the belt surface.
+Anomaly conditions (any ONE of these makes the clip ANOMALY):
+- Missing cap: one pen lacks its cap / shows a bare writing tip while the others
+  remain capped, or one pen looks clearly shorter or different at one end.
+- Wrong orientation: one pen is flipped and points the opposite way relative to
+  the other two, so the pens are NOT all aligned the same direction.
+- Wrong color: one pen differs in color from the other two; the three pens are
+  not all the same color.
+- Missing pen / wrong count: when the board is fully in view there are not three
+  pens (for example only two, or an empty gap where a pen should be).
+- Motion failure: the board stops, freezes/pauses mid-travel, jams, or reverses
+  instead of moving smoothly left to right.
+- Combinations of the above also count as ANOMALY.
 
-Do not flag these as anomalies:
-- Partial visibility at entry or exit.
-- Slight wobble.
-- Small camera perspective angle.
-- The black rectangular body appearing somewhat vertical due to perspective.
-- Mild diagonal appearance in late frames if the component remains upright/stable.
-- Mild rotation that does not look like tumbling or falling.
-- Red cap or pins being difficult to localize in a blurry frame; use fully
-  visible frames and posture over partial-frame guesses.
-- Slight off-center position if the component is still fully on the belt.
+Judging guidance:
+- Compare the three pens TO EACH OTHER. The line is NORMAL when the pens are
+  mutually consistent (same color, same orientation, all capped and complete) and
+  the motion is smooth; flag ANOMALY when one pen breaks the shared pattern or the
+  motion is interrupted.
+- Do NOT decide color in absolute terms (e.g. "blue"); decide whether all three
+  pens share the SAME color.
+- Count the pens only when the board is fully visible / centered, not during the
+  partial entry or exit frames.
+- Do not flag these: partial visibility at entry or exit, slight perspective tilt,
+  minor spacing differences, mild blur, or a small camera angle.
 """.strip()
 
 
@@ -78,7 +82,7 @@ Output strictly as valid JSON with this schema:
     }}
   ],
   "verdict": "NORMAL / ANOMALY / UNCLEAR",
-  "anomaly_type": "none / posture_alignment_failure / reversed_orientation / motion_failure / belt_position_failure / unclear",
+  "anomaly_type": "none / missing_cap / wrong_orientation / wrong_color / missing_pen / motion_failure / unexpected_pen_movement / multiple / unclear",
   "anomaly_score": 0.0,
   "confidence": "LOW / MEDIUM / HIGH",
   "reason": "one or two sentences explaining the verdict"
@@ -104,9 +108,11 @@ Important:
 - Do not make the questions too vague.
 - Do not make the questions overly specific to only one clip.
 - Keep the questions visually checkable.
-- Focus on the current production-line setup:
-  belt LEFT to RIGHT, normal upright/stable reference posture, red cap visible
-  upward/on top in normal examples, posture/alignment, motion, belt position.
+- Focus on the current production-line setup: a white board moving LEFT to RIGHT
+  carrying three pens; normal means the three pens are mutually consistent (same
+  color, same orientation, all capped and complete, exactly three) and the motion
+  is smooth. Anomalies: missing cap, wrong orientation, wrong color, missing pen,
+  motion stop/freeze.
 - Limit the new guiding questions to at most {max_questions}.
 
 Current guiding questions:

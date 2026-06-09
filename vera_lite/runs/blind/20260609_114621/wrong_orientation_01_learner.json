@@ -1,0 +1,69 @@
+{
+  "video": "data/pens_small/pens_wrong_direction.mp4",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully in view, are there exactly three pens on it (no missing pen and no empty gap)?",
+    "Do all three pens point the same direction, with none flipped or reversed relative to the other two?",
+    "Are all three pens the same color as each other, with none differing in color?",
+    "Is every pen complete and capped, with none showing a bare/exposed writing tip or looking clearly shorter than the others?",
+    "Does the board move smoothly and continuously from left to right, without stopping, freezing, pausing, reversing, or jamming at any point?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"When the board is fully in the frame (around 00:06-00:10), there are clearly three pens lined up side-by-side.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"The left and right pens have their black caps at the bottom, while the middle pen has its black cap at the top. The middle pen is flipped relative to the others.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens appear to be the same model: clear barrels with black caps/ends.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"All pens appear to have their caps on; no bare tips are exposed.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves continuously and smoothly from left to right across the rail without stopping or jamming.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"wrong_orientation\",\n  \"anomaly_score\": 1.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The middle pen is oriented with the cap facing up, while the outer two pens have their caps facing down. This inconsistent orientation constitutes an anomaly.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "When the board is fully in the frame (around 00:06-00:10), there are clearly three pens lined up side-by-side."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "The left and right pens have their black caps at the bottom, while the middle pen has its black cap at the top. The middle pen is flipped relative to the others."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All three pens appear to be the same model: clear barrels with black caps/ends."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "All pens appear to have their caps on; no bare tips are exposed."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves continuously and smoothly from left to right across the rail without stopping or jamming."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "wrong_orientation",
+    "anomaly_score": 1.0,
+    "confidence": "HIGH",
+    "reason": "The middle pen is oriented with the cap facing up, while the outer two pens have their caps facing down. This inconsistent orientation constitutes an anomaly."
+  },
+  "usage": {
+    "input_tokens": 11038,
+    "output_tokens": 1119,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 938,
+      "video_tokens": 10100
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 748,
+      "text_tokens": 371
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 12157,
+    "video_tokens": 10100
+  },
+  "request_id": "d683725a-d763-9d9d-aecf-cfb9eb6320d8",
+  "id": "wrong_orientation_01",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "wrong_orientation",
+  "description": "One pen is flipped 180 degrees relative to the other two.",
+  "correct": true
+}

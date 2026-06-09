@@ -1,0 +1,18 @@
+DETAILED SCENE DESCRIPTION:
+The video shows a top-down view of a light-colored wooden surface, likely a table, with a metal linear motion system mounted on it. The system consists of two parallel guide rails and a central threaded lead screw. A white, rectangular board or platform is attached to this mechanism and moves horizontally across the frame. As the board moves from left to right, it carries three pens arranged in a row. The background wood has some minor scuff marks. The lighting is even, likely indoor artificial light.
+
+OBJECTS:
+- Count: 3
+- Description (shape/color/parts): The objects are ballpoint pens. They are cylindrical and elongated. They appear to be capped pens with clips attached to the caps.
+- Per-object tip direction: All three pens are oriented vertically with their capped ends (containing the writing tip) facing **down** and the back ends facing **up**.
+- Any missing parts: None observed; all pens appear to have their caps on.
+- Color consistency: No. Two of the pens (middle and right) have dark grey/black translucent barrels with black caps. The leftmost pen has a blue translucent barrel with a lighter (possibly clear or light blue) cap.
+
+MOTION:
+- Direction: Left-to-right.
+- Continuity (smooth / pauses / stops / reverses), with rough timing: The motion is continuous and smooth throughout the video. The board enters from the left edge around 00:00, fully reveals the three pens by 00:08, and begins to exit the frame to the right by 00:13, with the last pen (blue) still visible at the end.
+
+UNCERTAINTIES:
+- The specific brand or model of the pens is unclear.
+- It is slightly ambiguous whether the blue pen's cap is clear plastic showing blue ink or a light blue cap due to resolution.
+- The exact mechanism driving the lead screw (motor) is off-screen.

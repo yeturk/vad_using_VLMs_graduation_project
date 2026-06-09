@@ -1,0 +1,75 @@
+{
+  "video": "data/pens_small/pens_wrong_direction_2.mp4",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+    "Are all three pens aligned identically, all pointing the same way, including any pen near the left or right frame edge as it enters or exits?",
+    "Do all three pens share identical barrel and cap colors, with no mismatch?",
+    "Is every pen fully capped with no exposed writing tip, and are all three pens equal in length?",
+    "Does the board advance steadily from left to right at EVERY moment, never halting, freezing, or pausing even briefly (1-3 seconds) at any point in the video?",
+    "Do all pens stay fixed in their positions on the board, with no pen shifting, sliding, or moving on its own relative to the board mid-clip?"
+  ],
+  "raw_text": "{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"When the board is fully visible (e.g., around 00:09), there are clearly three pens arranged in a row.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"The rightmost pen is tilted diagonally (pointing down-right), while the left and middle pens are vertical (pointing straight down). They are not all aligned in the same direction.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens appear to have black caps and translucent/dark grey barrels. While the right pen looks slightly darker due to angle/lighting, they are likely the same model.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens have a thick black cap at the bottom end. No bare writing tips are exposed.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves continuously from left to right throughout the clip without visible stopping or jamming.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"YES\",\n      \"evidence\": \"The pens maintain their relative positions and orientations on the board as it moves.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"wrong_orientation\",\n  \"anomaly_score\": 0.9,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The rightmost pen is oriented diagonally while the other two are vertical. This violates the nominal condition that all three pens must point in the same direction (be aligned identically).\"\n}",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "When the board is fully visible (e.g., around 00:09), there are clearly three pens arranged in a row."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "The rightmost pen is tilted diagonally (pointing down-right), while the left and middle pens are vertical (pointing straight down). They are not all aligned in the same direction."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All three pens appear to have black caps and translucent/dark grey barrels. While the right pen looks slightly darker due to angle/lighting, they are likely the same model."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "All three pens have a thick black cap at the bottom end. No bare writing tips are exposed."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves continuously from left to right throughout the clip without visible stopping or jamming."
+      },
+      {
+        "question_id": 6,
+        "answer": "YES",
+        "evidence": "The pens maintain their relative positions and orientations on the board as it moves."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "wrong_orientation",
+    "anomaly_score": 0.9,
+    "confidence": "HIGH",
+    "reason": "The rightmost pen is oriented diagonally while the other two are vertical. This violates the nominal condition that all three pens must point in the same direction (be aligned identically)."
+  },
+  "usage": {
+    "input_tokens": 11080,
+    "output_tokens": 13830,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 980,
+      "video_tokens": 10100
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 13394,
+      "text_tokens": 436
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 24910,
+    "video_tokens": 10100
+  },
+  "request_id": "28d6632f-654f-9d59-a603-8e7ae0a35f76",
+  "id": "wrong_orientation_02",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "wrong_orientation",
+  "description": "One pen is flipped relative to the others (variant).",
+  "correct": true
+}

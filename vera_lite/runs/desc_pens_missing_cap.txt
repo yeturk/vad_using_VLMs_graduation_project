@@ -1,0 +1,18 @@
+DETAILED SCENE DESCRIPTION:
+The video shows a top-down view of a linear motion system, likely a conveyor or actuator test setup. The background is a light-colored wooden surface (like a desk) with a few small dark scuff marks. Mounted on this surface is a silver aluminum linear rail system with a central threaded rod (ball screw). A white, rectangular board is attached to the slider of this mechanism. The board moves horizontally across the frame. As the board translates, three pen-like objects are revealed sitting on top of it. The objects enter the frame from the left side as the board moves right.
+
+OBJECTS:
+- Count: 3 distinct objects.
+- Description (shape/color/parts): They appear to be gel pens or similar writing instruments. They have translucent/clear barrels revealing black ink inside. They are cylindrical and long.
+- Per-object tip direction: All three objects are oriented vertically with their writing tips (or capped ends) facing **down** (towards the bottom of the frame).
+- Any missing parts: The leftmost object appears to be uncapped, showing a pointed writing tip at the bottom. The middle and rightmost objects appear to have black caps covering their tips at the bottom.
+- Color consistency: All objects share the same color scheme: clear barrels with black ink/components and black caps/tips.
+
+MOTION:
+- Direction: The white board moves continuously from **left to right**.
+- Continuity (smooth / pauses / stops / reverses), with rough timing: The motion is smooth and continuous throughout the clip. The board enters from the left edge (00:00), reveals the three objects sequentially as it moves right (00:04-00:06), centers them in the frame (00:10), and then carries them towards the right edge, exiting the frame (00:14-00:17).
+
+UNCERTAINTIES:
+- The exact type of pen (e.g., brand, specific model) is unclear due to resolution.
+- It is difficult to confirm if the black parts on the middle and right pens are definitely caps or perhaps rear plugs, though the uncapped left pen suggests they are caps covering the tips.
+- The mechanism driving the board (motor) is not visible, only the rail and screw.

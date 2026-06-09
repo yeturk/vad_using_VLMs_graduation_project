@@ -1,16 +1,93 @@
 [
   {
     "id": "normal_01",
-    "video": "data/r01_clip09_normal.mp4",
+    "video": "data/pens_small/pens_normal.mp4",
     "expected": "NORMAL",
     "anomaly_type": "none",
-    "description": "Normal push-button component moving left to right on the conveyor belt."
+    "description": "Three identical pens moving left to right on the board, smooth continuous motion."
   },
   {
-    "id": "angle_anomaly_01",
-    "video": "data/r01_clip06_angle_anomaly.mp4",
+    "id": "normal_02",
+    "video": "data/pens_small/pens_normal_2.mp4",
+    "expected": "NORMAL",
+    "anomaly_type": "none",
+    "description": "Three identical pens, normal pass."
+  },
+  {
+    "id": "normal_03",
+    "video": "data/pens_small/pens_normal_3.mp4",
+    "expected": "NORMAL",
+    "anomaly_type": "none",
+    "description": "Three identical pens, normal pass."
+  },
+  {
+    "id": "missing_cap_01",
+    "video": "data/pens_small/pens_missing_cap.mp4",
     "expected": "ANOMALY",
-    "anomaly_type": "angle_misalignment",
-    "description": "Push-button component with angle/alignment anomaly while moving on the conveyor belt."
+    "anomaly_type": "missing_cap",
+    "description": "One pen is missing its cap while the others are capped."
+  },
+  {
+    "id": "missing_cap_02",
+    "video": "data/pens_small/pens_missing_cap_2.mp4",
+    "expected": "ANOMALY",
+    "anomaly_type": "missing_cap",
+    "description": "One pen is missing its cap (variant)."
+  },
+  {
+    "id": "wrong_orientation_01",
+    "video": "data/pens_small/pens_wrong_direction.mp4",
+    "expected": "ANOMALY",
+    "anomaly_type": "wrong_orientation",
+    "description": "One pen is flipped 180 degrees relative to the other two."
+  },
+  {
+    "id": "wrong_orientation_02",
+    "video": "data/pens_small/pens_wrong_direction_2.mp4",
+    "expected": "ANOMALY",
+    "anomaly_type": "wrong_orientation",
+    "description": "One pen is flipped relative to the others (variant)."
+  },
+  {
+    "id": "wrong_color_01",
+    "video": "data/pens_small/pens_wrong_color.mp4",
+    "expected": "ANOMALY",
+    "anomaly_type": "wrong_color",
+    "description": "One pen differs in color from the other two."
+  },
+  {
+    "id": "missing_pen_01",
+    "video": "data/pens_small/pens_no_pen.mp4",
+    "expected": "ANOMALY",
+    "anomaly_type": "missing_pen",
+    "description": "A pen is missing; fewer than three pens on the board."
+  },
+  {
+    "id": "motion_stop_01",
+    "video": "data/pens_small/pens_conveyor_stops.mp4",
+    "expected": "ANOMALY",
+    "anomaly_type": "motion_failure",
+    "description": "The board stops mid-travel and stays frozen."
+  },
+  {
+    "id": "motion_stop_02",
+    "video": "data/pens_small/pens_conveyor_stops_and_continues.mp4",
+    "expected": "ANOMALY",
+    "anomaly_type": "motion_failure",
+    "description": "The board pauses mid-travel, then continues."
+  },
+  {
+    "id": "motion_temporal_01",
+    "video": "data/pens_small/pens_temporal_anomaly.mp4",
+    "expected": "ANOMALY",
+    "anomaly_type": "unexpected_pen_movement",
+    "description": "Mid-clip, the pens themselves shift/move on their own due to an unseen external force; the board moves normally and no cause is visible in the scene."
+  },
+  {
+    "id": "combined_01",
+    "video": "data/pens_small/pens_wrong_direction_and_missing_cap.mp4",
+    "expected": "ANOMALY",
+    "anomaly_type": "multiple",
+    "description": "One pen is flipped and a pen is missing its cap (combined anomaly)."
   }
 ]

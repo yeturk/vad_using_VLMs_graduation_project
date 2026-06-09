@@ -1,0 +1,69 @@
+{
+  "video": "data/pens_small/pens_missing_cap_2.mp4",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully in view, are there exactly three pens on it (no missing pen and no empty gap)?",
+    "Do all three pens point the same direction, with none flipped or reversed relative to the other two?",
+    "Are all three pens the same color as each other, with none differing in color?",
+    "Is every pen complete and capped, with none showing a bare/exposed writing tip or looking clearly shorter than the others?",
+    "Does the board move smoothly and continuously from left to right, without stopping, freezing, pausing, reversing, or jamming at any point?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"When the board is fully in view (around 00:08), there are exactly three pens visible on the board.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"The left and right pens have their caps at the bottom (pointing up), while the middle pen has its writing tip at the bottom (pointing down), indicating it is oriented oppositely or uncapped.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens appear to be black or dark grey, sharing the same color.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"NO\",\n      \"evidence\": \"The middle pen shows a bare writing tip at the bottom, while the other two pens have caps at the bottom, indicating the middle pen is missing its cap.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves smoothly and continuously from the left side of the frame to the right side without stopping or jamming.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"missing_cap\",\n  \"anomaly_score\": 1.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The middle pen is uncapped, showing a bare writing tip at the bottom while the other two pens are capped at the bottom. This violates the condition that every pen must be complete and capped.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "When the board is fully in view (around 00:08), there are exactly three pens visible on the board."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "The left and right pens have their caps at the bottom (pointing up), while the middle pen has its writing tip at the bottom (pointing down), indicating it is oriented oppositely or uncapped."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All three pens appear to be black or dark grey, sharing the same color."
+      },
+      {
+        "question_id": 4,
+        "answer": "NO",
+        "evidence": "The middle pen shows a bare writing tip at the bottom, while the other two pens have caps at the bottom, indicating the middle pen is missing its cap."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves smoothly and continuously from the left side of the frame to the right side without stopping or jamming."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "missing_cap",
+    "anomaly_score": 1.0,
+    "confidence": "HIGH",
+    "reason": "The middle pen is uncapped, showing a bare writing tip at the bottom while the other two pens are capped at the bottom. This violates the condition that every pen must be complete and capped."
+  },
+  "usage": {
+    "input_tokens": 11632,
+    "output_tokens": 4018,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 938,
+      "video_tokens": 10694
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 3618,
+      "text_tokens": 400
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 15650,
+    "video_tokens": 10694
+  },
+  "request_id": "fc15d945-ee15-9511-90af-fd7154188c12",
+  "id": "missing_cap_02",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "missing_cap",
+  "description": "One pen is missing its cap (variant).",
+  "correct": true
+}

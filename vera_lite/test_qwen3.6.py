@@ -9,50 +9,50 @@ if str(PROJECT_ROOT) not in sys.path:
 from vera_lite.dashscope_client import call_qwen
 
 
-DEFAULT_VIDEO = "data/r01_clip09_normal.mp4"
+DEFAULT_VIDEO = "data/pens_small/pens_normal.mp4"
 DEFAULT_MODEL = "qwen3.6-plus"
 
 
 DESCRIBE_PROMPT = """
-You are inspecting a short video from an industrial conveyor belt.
+You are inspecting a short video from a conveyor-style production line.
 
-Do NOT classify the video as normal or anomalous yet.
-Do NOT use any predefined rule from previous prompts.
+Do NOT classify the video as normal or anomalous.
+Do NOT assume what the objects "should" look like.
+Your only task is to describe, objectively, what you visually observe.
 
-Your task is only to describe what you visually observe in detail.
-
-Please focus on:
-1. What objects are visible in the scene?
-2. What is the conveyor belt direction in the camera frame?
-3. What is the moving component?
-4. What colors and parts are visible on the component?
-5. Which side of the component has the red cap?
-6. Which side of the component has the black pin side / metal pins?
-7. How does the component move over time?
-8. Does the component appear tilted, diagonal, upright, or aligned?
-9. Does it stay on the belt?
-10. What details are uncertain because of blur, resolution, perspective, or occlusion?
+Please answer:
+1. What is the background / surface? What color is it?
+2. What is the moving carrier (belt / board) and which direction does it move
+   in the camera frame (left-to-right, right-to-left, etc.)?
+3. How many distinct objects are carried on it? Count them.
+4. What are these objects? Describe their shape, color, and parts.
+5. For EACH object, which way does its tip / pointed end face
+   (up, down, left, right, diagonal)? Are they all the same or different?
+6. Does each object appear complete, or is any part (e.g. a cap) missing
+   on any of them?
+7. Are all objects the same color, or does any one differ?
+8. How does the motion evolve over time? Is it continuous and smooth, or does
+   it pause / stop / reverse at any point?
+9. What details are uncertain due to blur, resolution, perspective, or occlusion?
 
 Output format:
 
 DETAILED SCENE DESCRIPTION:
 [paragraph]
 
-FRAME/TIME OBSERVATIONS:
-- Early:
-- Middle:
-- Late:
-
-COMPONENT PARTS:
-- Red cap location:
-- Pin side location:
-- Body posture/orientation:
+OBJECTS:
+- Count:
+- Description (shape/color/parts):
+- Per-object tip direction:
+- Any missing parts:
+- Color consistency:
 
 MOTION:
-[describe direction and smoothness]
+- Direction:
+- Continuity (smooth / pauses / stops / reverses), with rough timing:
 
 UNCERTAINTIES:
-[list any visual uncertainties]
+[list]
 """.strip()
 
 

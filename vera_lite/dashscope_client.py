@@ -1,10 +1,16 @@
 import json
 import os
+import time
 from typing import Any
 
 import dashscope
 from dashscope import MultiModalConversation
 from dotenv import load_dotenv
+
+
+# DashScope returns these when the service is temporarily overloaded; retry them.
+TRANSIENT_STATUS = {429, 500, 502, 503, 504}
+MAX_RETRIES = 5
 
 
 def normalize_api_key(raw_key: str | None) -> str:
@@ -30,13 +36,23 @@ def configure_dashscope() -> None:
 
 def call_qwen(model: str, content: list[dict[str, Any]]) -> tuple[str, dict[str, Any]]:
     configure_dashscope()
-    response = MultiModalConversation.call(
-        model=model,
-        messages=[{"role": "user", "content": content}],
-    )
+    messages = [{"role": "user", "content": content}]
 
-    if response.get("status_code") != 200:
+    response = None
+    for attempt in range(MAX_RETRIES):
+        response = MultiModalConversation.call(model=model, messages=messages)
+        status = response.get("status_code")
+        if status == 200:
+            break
+        if status in TRANSIENT_STATUS and attempt < MAX_RETRIES - 1:
+            wait = 2 ** attempt * 5  # 5, 10, 20, 40 s
+            print(f"  [retry {attempt + 1}/{MAX_RETRIES}] status {status}, waiting {wait}s...")
+            time.sleep(wait)
+            continue
         raise RuntimeError(json.dumps(dict(response), ensure_ascii=False, indent=2))
+
+    if response is None or response.get("status_code") != 200:
+        raise RuntimeError(json.dumps(dict(response or {}), ensure_ascii=False, indent=2))
 
     output = response.get("output", {})
     choices = output.get("choices", [])

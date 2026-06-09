@@ -12,6 +12,41 @@ DEFAULT_MANIFEST = ROOT / "vera_lite" / "dataset_manifest.json"
 DEFAULT_QUESTIONS = ROOT / "vera_lite" / "guiding_questions.json"
 
 
+def compute_metrics(learner_results: list[dict]) -> dict:
+    """Binary NORMAL/ANOMALY metrics, treating ANOMALY as the positive class."""
+    tp = tn = fp = fn = 0
+    for r in learner_results:
+        expected = r["expected"]
+        predicted = r["parsed"].get("verdict")
+        if expected == "ANOMALY" and predicted == "ANOMALY":
+            tp += 1
+        elif expected == "NORMAL" and predicted == "NORMAL":
+            tn += 1
+        elif expected == "NORMAL" and predicted == "ANOMALY":
+            fp += 1
+        elif expected == "ANOMALY" and predicted == "NORMAL":
+            fn += 1
+        # predicted == "UNCLEAR" (or anything else) counts as an error below.
+
+    total = len(learner_results)
+    correct = tp + tn
+    precision = tp / (tp + fp) if (tp + fp) else 0.0
+    recall = tp / (tp + fn) if (tp + fn) else 0.0
+    f1 = 2 * precision * recall / (precision + recall) if (precision + recall) else 0.0
+    return {
+        "total": total,
+        "correct": correct,
+        "accuracy": correct / total if total else 0.0,
+        "tp": tp,
+        "tn": tn,
+        "fp": fp,
+        "fn": fn,
+        "precision": precision,
+        "recall": recall,
+        "f1": f1,
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", default="qwen3.6-plus")
@@ -20,6 +55,12 @@ def main() -> None:
     parser.add_argument("--questions", type=Path, default=DEFAULT_QUESTIONS)
     parser.add_argument("--out-dir", type=Path, default=ROOT / "vera_lite" / "runs")
     parser.add_argument("--skip-optimizer", action="store_true")
+    parser.add_argument(
+        "--reveal-label",
+        action="store_true",
+        help="Leak the expected label into the learner prompt. NOT recommended; "
+        "for ablation only. Default is blind: the learner never sees the label.",
+    )
     args = parser.parse_args()
 
     run_id = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -29,23 +70,37 @@ def main() -> None:
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
     learner_results = []
     for item in manifest:
+        # Blind by default: the learner does not see the ground-truth label.
+        prompt_expected = item["expected"] if args.reveal_label else None
         result = run_learner(
             video=item["video"],
-            expected=item["expected"],
+            expected=prompt_expected,
             model=args.model,
             questions_path=args.questions,
         )
         result["id"] = item["id"]
+        # Restore ground truth for evaluation/optimizer regardless of blind mode.
+        result["expected"] = item["expected"]
+        result["label_revealed_to_learner"] = args.reveal_label
         result["anomaly_type"] = item.get("anomaly_type")
         result["description"] = item.get("description")
+        predicted = result["parsed"].get("verdict")
+        result["correct"] = predicted == item["expected"]
         learner_results.append(result)
 
         item_path = run_dir / f"{item['id']}_learner.json"
         item_path.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
-        print(f"{item['id']}: expected={item['expected']} predicted={result['parsed'].get('verdict')}")
+        mark = "OK " if result["correct"] else "XX "
+        print(f"{mark}{item['id']}: expected={item['expected']} predicted={predicted}")
 
     results_path = run_dir / "learner_results.json"
     results_path.write_text(json.dumps(learner_results, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    metrics = compute_metrics(learner_results)
+    print(
+        f"\nAccuracy: {metrics['correct']}/{metrics['total']} = {metrics['accuracy']:.2f}  "
+        f"(TP={metrics['tp']} TN={metrics['tn']} FP={metrics['fp']} FN={metrics['fn']})"
+    )
 
     optimizer_result = None
     if not args.skip_optimizer:
@@ -74,10 +129,17 @@ def main() -> None:
         "run_id": run_id,
         "model": args.model,
         "optimizer_model": args.optimizer_model or args.model,
+        "label_revealed_to_learner": args.reveal_label,
         "manifest": str(args.manifest),
         "questions": str(args.questions),
         "learner_results_path": str(results_path),
         "optimizer_result_written": optimizer_result is not None,
+        "metrics": metrics,
+        "per_clip": [
+            {"id": r["id"], "expected": r["expected"],
+             "predicted": r["parsed"].get("verdict"), "correct": r["correct"]}
+            for r in learner_results
+        ],
     }
     (run_dir / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"Run saved to: {run_dir}")

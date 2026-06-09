@@ -1,0 +1,67 @@
+{
+  "video": "data/pens_small/pens_wrong_direction_and_missing_cap.mp4",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully in view, are there exactly three pens on it (no missing pen and no empty gap)?",
+    "Do all three pens point the same direction, with none flipped or reversed relative to the other two?",
+    "Are all three pens the same color as each other, with none differing in color?",
+    "Is every pen complete and capped, with none showing a bare/exposed writing tip or looking clearly shorter than the others?",
+    "Does the board move smoothly and continuously from left to right, without stopping, freezing, pausing, reversing, or jamming at any point?"
+  ],
+  "raw_text": "{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"When the board is centered (around 00:09), three distinct pen-like objects are clearly visible in a row.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"The rightmost pen has a black cap at the top, while the middle pen has a black cap at the bottom, indicating opposite orientations.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three objects appear to have the same grey/black coloration.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"NO\",\n      \"evidence\": \"The leftmost pen appears to be a bare refill or uncapped pen, lacking the black cap seen on the other two pens.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves smoothly and continuously from left to right throughout the clip without stopping or jamming.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"multiple\",\n  \"anomaly_score\": 1.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The video shows multiple anomalies: the middle and rightmost pens are oriented in opposite directions (wrong orientation), and the leftmost pen appears to be missing its cap (missing cap/incomplete).\"\n}",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "When the board is centered (around 00:09), three distinct pen-like objects are clearly visible in a row."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "The rightmost pen has a black cap at the top, while the middle pen has a black cap at the bottom, indicating opposite orientations."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All three objects appear to have the same grey/black coloration."
+      },
+      {
+        "question_id": 4,
+        "answer": "NO",
+        "evidence": "The leftmost pen appears to be a bare refill or uncapped pen, lacking the black cap seen on the other two pens."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves smoothly and continuously from left to right throughout the clip without stopping or jamming."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "multiple",
+    "anomaly_score": 1.0,
+    "confidence": "HIGH",
+    "reason": "The video shows multiple anomalies: the middle and rightmost pens are oriented in opposite directions (wrong orientation), and the leftmost pen appears to be missing its cap (missing cap/incomplete)."
+  },
+  "usage": {
+    "input_tokens": 11068,
+    "output_tokens": 3729,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 968,
+      "video_tokens": 10100
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 3364,
+      "text_tokens": 365
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 14797,
+    "video_tokens": 10100
+  },
+  "request_id": "ee447781-8354-9550-a401-407d54accb93",
+  "id": "combined_01",
+  "anomaly_type": "multiple",
+  "description": "One pen is flipped and a pen is missing its cap (combined anomaly)."
+}

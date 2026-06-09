@@ -1,0 +1,67 @@
+{
+  "video": "data/pens_small/pens_temporal_anomaly.mp4",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully in view, are there exactly three pens on it (no missing pen and no empty gap)?",
+    "Do all three pens point the same direction, with none flipped or reversed relative to the other two?",
+    "Are all three pens the same color as each other, with none differing in color?",
+    "Is every pen complete and capped, with none showing a bare/exposed writing tip or looking clearly shorter than the others?",
+    "Does the board move smoothly and continuously from left to right, without stopping, freezing, pausing, reversing, or jamming at any point?"
+  ],
+  "raw_text": "{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"When the board is fully in view (e.g., 00:06-00:10), there are exactly three pens visible on the white board.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens appear to be oriented with the black capped end pointing downwards and the translucent barrel upwards. None are flipped relative to the others in terms of up/down direction.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens appear to be the same color (black caps, translucent barrels with dark ink).\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"NO\",\n      \"evidence\": \"The middle pen appears clearly shorter than the left and right pens (visible from 00:06 onwards), suggesting it is missing its cap or is a different/shorter pen, breaking the uniformity.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves smoothly and continuously from left to right throughout the video without stopping or jamming.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"missing_cap\",\n  \"anomaly_score\": 0.8,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The middle pen is visibly shorter than the other two identical pens, which indicates a missing cap or a defect in length, violating the condition that all pens must be identical and complete.\"\n}",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "When the board is fully in view (e.g., 00:06-00:10), there are exactly three pens visible on the white board."
+      },
+      {
+        "question_id": 2,
+        "answer": "YES",
+        "evidence": "All three pens appear to be oriented with the black capped end pointing downwards and the translucent barrel upwards. None are flipped relative to the others in terms of up/down direction."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All three pens appear to be the same color (black caps, translucent barrels with dark ink)."
+      },
+      {
+        "question_id": 4,
+        "answer": "NO",
+        "evidence": "The middle pen appears clearly shorter than the left and right pens (visible from 00:06 onwards), suggesting it is missing its cap or is a different/shorter pen, breaking the uniformity."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves smoothly and continuously from left to right throughout the video without stopping or jamming."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "missing_cap",
+    "anomaly_score": 0.8,
+    "confidence": "HIGH",
+    "reason": "The middle pen is visibly shorter than the other two identical pens, which indicates a missing cap or a defect in length, violating the condition that all pens must be identical and complete."
+  },
+  "usage": {
+    "input_tokens": 11068,
+    "output_tokens": 10097,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 968,
+      "video_tokens": 10100
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 9695,
+      "text_tokens": 402
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 21165,
+    "video_tokens": 10100
+  },
+  "request_id": "5191c702-2d08-9247-80b1-ed5fe5bcc55e",
+  "id": "motion_temporal_01",
+  "anomaly_type": "motion_failure",
+  "description": "Temporal/motion anomaly in the board movement."
+}

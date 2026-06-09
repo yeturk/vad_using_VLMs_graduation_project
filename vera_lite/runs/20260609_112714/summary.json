@@ -1,0 +1,9 @@
+{
+  "run_id": "20260609_112714",
+  "model": "qwen3.6-plus",
+  "optimizer_model": "qwen3.6-plus",
+  "manifest": "/mnt/c/Users/Alper Kaan/Desktop/vad_using_VLMs_graduation_project/vera_lite/dataset_manifest.json",
+  "questions": "/mnt/c/Users/Alper Kaan/Desktop/vad_using_VLMs_graduation_project/vera_lite/guiding_questions.json",
+  "learner_results_path": "/mnt/c/Users/Alper Kaan/Desktop/vad_using_VLMs_graduation_project/vera_lite/runs/20260609_112714/learner_results.json",
+  "optimizer_result_written": true
+}

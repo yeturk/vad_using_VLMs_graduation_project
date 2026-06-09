@@ -1,0 +1,67 @@
+{
+  "video": "data/pens_small/pens_wrong_direction_2.mp4",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully in view, are there exactly three pens on it (no missing pen and no empty gap)?",
+    "Do all three pens point the same direction, with none flipped or reversed relative to the other two?",
+    "Are all three pens the same color as each other, with none differing in color?",
+    "Is every pen complete and capped, with none showing a bare/exposed writing tip or looking clearly shorter than the others?",
+    "Does the board move smoothly and continuously from left to right, without stopping, freezing, pausing, reversing, or jamming at any point?"
+  ],
+  "raw_text": "{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"When the board is fully in the frame (around 00:07-00:10), there are clearly three pens visible on the white board.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"The two leftmost pens are vertical and parallel, but the rightmost pen is tilted diagonally. They are not all aligned in the same direction.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens appear to have the same translucent barrel and black cap/end, indicating they are the same color.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens appear to have the black cap at one end and look to be of similar length; none clearly shows a bare tip or looks significantly shorter.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves continuously from left to right across the frame without stopping or reversing.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"wrong_orientation\",\n  \"anomaly_score\": 0.8,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The rightmost pen is tilted diagonally relative to the other two vertical pens, meaning the pens are not all aligned in the same direction as required for the NORMAL condition.\"\n}",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "When the board is fully in the frame (around 00:07-00:10), there are clearly three pens visible on the white board."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "The two leftmost pens are vertical and parallel, but the rightmost pen is tilted diagonally. They are not all aligned in the same direction."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All three pens appear to have the same translucent barrel and black cap/end, indicating they are the same color."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "All three pens appear to have the black cap at one end and look to be of similar length; none clearly shows a bare tip or looks significantly shorter."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves continuously from left to right across the frame without stopping or reversing."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "wrong_orientation",
+    "anomaly_score": 0.8,
+    "confidence": "HIGH",
+    "reason": "The rightmost pen is tilted diagonally relative to the other two vertical pens, meaning the pens are not all aligned in the same direction as required for the NORMAL condition."
+  },
+  "usage": {
+    "input_tokens": 11068,
+    "output_tokens": 6690,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 968,
+      "video_tokens": 10100
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 6307,
+      "text_tokens": 383
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 17758,
+    "video_tokens": 10100
+  },
+  "request_id": "43c40c4d-a046-9fe3-86ac-d6019009a5a2",
+  "id": "wrong_orientation_02",
+  "anomaly_type": "wrong_orientation",
+  "description": "One pen is flipped relative to the others (variant)."
+}

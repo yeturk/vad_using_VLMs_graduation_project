@@ -1,0 +1,67 @@
+{
+  "video": "data/pens_small/pens_missing_cap.mp4",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully in view, are there exactly three pens on it (no missing pen and no empty gap)?",
+    "Do all three pens point the same direction, with none flipped or reversed relative to the other two?",
+    "Are all three pens the same color as each other, with none differing in color?",
+    "Is every pen complete and capped, with none showing a bare/exposed writing tip or looking clearly shorter than the others?",
+    "Does the board move smoothly and continuously from left to right, without stopping, freezing, pausing, reversing, or jamming at any point?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"At 00:08-00:10, three distinct pen-shaped objects are visible on the white board.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"The leftmost pen has a pointed tip facing down, while the middle and right pens have caps facing down. They are not oriented identically.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens have translucent grey barrels and black ends, appearing consistent in color.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"NO\",\n      \"evidence\": \"The leftmost pen shows a bare writing tip (or is a refill) at the bottom, whereas the other two pens clearly have black caps attached at the bottom.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves continuously and smoothly from the left edge to the right edge of the frame without pausing or jamming.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"missing_cap\",\n  \"anomaly_score\": 0.95,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The leftmost pen is uncapped (showing a bare tip) while the other two are capped, violating the condition that all pens must be complete and identical.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "At 00:08-00:10, three distinct pen-shaped objects are visible on the white board."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "The leftmost pen has a pointed tip facing down, while the middle and right pens have caps facing down. They are not oriented identically."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All three pens have translucent grey barrels and black ends, appearing consistent in color."
+      },
+      {
+        "question_id": 4,
+        "answer": "NO",
+        "evidence": "The leftmost pen shows a bare writing tip (or is a refill) at the bottom, whereas the other two pens clearly have black caps attached at the bottom."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves continuously and smoothly from the left edge to the right edge of the frame without pausing or jamming."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "missing_cap",
+    "anomaly_score": 0.95,
+    "confidence": "HIGH",
+    "reason": "The leftmost pen is uncapped (showing a bare tip) while the other two are capped, violating the condition that all pens must be complete and identical."
+  },
+  "usage": {
+    "input_tokens": 11662,
+    "output_tokens": 2077,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 968,
+      "video_tokens": 10694
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 1694,
+      "text_tokens": 383
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 13739,
+    "video_tokens": 10694
+  },
+  "request_id": "69fcb643-90b0-92de-a2cc-1de937be9695",
+  "id": "missing_cap_01",
+  "anomaly_type": "missing_cap",
+  "description": "One pen is missing its cap while the others are capped."
+}

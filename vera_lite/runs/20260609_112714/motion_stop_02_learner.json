@@ -1,0 +1,67 @@
+{
+  "video": "data/pens_small/pens_conveyor_stops_and_continues.mp4",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully in view, are there exactly three pens on it (no missing pen and no empty gap)?",
+    "Do all three pens point the same direction, with none flipped or reversed relative to the other two?",
+    "Are all three pens the same color as each other, with none differing in color?",
+    "Is every pen complete and capped, with none showing a bare/exposed writing tip or looking clearly shorter than the others?",
+    "Does the board move smoothly and continuously from left to right, without stopping, freezing, pausing, reversing, or jamming at any point?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"When the board is fully centered (e.g., at 00:13), exactly three pens are visible.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens are oriented vertically with the black cap/grip at the bottom and the barrel at the top.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens have identical black caps/grips and translucent grey barrels.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"All pens appear to have their caps on and are of equal length.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"NO\",\n      \"evidence\": \"The board moves from left to center, then stops completely and remains stationary from approximately 00:14 to 00:21 before moving again to the right.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"motion_failure\",\n  \"anomaly_score\": 0.9,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The board pauses and remains stationary in the center of the frame for several seconds (approx 00:14-00:21) instead of moving smoothly and continuously.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "When the board is fully centered (e.g., at 00:13), exactly three pens are visible."
+      },
+      {
+        "question_id": 2,
+        "answer": "YES",
+        "evidence": "All three pens are oriented vertically with the black cap/grip at the bottom and the barrel at the top."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All three pens have identical black caps/grips and translucent grey barrels."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "All pens appear to have their caps on and are of equal length."
+      },
+      {
+        "question_id": 5,
+        "answer": "NO",
+        "evidence": "The board moves from left to center, then stops completely and remains stationary from approximately 00:14 to 00:21 before moving again to the right."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "motion_failure",
+    "anomaly_score": 0.9,
+    "confidence": "HIGH",
+    "reason": "The board pauses and remains stationary in the center of the frame for several seconds (approx 00:14-00:21) instead of moving smoothly and continuously."
+  },
+  "usage": {
+    "input_tokens": 17008,
+    "output_tokens": 1841,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 968,
+      "video_tokens": 16040
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 1473,
+      "text_tokens": 368
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 18849,
+    "video_tokens": 16040
+  },
+  "request_id": "ba48dc7d-4b95-9de9-a1c7-61357f0160b7",
+  "id": "motion_stop_02",
+  "anomaly_type": "motion_failure",
+  "description": "The board pauses mid-travel, then continues."
+}

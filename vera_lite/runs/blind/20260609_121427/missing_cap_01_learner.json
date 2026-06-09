@@ -1,0 +1,75 @@
+{
+  "video": "data/pens_small/pens_missing_cap.mp4",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+    "Are all three pens aligned identically, all pointing the same way, including any pen near the left or right frame edge as it enters or exits?",
+    "Do all three pens share identical barrel and cap colors, with no mismatch?",
+    "Is every pen fully capped with no exposed writing tip, and are all three pens equal in length?",
+    "Does the board advance steadily from left to right at EVERY moment, never halting, freezing, or pausing even briefly (1-3 seconds) at any point in the video?",
+    "Do all pens stay fixed in their positions on the board, with no pen shifting, sliding, or moving on its own relative to the board mid-clip?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"From 00:07 to 00:12, the board is fully visible and clearly holds three distinct pen-like objects in a row.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"The leftmost pen has its writing tip exposed at the bottom, while the other two pens have black caps at the bottom, meaning their functional ends (tips) are oriented oppositely (tip down vs tip up).\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"NO\",\n      \"evidence\": \"The leftmost object is entirely grey/translucent, lacking the black cap present on the bottom of the middle and right pens.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"NO\",\n      \"evidence\": \"The leftmost pen shows a bare, pointed writing tip at the bottom, whereas the other two are capped with black caps.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves continuously and smoothly from the left side of the frame to the right side throughout the video without stopping.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"YES\",\n      \"evidence\": \"The three items remain fixed in their relative positions on the white board as it slides.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"missing_cap\",\n  \"anomaly_score\": 0.9,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The leftmost pen is uncapped, showing a bare writing tip at the bottom, while the other two pens have black caps at the bottom. This violates the condition that all pens must be identical and capped.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "From 00:07 to 00:12, the board is fully visible and clearly holds three distinct pen-like objects in a row."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "The leftmost pen has its writing tip exposed at the bottom, while the other two pens have black caps at the bottom, meaning their functional ends (tips) are oriented oppositely (tip down vs tip up)."
+      },
+      {
+        "question_id": 3,
+        "answer": "NO",
+        "evidence": "The leftmost object is entirely grey/translucent, lacking the black cap present on the bottom of the middle and right pens."
+      },
+      {
+        "question_id": 4,
+        "answer": "NO",
+        "evidence": "The leftmost pen shows a bare, pointed writing tip at the bottom, whereas the other two are capped with black caps."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves continuously and smoothly from the left side of the frame to the right side throughout the video without stopping."
+      },
+      {
+        "question_id": 6,
+        "answer": "YES",
+        "evidence": "The three items remain fixed in their relative positions on the white board as it slides."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "missing_cap",
+    "anomaly_score": 0.9,
+    "confidence": "HIGH",
+    "reason": "The leftmost pen is uncapped, showing a bare writing tip at the bottom, while the other two pens have black caps at the bottom. This violates the condition that all pens must be identical and capped."
+  },
+  "usage": {
+    "input_tokens": 11674,
+    "output_tokens": 2239,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 980,
+      "video_tokens": 10694
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 1780,
+      "text_tokens": 459
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 13913,
+    "video_tokens": 10694
+  },
+  "request_id": "bd9e0f6d-aab3-9445-8074-c6cc3dae0d4e",
+  "id": "missing_cap_01",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "missing_cap",
+  "description": "One pen is missing its cap while the others are capped.",
+  "correct": true
+}
