@@ -61,6 +61,15 @@ def main() -> None:
         help="Leak the expected label into the learner prompt. NOT recommended; "
         "for ablation only. Default is blind: the learner never sees the label.",
     )
+    parser.add_argument("--frames", type=int, default=0,
+        help="If >0, feed the learner this many time-ordered frames instead of the video.")
+    parser.add_argument("--start-frac", type=float, default=0.1)
+    parser.add_argument("--end-frac", type=float, default=0.9)
+    parser.add_argument("--fps", type=float, default=0.0,
+        help="Video mode only: DashScope frame sampling rate.")
+    parser.add_argument("--thinking-budget", type=int, default=None,
+        help="Cap reasoning tokens so the model leaves room to emit the final JSON.")
+    parser.add_argument("--max-tokens", type=int, default=None)
     args = parser.parse_args()
 
     run_id = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -77,6 +86,12 @@ def main() -> None:
             expected=prompt_expected,
             model=args.model,
             questions_path=args.questions,
+            frames=args.frames,
+            start_frac=args.start_frac,
+            end_frac=args.end_frac,
+            fps=args.fps,
+            thinking_budget=args.thinking_budget,
+            max_tokens=args.max_tokens,
         )
         result["id"] = item["id"]
         # Restore ground truth for evaluation/optimizer regardless of blind mode.
@@ -130,6 +145,8 @@ def main() -> None:
         "model": args.model,
         "optimizer_model": args.optimizer_model or args.model,
         "label_revealed_to_learner": args.reveal_label,
+        "frames": args.frames,
+        "frame_window": [args.start_frac, args.end_frac] if args.frames else None,
         "manifest": str(args.manifest),
         "questions": str(args.questions),
         "learner_results_path": str(results_path),

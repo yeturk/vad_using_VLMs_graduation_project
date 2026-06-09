@@ -1,0 +1,76 @@
+{
+  "video": "data/pens_small/pens_no_pen.mp4",
+  "input_mode": "16 frames [0.15-0.7]",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+    "Are all three pens aligned identically, all pointing the same way, including any pen near the left or right frame edge as it enters or exits?",
+    "Do all three pens share identical barrel and cap colors, with no mismatch?",
+    "Is every pen fully capped with no exposed writing tip, and are all three pens equal in length?",
+    "Does the board advance steadily from left to right at EVERY moment, never halting, freezing, or pausing even briefly (1-3 seconds) at any point in the video?",
+    "Do all pens stay fixed in their positions on the board, with no pen shifting, sliding, or moving on its own relative to the board mid-clip?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"NO\",\n      \"evidence\": \"When the board is fully visible (e.g., frames 11-13), the white surface is completely empty; there are zero pens, not three.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"There are no pens visible to judge alignment; the board is empty.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"NO\",\n      \"evidence\": \"There are no pens visible to judge color consistency.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"NO\",\n      \"evidence\": \"There are no pens visible; therefore, none are capped or complete.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves smoothly and continuously from the left side of the frame to the right side across the sequence without stopping or jamming.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"UNCLEAR\",\n      \"evidence\": \"There are no pens to observe for movement relative to the board.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"missing_pen\",\n  \"anomaly_score\": 1.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The board is completely empty when fully in view; it carries zero pens instead of the required three identical pens.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "NO",
+        "evidence": "When the board is fully visible (e.g., frames 11-13), the white surface is completely empty; there are zero pens, not three."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "There are no pens visible to judge alignment; the board is empty."
+      },
+      {
+        "question_id": 3,
+        "answer": "NO",
+        "evidence": "There are no pens visible to judge color consistency."
+      },
+      {
+        "question_id": 4,
+        "answer": "NO",
+        "evidence": "There are no pens visible; therefore, none are capped or complete."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves smoothly and continuously from the left side of the frame to the right side across the sequence without stopping or jamming."
+      },
+      {
+        "question_id": 6,
+        "answer": "UNCLEAR",
+        "evidence": "There are no pens to observe for movement relative to the board."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "missing_pen",
+    "anomaly_score": 1.0,
+    "confidence": "HIGH",
+    "reason": "The board is completely empty when fully in view; it carries zero pens instead of the required three identical pens."
+  },
+  "usage": {
+    "input_tokens": 15167,
+    "output_tokens": 1884,
+    "characters": 0,
+    "image_tokens": 14112,
+    "input_tokens_details": {
+      "image_tokens": 14112,
+      "text_tokens": 1055
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 1500,
+      "text_tokens": 384
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 17051
+  },
+  "request_id": "c89d1da0-1ea7-9002-afe4-37b2b3ca6714",
+  "id": "missing_pen_01",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "missing_pen",
+  "description": "A pen is missing; fewer than three pens on the board.",
+  "correct": true
+}

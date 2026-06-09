@@ -34,13 +34,21 @@ def configure_dashscope() -> None:
     ).strip()
 
 
-def call_qwen(model: str, content: list[dict[str, Any]]) -> tuple[str, dict[str, Any]]:
+def call_qwen(
+    model: str,
+    content: list[dict[str, Any]],
+    **gen_kwargs: Any,
+) -> tuple[str, dict[str, Any]]:
+    """Call a Qwen VLM. Extra gen_kwargs (e.g. enable_thinking, thinking_budget,
+    max_tokens) are forwarded to the DashScope API to control reasoning length."""
     configure_dashscope()
     messages = [{"role": "user", "content": content}]
+    # Drop unset (None) generation params so we don't override API defaults.
+    gen_kwargs = {k: v for k, v in gen_kwargs.items() if v is not None}
 
     response = None
     for attempt in range(MAX_RETRIES):
-        response = MultiModalConversation.call(model=model, messages=messages)
+        response = MultiModalConversation.call(model=model, messages=messages, **gen_kwargs)
         status = response.get("status_code")
         if status == 200:
             break

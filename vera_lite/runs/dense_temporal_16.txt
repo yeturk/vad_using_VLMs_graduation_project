@@ -1,0 +1,8 @@
+{
+  "frame_observations": "In the early frames (e.g., frame 7), the three pens are arranged with relatively even spacing across the white board. However, starting around frame 8, the leftmost pen has shifted significantly to the right, positioning itself very close to the middle pen. From frame 8 through frame 12, the pens maintain this new configuration where the first two are clustered together and the third is separated by a larger gap. This indicates a change in relative spacing that is not consistent with a rigid group.",
+  "relative_movement_detected": true,
+  "verdict": "ANOMALY",
+  "anomaly_score": 0.9,
+  "confidence": "HIGH",
+  "reason": "The leftmost pen slides relative to the board and the other pens, changing the group's formation from evenly spaced to a clustered pair and a single pen."
+}

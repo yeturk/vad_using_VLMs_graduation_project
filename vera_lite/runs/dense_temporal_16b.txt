@@ -1,0 +1,10 @@
+```json
+{
+  "frame_observations": "In frames 1-8, the pens appear with consistent spacing (once fully visible in frame 7, there are three distinct pens with gaps between them). However, starting at frame 9, the arrangement changes abruptly: the left-most pen and the middle pen move very close together, almost touching, while the right pen remains separate. This clumping persists through frame 16.",
+  "relative_movement_detected": true,
+  "verdict": "ANOMALY",
+  "anomaly_score": 0.9,
+  "confidence": "HIGH",
+  "reason": "The relative spacing between the pens changes significantly. Frames 7-8 show three evenly spaced pens, but from frame 9 onwards, the left two pens have moved close together, indicating unexpected relative movement."
+}
+```

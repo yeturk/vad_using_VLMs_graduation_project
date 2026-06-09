@@ -51,7 +51,9 @@ def format_questions(questions: list[str]) -> str:
     return "\n".join(f"{idx}. {question}" for idx, question in enumerate(questions, 1))
 
 
-def build_learner_prompt(questions: list[str], expected: str | None = None) -> str:
+def build_learner_prompt(
+    questions: list[str], expected: str | None = None, frames: int = 0
+) -> str:
     expected_line = ""
     if expected:
         expected_line = (
@@ -60,9 +62,20 @@ def build_learner_prompt(questions: list[str], expected: str | None = None) -> s
             f"\nExpected label: {expected}\n"
         )
 
+    frame_note = ""
+    if frames and frames > 0:
+        frame_note = (
+            f"\nInput: you are given {frames} still frames sampled in time order from "
+            "one short clip (frame 1 = earliest, last = latest). Treat them as a temporal "
+            "sequence: compare consecutive frames to judge the board's motion and any "
+            "change in the pens' relative arrangement. Pens entering at the left or "
+            "leaving at the right edge across frames is the board's normal travel, not "
+            "an anomaly.\n"
+        )
+
     return f"""
 {SYSTEM_CONTEXT}
-
+{frame_note}
 Current guiding questions:
 {format_questions(questions)}
 {expected_line}

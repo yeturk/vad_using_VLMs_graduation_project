@@ -1,0 +1,76 @@
+{
+  "video": "data/pens_small/pens_wrong_direction_2.mp4",
+  "input_mode": "16 frames [0.15-0.7]",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+    "Are all three pens aligned identically, all pointing the same way, including any pen near the left or right frame edge as it enters or exits?",
+    "Do all three pens share identical barrel and cap colors, with no mismatch?",
+    "Is every pen fully capped with no exposed writing tip, and are all three pens equal in length?",
+    "Does the board advance steadily from left to right at EVERY moment, never halting, freezing, or pausing even briefly (1-3 seconds) at any point in the video?",
+    "Do all pens stay fixed in their positions on the board, with no pen shifting, sliding, or moving on its own relative to the board mid-clip?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"In frames 7-14, the board is fully visible and clearly holds three pens arranged in a row.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"The left and middle pens are vertical (pointing straight down), but the rightmost pen is tilted diagonally. They do not all point in the exact same direction vector, although caps are all down.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens have translucent grey barrels and black caps/ends. They appear identical in color.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens appear to have black caps on the bottom end. None show an exposed writing tip. They appear to be of equal length.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves steadily from the left side of the frame to the right side across the sequence without stopping or reversing.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"YES\",\n      \"evidence\": \"The pens maintain their relative positions on the board (two vertical, one tilted) throughout the movement.\"\n    }\n  ],\n  \"verdict\": \"NORMAL\",\n  \"anomaly_type\": \"none\",\n  \"anomaly_score\": 0.1,\n  \"confidence\": \"MEDIUM\",\n  \"reason\": \"The board carries three pens of the same color and capped state. While the rightmost pen is tilted relative to the others, the primary orientation (cap down) is consistent, and the specific anomaly definition for 'wrong orientation' specifies being 'flipped and points the opposite way'. The tilt is likely a minor placement variance rather than a defect.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "In frames 7-14, the board is fully visible and clearly holds three pens arranged in a row."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "The left and middle pens are vertical (pointing straight down), but the rightmost pen is tilted diagonally. They do not all point in the exact same direction vector, although caps are all down."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All three pens have translucent grey barrels and black caps/ends. They appear identical in color."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "All three pens appear to have black caps on the bottom end. None show an exposed writing tip. They appear to be of equal length."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves steadily from the left side of the frame to the right side across the sequence without stopping or reversing."
+      },
+      {
+        "question_id": 6,
+        "answer": "YES",
+        "evidence": "The pens maintain their relative positions on the board (two vertical, one tilted) throughout the movement."
+      }
+    ],
+    "verdict": "NORMAL",
+    "anomaly_type": "none",
+    "anomaly_score": 0.1,
+    "confidence": "MEDIUM",
+    "reason": "The board carries three pens of the same color and capped state. While the rightmost pen is tilted relative to the others, the primary orientation (cap down) is consistent, and the specific anomaly definition for 'wrong orientation' specifies being 'flipped and points the opposite way'. The tilt is likely a minor placement variance rather than a defect."
+  },
+  "usage": {
+    "input_tokens": 15167,
+    "output_tokens": 1971,
+    "characters": 0,
+    "image_tokens": 14112,
+    "input_tokens_details": {
+      "image_tokens": 14112,
+      "text_tokens": 1055
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 1500,
+      "text_tokens": 471
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 17138
+  },
+  "request_id": "3063b77f-ec68-973c-b547-9ac33a1a6ec1",
+  "id": "wrong_orientation_02",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "wrong_orientation",
+  "description": "One pen is flipped relative to the others (variant).",
+  "correct": false
+}

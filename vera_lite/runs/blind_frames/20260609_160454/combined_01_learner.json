@@ -1,0 +1,76 @@
+{
+  "video": "data/pens_small/pens_wrong_direction_and_missing_cap.mp4",
+  "input_mode": "16 frames [0.15-0.7]",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+    "Are all three pens aligned identically, all pointing the same way, including any pen near the left or right frame edge as it enters or exits?",
+    "Do all three pens share identical barrel and cap colors, with no mismatch?",
+    "Is every pen fully capped with no exposed writing tip, and are all three pens equal in length?",
+    "Does the board advance steadily from left to right at EVERY moment, never halting, freezing, or pausing even briefly (1-3 seconds) at any point in the video?",
+    "Do all pens stay fixed in their positions on the board, with no pen shifting, sliding, or moving on its own relative to the board mid-clip?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"From frame 7 onwards, exactly three pens are visible on the board in a row.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"The rightmost pen has its cap at the top, while the left and middle pens have their caps at the bottom. They are not aligned identically.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens have translucent barrels and black caps/ends.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"All pens appear to have caps on one end. No bare tips are exposed in a way that suggests a missing cap (the 'pointy' ends are actually the capped ends or the pen bodies are symmetric enough, but the orientation difference is the key).\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves steadily from left to right across the frames without stopping.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"YES\",\n      \"evidence\": \"The pens remain fixed in their relative positions on the board throughout the clip.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"wrong_orientation\",\n  \"anomaly_score\": 0.9,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The rightmost pen is oriented with the cap facing up, while the other two pens are oriented with the cap facing down. This violates the condition that all pens must point the same direction.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "From frame 7 onwards, exactly three pens are visible on the board in a row."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "The rightmost pen has its cap at the top, while the left and middle pens have their caps at the bottom. They are not aligned identically."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All three pens have translucent barrels and black caps/ends."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "All pens appear to have caps on one end. No bare tips are exposed in a way that suggests a missing cap (the 'pointy' ends are actually the capped ends or the pen bodies are symmetric enough, but the orientation difference is the key)."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves steadily from left to right across the frames without stopping."
+      },
+      {
+        "question_id": 6,
+        "answer": "YES",
+        "evidence": "The pens remain fixed in their relative positions on the board throughout the clip."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "wrong_orientation",
+    "anomaly_score": 0.9,
+    "confidence": "HIGH",
+    "reason": "The rightmost pen is oriented with the cap facing up, while the other two pens are oriented with the cap facing down. This violates the condition that all pens must point the same direction."
+  },
+  "usage": {
+    "input_tokens": 15167,
+    "output_tokens": 1930,
+    "characters": 0,
+    "image_tokens": 14112,
+    "input_tokens_details": {
+      "image_tokens": 14112,
+      "text_tokens": 1055
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 1500,
+      "text_tokens": 430
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 17097
+  },
+  "request_id": "b228ee9f-0091-9ac7-b994-b34190575bc0",
+  "id": "combined_01",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "multiple",
+  "description": "One pen is flipped and a pen is missing its cap (combined anomaly).",
+  "correct": true
+}

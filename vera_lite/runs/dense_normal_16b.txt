@@ -1,0 +1,8 @@
+{
+  "frame_observations": "The white board slides from left to right. Initially, no pens are visible (Frame 1). Then pens enter the frame from the left side sequentially: first one pen (Frame 2-3), then a second pen appears to its left (Frame 4-6, indicating the board is moving right and revealing pens arranged left-to-right), and finally a third pen appears (Frame 7). From Frame 7 onwards, all three pens are visible. Throughout the sequence where multiple pens are visible, the spacing between adjacent pens remains constant, and their vertical alignment is maintained. They move as a single rigid unit across the frame.",
+  "relative_movement_detected": false,
+  "verdict": "NORMAL",
+  "anomaly_score": 0.0,
+  "confidence": "HIGH",
+  "reason": "The pens enter the frame sequentially and maintain fixed relative spacing and alignment throughout the clip, consistent with being rigidly attached to the translating board. No independent movement or shifting between pens is observed."
+}

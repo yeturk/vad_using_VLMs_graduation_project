@@ -1,0 +1,8 @@
+{
+  "frame_observations": "In the early frames (4-11), three pens are visible on the white board, maintaining consistent spacing as the board slides from left to right. However, starting around frame 12, the number of visible pens decreases. In frame 12 and 13, only two pens are visible (the rightmost pen has moved off the board/frame). In frame 14, only one pen remains. By frame 15, no pens are visible on the board. The pens appear to be sliding forward (to the right) relative to the board, causing them to fall off or move out of view sequentially.",
+  "relative_movement_detected": true,
+  "verdict": "ANOMALY",
+  "anomaly_score": 0.9,
+  "confidence": "HIGH",
+  "reason": "The pens do not remain fixed relative to the board; they slide towards the right edge and disappear one by one, indicating unexpected relative movement."
+}
