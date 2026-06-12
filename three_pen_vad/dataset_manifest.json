@@ -1,0 +1,43 @@
+[
+  {
+    "id": "normal_01",
+    "raw_video": "data/grad2_pilot/videos/normal_01.mp4",
+    "processed_video": "data/grad2_pilot/processed/normal_01_4k_20fps_trim2s.mp4",
+    "expected": "NORMAL",
+    "anomaly_type": "none",
+    "description": "Normal conveyor video with three capped pens in the standard arrangement."
+  },
+  {
+    "id": "normal_02",
+    "raw_video": "data/grad2_pilot/videos/normal_02.mp4",
+    "processed_video": "data/grad2_pilot/processed/normal_02_4k_20fps_trim2s.mp4",
+    "expected": "NORMAL",
+    "anomaly_type": "none",
+    "description": "Normal conveyor video with three capped pens in the standard arrangement."
+  },
+  {
+    "id": "normal_03",
+    "raw_video": "data/grad2_pilot/videos/normal_03.mp4",
+    "processed_video": "data/grad2_pilot/processed/normal_03_4k_20fps_trim2s.mp4",
+    "expected": "NORMAL",
+    "anomaly_type": "none",
+    "description": "Normal conveyor video with three capped pens in the standard arrangement."
+  },
+  {
+    "id": "missing_cap_01_left_pen",
+    "raw_video": "data/grad2_pilot/videos/missing_cap_01_left_pen.mp4",
+    "processed_video": "data/grad2_pilot/processed/missing_cap_01_left_pen_4k_20fps_trim2s.mp4",
+    "expected": "ANOMALY",
+    "anomaly_type": "missing_cap",
+    "description": "The left/first pen is missing its cap."
+  },
+  {
+    "id": "missing_cap_02_middle_pen",
+    "raw_video": "data/grad2_pilot/videos/missing_cap_02_middle_pen.mp4",
+    "processed_video": "data/grad2_pilot/processed/missing_cap_02_middle_pen_4k_20fps_trim2s.mp4",
+    "expected": "ANOMALY",
+    "anomaly_type": "missing_cap",
+    "description": "The middle/second pen is missing its cap."
+  }
+]
+

@@ -1,0 +1,65 @@
+{
+  "video": "data/grad2_pilot/processed/normal_01_4k_20fps_trim2s.mp4",
+  "expected": "NORMAL",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "In fully visible middle frames, are exactly three pens visible on the white carrier?",
+    "Does each pen show a visible black cap-like part at its lower end?",
+    "Does any pen show an exposed pointed writing tip where the black cap-like part should be?",
+    "Are the three pens parallel and similarly oriented on the carrier?",
+    "Does the carrier move smoothly from LEFT to RIGHT while the pens remain stable relative to it?"
+  ],
+  "elapsed_seconds": 46.996681507000176,
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"From frame 00:05 onwards, three distinct pens are clearly visible on the white carrier plate.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens display a black cap-like part (or grip) at their lower end in frames 00:05 through 00:12.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"NO\",\n      \"evidence\": \"No pen shows an exposed pointed writing tip; all lower ends appear capped or have the standard black grip.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"The three pens are arranged in a vertical, parallel row and maintain this orientation throughout the movement.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The carrier moves steadily from left to right, and the pens do not shift position relative to the plate.\"\n    }\n  ],\n  \"verdict\": \"NORMAL\",\n  \"missing_cap_pen\": \"none\",\n  \"anomaly_score\": 0.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"All three pens are fully visible in the middle frames and each exhibits the normal black cap-like part at the bottom. No missing cap anomaly is present.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "From frame 00:05 onwards, three distinct pens are clearly visible on the white carrier plate."
+      },
+      {
+        "question_id": 2,
+        "answer": "YES",
+        "evidence": "All three pens display a black cap-like part (or grip) at their lower end in frames 00:05 through 00:12."
+      },
+      {
+        "question_id": 3,
+        "answer": "NO",
+        "evidence": "No pen shows an exposed pointed writing tip; all lower ends appear capped or have the standard black grip."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "The three pens are arranged in a vertical, parallel row and maintain this orientation throughout the movement."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The carrier moves steadily from left to right, and the pens do not shift position relative to the plate."
+      }
+    ],
+    "verdict": "NORMAL",
+    "missing_cap_pen": "none",
+    "anomaly_score": 0.0,
+    "confidence": "HIGH",
+    "reason": "All three pens are fully visible in the middle frames and each exhibits the normal black cap-like part at the bottom. No missing cap anomaly is present."
+  },
+  "usage": {
+    "input_tokens": 8374,
+    "output_tokens": 965,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 650,
+      "video_tokens": 7724
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 602,
+      "text_tokens": 363
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 9339,
+    "video_tokens": 7724
+  },
+  "request_id": "df2bea26-f0b1-9040-a5a1-1fb7e045aca3"
+}

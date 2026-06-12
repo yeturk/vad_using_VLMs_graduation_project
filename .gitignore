@@ -44,7 +44,12 @@ logs/
 /.codex
 
 data/
+data/grad2_pilot/videos/*.mp4
+data/grad2_pilot/processed/*.mp4
 
 # Debug / generated images
 qwen_vl/captured_frame.jpg
 qwen_vl/temporal_grid.jpg
+
+.claude
+.codex
