@@ -1,0 +1,21 @@
+DETAILED SCENE DESCRIPTION:
+The video presents a top-down view of a linear actuator conveyor system situated on a light-colored wooden surface. The mechanism features parallel metal guide rails and a central threaded lead screw. A white, rectangular carrier board is mounted on this system. Initially, the carrier enters the frame from the left side, carrying three black pens arranged in a vertical row. As the video progresses, the carrier moves steadily from left to right along the rails. The pens remain stationary relative to the carrier throughout the motion.
+
+PEN OBSERVATIONS:
+- Pen count: 3
+- Left/first pen: Vertical orientation, positioned on the left side of the carrier.
+- Middle/second pen: Vertical orientation, positioned in the center of the carrier.
+- Right/third pen: Vertical orientation, positioned on the right side of the carrier.
+
+CAP VISIBILITY:
+- Left/first pen: The black cap is visible at the bottom end of the pen.
+- Middle/second pen: The black cap is visible at the top end of the pen.
+- Right/third pen: The black cap is visible at the bottom end of the pen.
+
+ORIENTATION AND MOTION:
+All three pens are oriented vertically and parallel to one another. The left and right pens are aligned with their caps at the bottom, while the middle pen is aligned with its cap at the top. The white carrier moves horizontally from the left side of the screen towards the right side, driven by the visible lead screw mechanism. The motion is smooth and consistent.
+
+UNCERTAINTIES:
+- It is unclear if the middle pen is simply oriented upside down (cap on the non-writing end) or if the cap is "posted" on the back, leaving the writing tip exposed. Functionally, the writing tip of the middle pen appears exposed compared to the other two.
+- Specific branding or model of the pens is not legible due to resolution and distance.
+- Reflections on the pen barrels occasionally obscure the ink level inside.

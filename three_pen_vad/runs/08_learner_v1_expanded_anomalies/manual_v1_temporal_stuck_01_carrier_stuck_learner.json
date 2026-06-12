@@ -1,0 +1,88 @@
+{
+  "video": "data/grad2_pilot/processed/temporal_stuck_01_carrier_stuck_4k_20fps_trim2s.mp4",
+  "expected": "TEMPORAL_STUCK",
+  "model": "qwen3.6-plus",
+  "prompt_version": "v1",
+  "questions": [
+    "In fully visible middle frames, are exactly three pens visible on the white carrier?",
+    "Do all pens match the expected normal appearance: dark body and dark cap-like part at the lower end?",
+    "Does any pen show a clearly different color or material appearance, such as blue, transparent, or white parts?",
+    "Does any pen lack the normal cap-like marker or show an exposed pointed writing tip?",
+    "Are all pens similarly oriented, with no reversed, upside-down, tilted, or diagonal pen?",
+    "Are the cap-like markers on the same end of all visible pens?",
+    "Does the carrier move continuously from LEFT to RIGHT without stopping, stalling, or getting stuck in the inspection view?",
+    "Do the pens remain stable relative to the carrier without sliding, falling, or unexpected disappearance?"
+  ],
+  "elapsed_seconds": 45.63540637100232,
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"From 00:05 onwards, three pens are clearly visible on the white carrier.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens have dark bodies and dark cap-like parts at the lower end.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"NO\",\n      \"evidence\": \"All pens appear identical in color and material (dark gray/black).\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"NO\",\n      \"evidence\": \"All three pens clearly show the dark cap-like marker at the bottom end.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"All pens are aligned vertically and parallel to each other.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"YES\",\n      \"evidence\": \"The dark cap-like markers are all located at the bottom end of the pens.\"\n    },\n    {\n      \"question_id\": 7,\n      \"answer\": \"YES\",\n      \"evidence\": \"The carrier moves smoothly from left to right throughout the video without stalling.\"\n    },\n    {\n      \"question_id\": 8,\n      \"answer\": \"YES\",\n      \"evidence\": \"The pens remain fixed in their positions on the carrier as it moves.\"\n    }\n  ],\n  \"verdict\": \"NORMAL\",\n  \"missing_cap_pen\": \"none\",\n  \"wrong_orientation_pen\": \"none\",\n  \"wrong_orientation_type\": \"none\",\n  \"color_anomaly_pen\": \"none\",\n  \"temporal_anomaly\": \"none\",\n  \"anomaly_score\": 0.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The video shows three identical dark pens with caps at the bottom moving smoothly from left to right on the carrier. All pens are correctly oriented and no anomalies are present.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "From 00:05 onwards, three pens are clearly visible on the white carrier."
+      },
+      {
+        "question_id": 2,
+        "answer": "YES",
+        "evidence": "All three pens have dark bodies and dark cap-like parts at the lower end."
+      },
+      {
+        "question_id": 3,
+        "answer": "NO",
+        "evidence": "All pens appear identical in color and material (dark gray/black)."
+      },
+      {
+        "question_id": 4,
+        "answer": "NO",
+        "evidence": "All three pens clearly show the dark cap-like marker at the bottom end."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "All pens are aligned vertically and parallel to each other."
+      },
+      {
+        "question_id": 6,
+        "answer": "YES",
+        "evidence": "The dark cap-like markers are all located at the bottom end of the pens."
+      },
+      {
+        "question_id": 7,
+        "answer": "YES",
+        "evidence": "The carrier moves smoothly from left to right throughout the video without stalling."
+      },
+      {
+        "question_id": 8,
+        "answer": "YES",
+        "evidence": "The pens remain fixed in their positions on the carrier as it moves."
+      }
+    ],
+    "verdict": "NORMAL",
+    "missing_cap_pen": "none",
+    "wrong_orientation_pen": "none",
+    "wrong_orientation_type": "none",
+    "color_anomaly_pen": "none",
+    "temporal_anomaly": "none",
+    "anomaly_score": 0.0,
+    "confidence": "HIGH",
+    "reason": "The video shows three identical dark pens with caps at the bottom moving smoothly from left to right on the carrier. All pens are correctly oriented and no anomalies are present."
+  },
+  "usage": {
+    "input_tokens": 9440,
+    "output_tokens": 1291,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 1122,
+      "video_tokens": 8318
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 790,
+      "text_tokens": 501
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 10731,
+    "video_tokens": 8318
+  },
+  "request_id": "11cf9fea-f514-92ad-9be5-3892b614db98"
+}

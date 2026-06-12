@@ -9,7 +9,7 @@ from typing import Any
 
 from vera_lite.dashscope_client import call_qwen, extract_json_object
 
-from .prompts import GUIDING_QUESTIONS, build_learner_prompt
+from .prompts import build_learner_prompt, get_guiding_questions
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -17,8 +17,14 @@ DEFAULT_MODEL = "qwen3.6-plus"
 DEFAULT_RUNS_DIR = ROOT / "three_pen_vad" / "runs"
 
 
-def run_learner(video: str, expected: str | None, model: str = DEFAULT_MODEL) -> dict[str, Any]:
-    prompt = build_learner_prompt(expected=expected)
+def run_learner(
+    video: str,
+    expected: str | None,
+    model: str = DEFAULT_MODEL,
+    prompt_version: str = "v1",
+) -> dict[str, Any]:
+    prompt = build_learner_prompt(expected=expected, prompt_version=prompt_version)
+    questions = get_guiding_questions(prompt_version)
     start_time = time.perf_counter()
     text, raw_response = call_qwen(
         model=model,
@@ -33,7 +39,8 @@ def run_learner(video: str, expected: str | None, model: str = DEFAULT_MODEL) ->
         "video": video,
         "expected": expected,
         "model": model,
-        "questions": GUIDING_QUESTIONS,
+        "prompt_version": prompt_version,
+        "questions": questions,
         "elapsed_seconds": elapsed_seconds,
         "raw_text": text,
         "parsed": parsed,
@@ -51,7 +58,7 @@ def build_run_summary(result: dict[str, Any]) -> dict[str, Any]:
         "output_tokens": usage.get("output_tokens"),
         "total_tokens": usage.get("total_tokens"),
         "video_tokens": usage.get("video_tokens"),
-        "verdict": parsed.get("verdict"),
+        "verdict": parsed.get("verdict") or parsed.get("primary_verdict"),
         "confidence": parsed.get("confidence"),
         "anomaly_score": parsed.get("anomaly_score"),
     }
@@ -76,11 +83,16 @@ def print_summary(summary: dict[str, Any]) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Run the NORMAL vs MISSING_CAP learner on a three-pen video."
+        description="Run the three-pen anomaly learner on a conveyor video."
     )
     parser.add_argument("--video", required=True)
-    parser.add_argument("--expected", choices=["NORMAL", "MISSING_CAP"], default=None)
+    parser.add_argument(
+        "--expected",
+        choices=["NORMAL", "MISSING_CAP", "WRONG_ORIENTATION", "COLOR_ANOMALY", "TEMPORAL_STUCK"],
+        default=None,
+    )
     parser.add_argument("--model", default=DEFAULT_MODEL)
+    parser.add_argument("--prompt-version", choices=["v1", "v2"], default="v1")
     parser.add_argument("--out", type=Path, default=None)
     parser.add_argument("--runs-dir", type=Path, default=DEFAULT_RUNS_DIR)
     args = parser.parse_args()
@@ -91,9 +103,15 @@ def main() -> None:
     print(f"Video: {args.video}")
     print(f"Expected: {args.expected}")
     print(f"Model: {args.model}")
+    print(f"Prompt version: {args.prompt_version}")
     print("Calling model...")
 
-    result = run_learner(video=args.video, expected=args.expected, model=args.model)
+    result = run_learner(
+        video=args.video,
+        expected=args.expected,
+        model=args.model,
+        prompt_version=args.prompt_version,
+    )
     output_path.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
     print_summary(build_run_summary(result))
     print(f"Saved to: {output_path}")

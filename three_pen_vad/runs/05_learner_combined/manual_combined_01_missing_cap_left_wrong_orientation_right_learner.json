@@ -1,0 +1,85 @@
+{
+  "video": "data/grad2_pilot/processed/combined_01_missing_cap_left_wrong_orientation_right_4k_20fps_trim2s.mp4",
+  "expected": "MISSING_CAP",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "In fully visible middle frames, are exactly three pens visible on the white carrier?",
+    "Does each pen show a visible black cap-like part at its lower end?",
+    "Does any pen show an exposed pointed writing tip where the black cap-like part should be?",
+    "Are the three pens parallel and similarly oriented on the carrier?",
+    "Are the black cap-like parts on the same end of all three pens?",
+    "Is any pen reversed or upside down compared with the other pens?",
+    "Is any pen tilted or diagonal compared with the other pens?",
+    "Does the carrier move smoothly from LEFT to RIGHT while the pens remain stable relative to it?"
+  ],
+  "elapsed_seconds": 83.0821849719996,
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"In frames 00:05 to 00:08, exactly three pens are clearly visible on the white carrier.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"The leftmost pen does not show a black cap-like part at its lower end; instead, it shows a pointed tip.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"The leftmost pen shows an exposed pointed writing tip at the bottom, whereas the other two have black caps.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens are arranged vertically and are parallel to each other.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"NO\",\n      \"evidence\": \"The middle and right pens have the black cap-like part at the bottom, but the left pen has a pointed tip at the bottom.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"NO\",\n      \"evidence\": \"The pens are not reversed relative to each other in a way that suggests a simple orientation error; the left pen is missing its cap.\"\n    },\n    {\n      \"question_id\": 7,\n      \"answer\": \"NO\",\n      \"evidence\": \"All pens are vertical and aligned; none are tilted or diagonal.\"\n    },\n    {\n      \"question_id\": 8,\n      \"answer\": \"YES\",\n      \"evidence\": \"The carrier moves smoothly from the left side of the frame to the right side, and the pens remain stationary on it.\"\n    }\n  ],\n  \"verdict\": \"MISSING_CAP\",\n  \"missing_cap_pen\": \"left_first\",\n  \"wrong_orientation_pen\": \"none\",\n  \"wrong_orientation_type\": \"none\",\n  \"anomaly_score\": 0.95,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The leftmost pen clearly lacks the black cap-like part present on the other two pens and instead shows an exposed pointed tip, fitting the MISSING_CAP anomaly definition.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "In frames 00:05 to 00:08, exactly three pens are clearly visible on the white carrier."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "The leftmost pen does not show a black cap-like part at its lower end; instead, it shows a pointed tip."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "The leftmost pen shows an exposed pointed writing tip at the bottom, whereas the other two have black caps."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "All three pens are arranged vertically and are parallel to each other."
+      },
+      {
+        "question_id": 5,
+        "answer": "NO",
+        "evidence": "The middle and right pens have the black cap-like part at the bottom, but the left pen has a pointed tip at the bottom."
+      },
+      {
+        "question_id": 6,
+        "answer": "NO",
+        "evidence": "The pens are not reversed relative to each other in a way that suggests a simple orientation error; the left pen is missing its cap."
+      },
+      {
+        "question_id": 7,
+        "answer": "NO",
+        "evidence": "All pens are vertical and aligned; none are tilted or diagonal."
+      },
+      {
+        "question_id": 8,
+        "answer": "YES",
+        "evidence": "The carrier moves smoothly from the left side of the frame to the right side, and the pens remain stationary on it."
+      }
+    ],
+    "verdict": "MISSING_CAP",
+    "missing_cap_pen": "left_first",
+    "wrong_orientation_pen": "none",
+    "wrong_orientation_type": "none",
+    "anomaly_score": 0.95,
+    "confidence": "HIGH",
+    "reason": "The leftmost pen clearly lacks the black cap-like part present on the other two pens and instead shows an exposed pointed tip, fitting the MISSING_CAP anomaly definition."
+  },
+  "usage": {
+    "input_tokens": 8588,
+    "output_tokens": 2562,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 864,
+      "video_tokens": 7724
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 2021,
+      "text_tokens": 541
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 11150,
+    "video_tokens": 7724
+  },
+  "request_id": "1f7c138c-85d6-9ff2-9883-f557d4e4b0d4"
+}

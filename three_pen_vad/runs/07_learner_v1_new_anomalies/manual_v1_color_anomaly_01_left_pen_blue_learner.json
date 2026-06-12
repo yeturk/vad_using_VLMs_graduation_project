@@ -1,0 +1,86 @@
+{
+  "video": "data/grad2_pilot/processed/color_anomaly_01_left_pen_blue_4k_20fps_trim2s.mp4",
+  "expected": "WRONG_ORIENTATION",
+  "model": "qwen3.6-plus",
+  "prompt_version": "v1",
+  "questions": [
+    "In fully visible middle frames, are exactly three pens visible on the white carrier?",
+    "Does each pen show a visible black cap-like part at its lower end?",
+    "Does any pen show an exposed pointed writing tip where the black cap-like part should be?",
+    "Are the three pens parallel and similarly oriented on the carrier?",
+    "Are the black cap-like parts on the same end of all three pens?",
+    "Is any pen reversed or upside down compared with the other pens?",
+    "Is any pen tilted or diagonal compared with the other pens?",
+    "Does the carrier move smoothly from LEFT to RIGHT while the pens remain stable relative to it?"
+  ],
+  "elapsed_seconds": 160.69427430699943,
+  "raw_text": "{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"In frames 00:05 to 00:09, exactly three pens (one blue, two black) are fully visible on the white carrier plate.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"The two black pens show visible black cap-like parts at the lower end. The blue pen (leftmost) shows a clear/white cap-like part, not a black one.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"NO\",\n      \"evidence\": \"All three pens show a cap-like structure at the bottom. The blue pen has a clear cap, not an exposed pointed writing tip.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"The three pens are arranged in a parallel vertical row and maintain this orientation throughout the movement.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The cap-like parts (black for the two right pens, clear for the left blue pen) are all located at the bottom end of the pens.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"NO\",\n      \"evidence\": \"All pens are oriented with the cap-like part at the bottom and the barrel at the top. None are reversed relative to the others.\"\n    },\n    {\n      \"question_id\": 7,\n      \"answer\": \"NO\",\n      \"evidence\": \"All pens are vertically aligned and parallel to each other. None are tilted or diagonal.\"\n    },\n    {\n      \"question_id\": 8,\n      \"answer\": \"YES\",\n      \"evidence\": \"The carrier plate moves smoothly from left to right across the frame, and the pens remain stable on it.\"\n    }\n  ],\n  \"verdict\": \"NORMAL\",\n  \"missing_cap_pen\": \"none\",\n  \"wrong_orientation_pen\": \"none\",\n  \"wrong_orientation_type\": \"none\",\n  \"anomaly_score\": 0.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"All three pens are visible, parallel, and oriented with their caps at the same end (bottom). Although the leftmost pen has a clear cap instead of a black one, it is capped and oriented correctly, fitting the normal operational state.\"\n}",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "In frames 00:05 to 00:09, exactly three pens (one blue, two black) are fully visible on the white carrier plate."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "The two black pens show visible black cap-like parts at the lower end. The blue pen (leftmost) shows a clear/white cap-like part, not a black one."
+      },
+      {
+        "question_id": 3,
+        "answer": "NO",
+        "evidence": "All three pens show a cap-like structure at the bottom. The blue pen has a clear cap, not an exposed pointed writing tip."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "The three pens are arranged in a parallel vertical row and maintain this orientation throughout the movement."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The cap-like parts (black for the two right pens, clear for the left blue pen) are all located at the bottom end of the pens."
+      },
+      {
+        "question_id": 6,
+        "answer": "NO",
+        "evidence": "All pens are oriented with the cap-like part at the bottom and the barrel at the top. None are reversed relative to the others."
+      },
+      {
+        "question_id": 7,
+        "answer": "NO",
+        "evidence": "All pens are vertically aligned and parallel to each other. None are tilted or diagonal."
+      },
+      {
+        "question_id": 8,
+        "answer": "YES",
+        "evidence": "The carrier plate moves smoothly from left to right across the frame, and the pens remain stable on it."
+      }
+    ],
+    "verdict": "NORMAL",
+    "missing_cap_pen": "none",
+    "wrong_orientation_pen": "none",
+    "wrong_orientation_type": "none",
+    "anomaly_score": 0.0,
+    "confidence": "HIGH",
+    "reason": "All three pens are visible, parallel, and oriented with their caps at the same end (bottom). Although the leftmost pen has a clear cap instead of a black one, it is capped and oriented correctly, fitting the normal operational state."
+  },
+  "usage": {
+    "input_tokens": 8588,
+    "output_tokens": 6488,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 864,
+      "video_tokens": 7724
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 5907,
+      "text_tokens": 581
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 15076,
+    "video_tokens": 7724
+  },
+  "request_id": "66363b0b-b029-96db-9767-a09fceeb0743"
+}

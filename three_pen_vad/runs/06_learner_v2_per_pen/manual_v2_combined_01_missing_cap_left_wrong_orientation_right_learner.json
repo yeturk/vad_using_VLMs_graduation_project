@@ -1,0 +1,80 @@
+{
+  "video": "data/grad2_pilot/processed/combined_01_missing_cap_left_wrong_orientation_right_4k_20fps_trim2s.mp4",
+  "expected": "MISSING_CAP",
+  "model": "qwen3.6-plus",
+  "prompt_version": "v2",
+  "questions": [
+    "In fully visible middle frames, are exactly three pens visible and stable on the white carrier?",
+    "For each pen, report cap marker status, cap end, exposed writing tip, and orientation.",
+    "Which pens, if any, have missing-cap evidence?",
+    "Which pens, if any, have wrong-orientation evidence?",
+    "Does the carrier motion look normal enough that the object inspection is reliable?"
+  ],
+  "elapsed_seconds": 189.06638000099883,
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"Three distinct pens are clearly visible and stable on the white carrier plate in the middle frames (e.g., 00:06-00:09).\"\n    }\n  ],\n  \"pen_observations\": {\n    \"left_first\": {\n      \"cap_marker\": \"absent\",\n      \"cap_end\": \"none\",\n      \"writing_tip_exposed\": \"yes\",\n      \"orientation\": \"normal\",\n      \"evidence\": \"The pen lacks the black cap marker seen on the others; a pointed writing tip is visible at the bottom end.\"\n    },\n    \"middle_second\": {\n      \"cap_marker\": \"present\",\n      \"cap_end\": \"bottom\",\n      \"writing_tip_exposed\": \"no\",\n      \"orientation\": \"normal\",\n      \"evidence\": \"The black cap marker is present at the bottom end of the pen.\"\n    },\n    \"right_third\": {\n      \"cap_marker\": \"present\",\n      \"cap_end\": \"top\",\n      \"writing_tip_exposed\": \"no\",\n      \"orientation\": \"reversed\",\n      \"evidence\": \"The black cap marker is present at the top end, which is opposite to the orientation of the middle pen.\"\n    }\n  },\n  \"detected_anomalies\": [\n    {\n      \"type\": \"MISSING_CAP\",\n      \"pen\": \"left_first\",\n      \"evidence\": \"The leftmost pen has no black cap marker; the writing tip is exposed at the bottom.\"\n    },\n    {\n      \"type\": \"WRONG_ORIENTATION\",\n      \"pen\": \"right_third\",\n      \"evidence\": \"The rightmost pen has its cap at the top end, while the middle pen has its cap at the bottom end, indicating it is reversed relative to the standard arrangement.\"\n    }\n  ],\n  \"primary_verdict\": \"MULTIPLE_ANOMALIES\",\n  \"anomaly_score\": 1.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The left pen is missing its cap entirely (MISSING_CAP), and the right pen is oriented with the cap at the top while the middle pen has it at the bottom (WRONG_ORIENTATION).\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "Three distinct pens are clearly visible and stable on the white carrier plate in the middle frames (e.g., 00:06-00:09)."
+      }
+    ],
+    "pen_observations": {
+      "left_first": {
+        "cap_marker": "absent",
+        "cap_end": "none",
+        "writing_tip_exposed": "yes",
+        "orientation": "normal",
+        "evidence": "The pen lacks the black cap marker seen on the others; a pointed writing tip is visible at the bottom end."
+      },
+      "middle_second": {
+        "cap_marker": "present",
+        "cap_end": "bottom",
+        "writing_tip_exposed": "no",
+        "orientation": "normal",
+        "evidence": "The black cap marker is present at the bottom end of the pen."
+      },
+      "right_third": {
+        "cap_marker": "present",
+        "cap_end": "top",
+        "writing_tip_exposed": "no",
+        "orientation": "reversed",
+        "evidence": "The black cap marker is present at the top end, which is opposite to the orientation of the middle pen."
+      }
+    },
+    "detected_anomalies": [
+      {
+        "type": "MISSING_CAP",
+        "pen": "left_first",
+        "evidence": "The leftmost pen has no black cap marker; the writing tip is exposed at the bottom."
+      },
+      {
+        "type": "WRONG_ORIENTATION",
+        "pen": "right_third",
+        "evidence": "The rightmost pen has its cap at the top end, while the middle pen has its cap at the bottom end, indicating it is reversed relative to the standard arrangement."
+      }
+    ],
+    "primary_verdict": "MULTIPLE_ANOMALIES",
+    "anomaly_score": 1.0,
+    "confidence": "HIGH",
+    "reason": "The left pen is missing its cap entirely (MISSING_CAP), and the right pen is oriented with the cap at the top while the middle pen has it at the bottom (WRONG_ORIENTATION)."
+  },
+  "usage": {
+    "input_tokens": 8769,
+    "output_tokens": 8681,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 1045,
+      "video_tokens": 7724
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 8151,
+      "text_tokens": 530
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 17450,
+    "video_tokens": 7724
+  },
+  "request_id": "16fbd506-c2fb-92b1-99f9-6a546d136145"
+}

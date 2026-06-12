@@ -1,0 +1,88 @@
+{
+  "video": "data/grad2_pilot/processed/temporal_stuck_01_carrier_stuck_4k_20fps_trim2s.mp4",
+  "expected": "TEMPORAL_STUCK",
+  "model": "qwen3.6-plus",
+  "prompt_version": "v1",
+  "questions": [
+    "In fully visible middle frames, are exactly three pens visible on the white carrier?",
+    "Do all pens match the expected normal appearance: dark body and dark cap-like part at the lower end?",
+    "Does any pen show a clearly different color or material appearance, such as blue, transparent, or white parts?",
+    "Does any pen lack the normal cap-like marker or show an exposed pointed writing tip?",
+    "Are all pens similarly oriented, with no reversed, upside-down, tilted, or diagonal pen?",
+    "Are the cap-like markers on the same end of all visible pens?",
+    "Compare early, middle, and late frames: does the carrier keep changing position without stopping, stalling, or getting stuck?",
+    "Do the pens remain stable relative to the carrier without sliding, falling, or unexpected disappearance?"
+  ],
+  "elapsed_seconds": 62.03513628099972,
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"Three pens are clearly visible on the white carrier plate in the middle frames.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens have a dark gray/black body and a dark cap-like part at the lower end.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"NO\",\n      \"evidence\": \"All pens appear to have the same dark color and material.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"NO\",\n      \"evidence\": \"All three pens show the dark cap-like part at the bottom; no exposed writing tip is visible.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens are aligned vertically and parallel to each other.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"YES\",\n      \"evidence\": \"The dark cap-like markers are all at the bottom end of the pens.\"\n    },\n    {\n      \"question_id\": 7,\n      \"answer\": \"NO\",\n      \"evidence\": \"The carrier moves from left to right initially but stops completely around 00:05 and remains stationary until the end of the video.\"\n    },\n    {\n      \"question_id\": 8,\n      \"answer\": \"YES\",\n      \"evidence\": \"The pens remain stable on the carrier plate throughout the video.\"\n    }\n  ],\n  \"verdict\": \"TEMPORAL_STUCK\",\n  \"missing_cap_pen\": \"none\",\n  \"wrong_orientation_pen\": \"none\",\n  \"wrong_orientation_type\": \"none\",\n  \"color_anomaly_pen\": \"none\",\n  \"temporal_anomaly\": \"carrier_stuck\",\n  \"anomaly_score\": 1.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The carrier plate moves from left to right initially but then stops completely and remains stationary for the remainder of the video while fully visible, indicating a stuck anomaly.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "Three pens are clearly visible on the white carrier plate in the middle frames."
+      },
+      {
+        "question_id": 2,
+        "answer": "YES",
+        "evidence": "All three pens have a dark gray/black body and a dark cap-like part at the lower end."
+      },
+      {
+        "question_id": 3,
+        "answer": "NO",
+        "evidence": "All pens appear to have the same dark color and material."
+      },
+      {
+        "question_id": 4,
+        "answer": "NO",
+        "evidence": "All three pens show the dark cap-like part at the bottom; no exposed writing tip is visible."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "All three pens are aligned vertically and parallel to each other."
+      },
+      {
+        "question_id": 6,
+        "answer": "YES",
+        "evidence": "The dark cap-like markers are all at the bottom end of the pens."
+      },
+      {
+        "question_id": 7,
+        "answer": "NO",
+        "evidence": "The carrier moves from left to right initially but stops completely around 00:05 and remains stationary until the end of the video."
+      },
+      {
+        "question_id": 8,
+        "answer": "YES",
+        "evidence": "The pens remain stable on the carrier plate throughout the video."
+      }
+    ],
+    "verdict": "TEMPORAL_STUCK",
+    "missing_cap_pen": "none",
+    "wrong_orientation_pen": "none",
+    "wrong_orientation_type": "none",
+    "color_anomaly_pen": "none",
+    "temporal_anomaly": "carrier_stuck",
+    "anomaly_score": 1.0,
+    "confidence": "HIGH",
+    "reason": "The carrier plate moves from left to right initially but then stops completely and remains stationary for the remainder of the video while fully visible, indicating a stuck anomaly."
+  },
+  "usage": {
+    "input_tokens": 9507,
+    "output_tokens": 1544,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 1189,
+      "video_tokens": 8318
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 1025,
+      "text_tokens": 519
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 11051,
+    "video_tokens": 8318
+  },
+  "request_id": "0bcc4be8-46fd-9219-9510-91035ede1966"
+}

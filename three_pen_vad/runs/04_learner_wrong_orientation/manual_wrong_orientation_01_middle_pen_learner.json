@@ -1,0 +1,85 @@
+{
+  "video": "data/grad2_pilot/processed/wrong_orientation_01_middle_pen_4k_20fps_trim2s.mp4",
+  "expected": "WRONG_ORIENTATION",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "In fully visible middle frames, are exactly three pens visible on the white carrier?",
+    "Does each pen show a visible black cap-like part at its lower end?",
+    "Does any pen show an exposed pointed writing tip where the black cap-like part should be?",
+    "Are the three pens parallel and similarly oriented on the carrier?",
+    "Are the black cap-like parts on the same end of all three pens?",
+    "Is any pen reversed or upside down compared with the other pens?",
+    "Is any pen tilted or diagonal compared with the other pens?",
+    "Does the carrier move smoothly from LEFT to RIGHT while the pens remain stable relative to it?"
+  ],
+  "elapsed_seconds": 60.99640326500048,
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"Three pens are clearly visible on the carrier in frames 00:05 to 00:10.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"The middle pen has the black cap-like part at the top, while the left and right pens have it at the bottom.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"The middle pen shows the clear writing tip at the bottom end, where the other pens have the black part.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"NO\",\n      \"evidence\": \"The middle pen is oriented opposite to the left and right pens.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"NO\",\n      \"evidence\": \"The black part is at the bottom for the outer pens and at the top for the middle pen.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"YES\",\n      \"evidence\": \"The middle pen is reversed (upside down) compared to the other two.\"\n    },\n    {\n      \"question_id\": 7,\n      \"answer\": \"NO\",\n      \"evidence\": \"All pens are vertical and parallel to each other.\"\n    },\n    {\n      \"question_id\": 8,\n      \"answer\": \"YES\",\n      \"evidence\": \"The carrier moves smoothly from left to right.\"\n    }\n  ],\n  \"verdict\": \"WRONG_ORIENTATION\",\n  \"missing_cap_pen\": \"none\",\n  \"wrong_orientation_pen\": \"middle_second\",\n  \"wrong_orientation_type\": \"reversed\",\n  \"anomaly_score\": 1.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The middle pen is reversed (upside down) compared to the left and right pens, with its cap at the top instead of the bottom.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "Three pens are clearly visible on the carrier in frames 00:05 to 00:10."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "The middle pen has the black cap-like part at the top, while the left and right pens have it at the bottom."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "The middle pen shows the clear writing tip at the bottom end, where the other pens have the black part."
+      },
+      {
+        "question_id": 4,
+        "answer": "NO",
+        "evidence": "The middle pen is oriented opposite to the left and right pens."
+      },
+      {
+        "question_id": 5,
+        "answer": "NO",
+        "evidence": "The black part is at the bottom for the outer pens and at the top for the middle pen."
+      },
+      {
+        "question_id": 6,
+        "answer": "YES",
+        "evidence": "The middle pen is reversed (upside down) compared to the other two."
+      },
+      {
+        "question_id": 7,
+        "answer": "NO",
+        "evidence": "All pens are vertical and parallel to each other."
+      },
+      {
+        "question_id": 8,
+        "answer": "YES",
+        "evidence": "The carrier moves smoothly from left to right."
+      }
+    ],
+    "verdict": "WRONG_ORIENTATION",
+    "missing_cap_pen": "none",
+    "wrong_orientation_pen": "middle_second",
+    "wrong_orientation_type": "reversed",
+    "anomaly_score": 1.0,
+    "confidence": "HIGH",
+    "reason": "The middle pen is reversed (upside down) compared to the left and right pens, with its cap at the top instead of the bottom."
+  },
+  "usage": {
+    "input_tokens": 8588,
+    "output_tokens": 2014,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 864,
+      "video_tokens": 7724
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 1515,
+      "text_tokens": 499
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 10602,
+    "video_tokens": 7724
+  },
+  "request_id": "e3ec7eab-f3c9-970c-a6e8-ae35179f3c80"
+}

@@ -6,7 +6,12 @@ from three_pen_vad.preprocess_video import (
     build_processed_name,
     compute_trim_window,
 )
-from three_pen_vad.prompts import DESCRIPTION_PROMPT, build_learner_prompt
+from three_pen_vad.prompts import (
+    DESCRIPTION_PROMPT,
+    GUIDING_QUESTIONS_V2,
+    build_learner_prompt,
+    get_guiding_questions,
+)
 from three_pen_vad.run_learner import build_run_summary
 
 
@@ -69,17 +74,27 @@ class ThreePenVadTests(unittest.TestCase):
             ],
         )
 
-    def test_learner_prompt_only_targets_normal_and_missing_cap(self):
-        prompt = build_learner_prompt(expected="NORMAL")
+    def test_learner_prompt_v1_targets_current_anomaly_set(self):
+        prompt = build_learner_prompt(expected="NORMAL", prompt_version="v1")
 
-        self.assertIn("For this experiment, only distinguish NORMAL from MISSING_CAP.", prompt)
-        self.assertIn('"verdict": "NORMAL / MISSING_CAP / UNCLEAR"', prompt)
+        self.assertIn(
+            "For this experiment, distinguish NORMAL, MISSING_CAP, WRONG_ORIENTATION, COLOR_ANOMALY, and TEMPORAL_STUCK.",
+            prompt,
+        )
+        self.assertIn('"verdict": "NORMAL / MISSING_CAP / WRONG_ORIENTATION / COLOR_ANOMALY / TEMPORAL_STUCK / UNCLEAR"', prompt)
         self.assertIn('"missing_cap_pen": "none / left_first / middle_second / right_third / unclear"', prompt)
-        self.assertNotIn("wrong_orientation", prompt)
-        self.assertNotIn("stuck", prompt)
+        self.assertIn('"wrong_orientation_pen": "none / left_first / middle_second / right_third / unclear"', prompt)
+        self.assertIn('"color_anomaly_pen": "none / left_first / middle_second / right_third / unclear"', prompt)
+        self.assertIn('"temporal_anomaly": "none / carrier_stuck / unclear"', prompt)
+        self.assertIn('"wrong_orientation_type": "none / reversed / tilted / unclear"', prompt)
+        self.assertIn("clearly different color", prompt)
+        self.assertIn("stops, stalls", prompt)
+        self.assertIn("Compare early, middle, and late frames", prompt)
+        self.assertIn("remains fixed for several seconds while fully visible", prompt)
+        self.assertLessEqual(len(get_guiding_questions("v1")), 8)
 
     def test_learner_prompt_does_not_include_expected_label(self):
-        prompt = build_learner_prompt(expected="MISSING_CAP")
+        prompt = build_learner_prompt(expected="MISSING_CAP", prompt_version="v2")
 
         self.assertNotIn("Expected label", prompt)
         self.assertNotIn("provided only for experiment logging", prompt)
@@ -90,6 +105,34 @@ class ThreePenVadTests(unittest.TestCase):
         self.assertIn("Analyze fully visible middle frames", prompt)
         self.assertIn("Do not treat partial visibility during entry or exit as an anomaly", prompt)
         self.assertIn("Return JSON only", prompt)
+
+    def test_learner_prompt_v2_uses_per_pen_attribute_extraction(self):
+        prompt = build_learner_prompt(expected="MISSING_CAP", prompt_version="v2")
+
+        self.assertEqual(len(GUIDING_QUESTIONS_V2), 5)
+        self.assertIn("per-pen attribute extraction", prompt)
+        self.assertIn('"pen_observations"', prompt)
+        self.assertIn('"left_first"', prompt)
+        self.assertIn('"cap_marker": "present / absent / unclear"', prompt)
+        self.assertIn('"cap_end": "top / bottom / none / unclear"', prompt)
+        self.assertIn('"writing_tip_exposed": "yes / no / unclear"', prompt)
+        self.assertIn('"orientation": "normal / reversed / tilted / unclear"', prompt)
+        self.assertIn('"detected_anomalies"', prompt)
+        self.assertIn('"primary_verdict": "NORMAL / MISSING_CAP / WRONG_ORIENTATION / MULTIPLE_ANOMALIES / UNCLEAR"', prompt)
+        self.assertIn("Do not stop after finding the first anomaly", prompt)
+        self.assertNotIn('"verdict": "NORMAL / MISSING_CAP / WRONG_ORIENTATION / UNCLEAR"', prompt)
+
+    def test_get_guiding_questions_selects_prompt_version(self):
+        v1_questions = get_guiding_questions("v1")
+        v2_questions = get_guiding_questions("v2")
+
+        self.assertEqual(len(v1_questions), 8)
+        self.assertEqual(len(v2_questions), 5)
+        self.assertTrue(any("color" in question.lower() for question in v1_questions))
+        self.assertTrue(any("early, middle, and late" in question.lower() for question in v1_questions))
+        self.assertIn("For each pen", v2_questions[1])
+        with self.assertRaises(ValueError):
+            get_guiding_questions("unknown")
 
     def test_build_run_summary_extracts_usage_and_elapsed_time(self):
         result = {
