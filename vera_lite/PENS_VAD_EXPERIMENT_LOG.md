@@ -134,21 +134,79 @@
 
 ---
 
+## 9b. Pencere Genişletme Denemesi (başarısız)
+
+`runs/blind_frames_wide/20260609_182203` — pencere **[0.05–0.95]**, 16 kare, thinking_budget.
+
+**Sonuç: 8/13 = 0.62, 1 false positive** → daha kötü.
+- `normal_03` → ANOMALY (**FP**): çıkış artefaktı geri geldi (kalemler kadraj dışına taşıyor → "hareket" sanıldı).
+- Kenar kareleri orta bölgeyi seyreltince yoğun-kare'nin daha önce yakaladığı `wrong_orientation_01` ve `motion_temporal_01` bile **kayboldu**.
+
+→ Geniş pencere işe yaramıyor; dar pencere [0.15–0.70] daha iyi ayarlı. Tek temsille 13/13 yolu kapandı.
+
+---
+
+## 9c. Ensemble (NİHAİ ÇÖZÜM) — 13/13
+
+`runs/ensemble/video_v3__dense16.json` (`ensemble_eval.py`, **sıfır ek API maliyeti**).
+
+**Mantık:** "Herhangi bir koşu ANOMALY derse → ANOMALY." İki yöntemin de **0 FP**'si ve **ayrık** false-negative'leri olduğu için birleşim hepsini toplar, yeni FP doğurmaz.
+
+| Klip | video_v3 | dense16 | ensemble |
+|------|:---:|:---:|:---:|
+| `motion_temporal_01` | NORMAL ❌ | ANOMALY ✅ | ANOMALY ✓ |
+| `wrong_orientation_02` | ANOMALY ✅ | NORMAL ❌ | ANOMALY ✓ |
+| `motion_stop_02` | ANOMALY ✅ | NORMAL ❌ | ANOMALY ✓ |
+| diğer 10 | ✅ | ✅ | ✓ |
+
+**Sonuç: 13/13 = 1.00, TP=10 TN=3 FP=0 FN=0, P=R=F1=1.00.**
+
+### Tüm yaklaşımların özeti
+| Yaklaşım | Accuracy | FP |
+|----------|:---:|:---:|
+| Video v2 | 0.77 | 0 |
+| Video v3 | 0.92 | 0 |
+| Yoğun-kare [0.15–0.70] | 0.85 | 0 |
+| Yoğun-kare [0.05–0.95] | 0.62 | 1 |
+| **Ensemble (video v3 ⋁ dense16)** | **1.00** | **0** |
+
+---
+
+## 9d. Temporal Grid Denemesi (negatif sonuç)
+
+**Fikir:** Tek-VLM-geçişiyle 13/13'e ulaşmak için, N kareyi tek bir görüntüde **ızgaraya (montaj)** dizip gönder; model tüm zamanı uzamsal olarak yan yana görsün. (`test_temporal_grid.py`, çıktılar `runs/grid/`)
+
+4 kritik klipte 3×3 grid (tüm süre):
+
+| Klip | Grid | Beklenen | |
+|------|:---:|:---:|---|
+| `temporal` | ANOMALY | ANOMALY | ✓ |
+| `wrong_orientation_02` | NORMAL | ANOMALY | ✗ |
+| `motion_stop_02` | NORMAL | ANOMALY | ✗ |
+| `normal` | **ANOMALY (missing_pen)** | NORMAL | ✗ **FP** |
+
+**Sonuç: başarısız.** Grid, yoğun-kare ile **aynı kör noktalara** sahip (orient2 + stop2 kaçtı), üstelik tüm süreyi kapsadığı için çıkış artefaktı **FP** doğurdu (sondaki çıkış karelerini "missing_pen" sandı — geniş-pencere dense ile aynı). Orta-pencere kırpsak FP gider ama o zaman dense ile özdeşleşir. → Grid, dense-view'ı geçemedi.
+
+**Asıl bulgu güçlendi:** Sorun temsilin düzeni değil, **sürekli (video) ↔ ayrık (kare/grid)** ayrımı. 3 farklı ayrık temsil (dense dar, dense geniş, grid) hep aynı takası gösterdi.
+
+---
+
 ## 10. Çıkarımlar
 
 1. **VERA döngüsü işe yarıyor:** soruları iyileştirerek 0.77 → 0.92, 0 false positive.
 2. **VLM temporal zayıflığı doğrulandı:** tek-video çağrısı (yüksek fps dahil) ince intra-object hareketi kaçırıyor — literatürle uyumlu, tez için değerli bulgu.
 3. **Sunum biçimi > kare sayısı:** temporal anomaliyi çözen şey, ayrık numaralı kare + göreli-boşluk prompt'u idi.
 4. **Thinking model yönetimi şart:** yoğun görsel girdide `thinking_budget` olmadan model boş cevap veriyor.
-5. **Temsil takası:** video modu (kenar-yön, duraklama) vs yoğun-kare (intra-object hareket) — farklı güçler.
+5. **Continuous ↔ discrete takası içsel:** sürekli video kenar-yön+duraklamayı, ayrık temsiller (dense/grid) intra-object hareketi yakalıyor. **Hiçbir tek temsil 13/13 yapmıyor** (dense dar/geniş + grid ile 3 kez doğrulandı) → ensemble gerekli.
 
 ---
 
 ## 11. Sonraki Adımlar
 
-1. **Pencereyi genişlet** (0.05–0.95) + "çıkış normaldir" notu → kenar-yön + geç duraklama geri gelir mi, normaller FP olmadan korunur mu? (tek ucuz koşu)
-2. **Ensemble (çok-görüşlü):** video v3 **VE** yoğun-kare; "biri ANOMALY derse ANOMALY". Birleşim muhtemelen 13/13. (2× çağrı, metodolojik olarak şık)
-3. **Uyarı:** 13 kliplik pilot sette 13/13'ü tam bu kliplere ayar yaparak elde etmek **overfitting**; asıl değer "hangi yöntem hangi anomali türünü yakalıyor" analizi. Büyük partiye (45 klip) geçmeden önce dikkat.
+1. **Pencere genişletme denendi → başarısız** (bkz. §9b): 0.62, FP doğurdu. Tek temsil 13/13 yapmıyor.
+2. **Ensemble denendi → başarılı** (bkz. §9c): **13/13, 0 FP, sıfır ek maliyet**. Nihai yaklaşım bu.
+3. **Uyarı (önemli):** 13 kliplik pilot sette 13/13'ü tam bu kliplere ayar yaparak elde etmek **overfitting**; asıl değer "hangi yöntem hangi anomali türünü yakalıyor" analizi ve ensemble'ın metodolojik gerekçesi. Büyük partiye (45 klip) geçince ensemble'ı yeniden ölçmek gerek.
+4. **Genelleme testi:** Ensemble'ı daha büyük/yeni kliplerde doğrula; dar pencere [0.15–0.70] ve thinking_budget değerlerinin yeni veride de tuttuğunu kontrol et.
 
 ---
 
@@ -166,5 +224,7 @@
 | `run_iteration.py` | Kör mod (varsayılan), metrikler, `--frames/--fps/--thinking-budget/--max-tokens` |
 | `run_learner.py` | Kare modu, `fps`, thinking parametreleri, parse-fallback |
 | `dashscope_client.py` | Retry/backoff, generation kwargs geçişi |
+| `ensemble_eval.py` | İki koşunun OR-ensemble'ı + metrikler (yeni) |
+| `test_temporal_grid.py` | Temporal grid (montaj) probu — negatif sonuç (yeni) |
 
-**Koşu çıktıları:** `vera_lite/runs/` (video kör: `blind/`, yoğun-kare: `blind_frames/`, describe: `desc_*.txt`, tanılama: `diag_*.json`).
+**Koşu çıktıları:** `vera_lite/runs/` (video kör: `blind/`, yoğun-kare: `blind_frames/`, geniş pencere: `blind_frames_wide/`, ensemble: `ensemble/`, grid: `grid/`, describe: `desc_*.txt`, tanılama: `diag_*.json`).

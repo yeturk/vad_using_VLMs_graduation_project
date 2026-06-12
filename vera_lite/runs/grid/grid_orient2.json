@@ -1,0 +1,60 @@
+{
+  "video": "data/pens_small/pens_wrong_direction_2.mp4",
+  "grid": "3x3",
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"In cells 4, 5, and 6, the board is fully visible and holds exactly three pens arranged in a row.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens have their dark caps at the bottom. While the rightmost pen is tilted, its 'down' direction (cap end) is consistent with the other two vertical pens.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens share the same appearance: clear/translucent barrels and dark caps.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"All pens appear capped with dark ends visible; no bare tips are exposed.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves steadily from left (cell 1) to right (cell 9) without stopping or reversing.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"YES\",\n      \"evidence\": \"The pens maintain their relative spacing and orientation on the board throughout the sequence.\"\n    }\n  ],\n  \"verdict\": \"NORMAL\",\n  \"anomaly_type\": \"none\",\n  \"anomaly_score\": 0.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The board carries three identical, capped pens moving smoothly left to right. All pens are oriented with caps down, satisfying the nominal condition despite one pen being slightly tilted.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "In cells 4, 5, and 6, the board is fully visible and holds exactly three pens arranged in a row."
+      },
+      {
+        "question_id": 2,
+        "answer": "YES",
+        "evidence": "All three pens have their dark caps at the bottom. While the rightmost pen is tilted, its 'down' direction (cap end) is consistent with the other two vertical pens."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All three pens share the same appearance: clear/translucent barrels and dark caps."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "All pens appear capped with dark ends visible; no bare tips are exposed."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves steadily from left (cell 1) to right (cell 9) without stopping or reversing."
+      },
+      {
+        "question_id": 6,
+        "answer": "YES",
+        "evidence": "The pens maintain their relative spacing and orientation on the board throughout the sequence."
+      }
+    ],
+    "verdict": "NORMAL",
+    "anomaly_type": "none",
+    "anomaly_score": 0.0,
+    "confidence": "HIGH",
+    "reason": "The board carries three identical, capped pens moving smoothly left to right. All pens are oriented with caps down, satisfying the nominal condition despite one pen being slightly tilted."
+  },
+  "usage": {
+    "input_tokens": 1956,
+    "output_tokens": 1913,
+    "characters": 0,
+    "image_tokens": 860,
+    "input_tokens_details": {
+      "image_tokens": 860,
+      "text_tokens": 1096
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 1500,
+      "text_tokens": 413
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 3869
+  }
+}

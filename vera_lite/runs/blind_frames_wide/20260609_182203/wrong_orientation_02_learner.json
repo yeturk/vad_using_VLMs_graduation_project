@@ -1,0 +1,76 @@
+{
+  "video": "data/pens_small/pens_wrong_direction_2.mp4",
+  "input_mode": "16 frames [0.05-0.95]",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+    "Are all three pens aligned identically, all pointing the same way, including any pen near the left or right frame edge as it enters or exits?",
+    "Do all three pens share identical barrel and cap colors, with no mismatch?",
+    "Is every pen fully capped with no exposed writing tip, and are all three pens equal in length?",
+    "Does the board advance steadily from left to right at EVERY moment, never halting, freezing, or pausing even briefly (1-3 seconds) at any point in the video?",
+    "Do all pens stay fixed in their positions on the board, with no pen shifting, sliding, or moving on its own relative to the board mid-clip?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"In frames 7 through 11, when the board is fully visible, there are exactly three pens arranged in a row.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three visible pens have their black caps at the bottom and clear barrels at the top. The rightmost pen is tilted but oriented the same way (cap down) as the others.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All pens have translucent grey/black barrels and black caps. They appear identical in color.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"All pens show the black cap at one end. None appear to have an exposed writing tip or look significantly shorter than the others.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves smoothly from left to right across the sequence of frames without stopping or reversing.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"YES\",\n      \"evidence\": \"The pens remain fixed in their relative positions on the board throughout the movement.\"\n    }\n  ],\n  \"verdict\": \"NORMAL\",\n  \"anomaly_type\": \"none\",\n  \"anomaly_score\": 0.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The video shows a board carrying three identical pens moving smoothly from left to right. All pens are capped, oriented in the same direction (caps down), and match in color and type. No anomalies are detected.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "In frames 7 through 11, when the board is fully visible, there are exactly three pens arranged in a row."
+      },
+      {
+        "question_id": 2,
+        "answer": "YES",
+        "evidence": "All three visible pens have their black caps at the bottom and clear barrels at the top. The rightmost pen is tilted but oriented the same way (cap down) as the others."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All pens have translucent grey/black barrels and black caps. They appear identical in color."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "All pens show the black cap at one end. None appear to have an exposed writing tip or look significantly shorter than the others."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves smoothly from left to right across the sequence of frames without stopping or reversing."
+      },
+      {
+        "question_id": 6,
+        "answer": "YES",
+        "evidence": "The pens remain fixed in their relative positions on the board throughout the movement."
+      }
+    ],
+    "verdict": "NORMAL",
+    "anomaly_type": "none",
+    "anomaly_score": 0.0,
+    "confidence": "HIGH",
+    "reason": "The video shows a board carrying three identical pens moving smoothly from left to right. All pens are capped, oriented in the same direction (caps down), and match in color and type. No anomalies are detected."
+  },
+  "usage": {
+    "input_tokens": 15167,
+    "output_tokens": 1928,
+    "characters": 0,
+    "image_tokens": 14112,
+    "input_tokens_details": {
+      "image_tokens": 14112,
+      "text_tokens": 1055
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 1500,
+      "text_tokens": 428
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 17095
+  },
+  "request_id": "964f6826-8110-957e-bf63-ed34d3e74528",
+  "id": "wrong_orientation_02",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "wrong_orientation",
+  "description": "One pen is flipped relative to the others (variant).",
+  "correct": false
+}

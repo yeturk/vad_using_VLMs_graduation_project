@@ -1,0 +1,76 @@
+{
+  "video": "data/pens_small/pens_wrong_color.mp4",
+  "input_mode": "16 frames [0.05-0.95]",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+    "Are all three pens aligned identically, all pointing the same way, including any pen near the left or right frame edge as it enters or exits?",
+    "Do all three pens share identical barrel and cap colors, with no mismatch?",
+    "Is every pen fully capped with no exposed writing tip, and are all three pens equal in length?",
+    "Does the board advance steadily from left to right at EVERY moment, never halting, freezing, or pausing even briefly (1-3 seconds) at any point in the video?",
+    "Do all pens stay fixed in their positions on the board, with no pen shifting, sliding, or moving on its own relative to the board mid-clip?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"In frames 8 through 12, when the board is fully or mostly visible, exactly three pens are present in a row.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"YES\",\n      \"evidence\": \"In frames 7-12, all three pens are oriented with their caps pointing downwards (towards the bottom of the frame).\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"NO\",\n      \"evidence\": \"In frames 7-12, the leftmost pen has a blue barrel and cap, while the middle and rightmost pens have black caps and clear/dark barrels. They are not all the same color.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"All visible pens appear to have their caps on; no bare writing tips are exposed.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board translates smoothly from left to right across the sequence of frames without visible stopping or reversing.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"YES\",\n      \"evidence\": \"The relative positions of the pens on the board remain constant throughout the visible duration.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"wrong_color\",\n  \"anomaly_score\": 1.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The video shows three pens on the board, but one pen is blue while the other two are black/clear, violating the requirement that all pens be identical in color.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "In frames 8 through 12, when the board is fully or mostly visible, exactly three pens are present in a row."
+      },
+      {
+        "question_id": 2,
+        "answer": "YES",
+        "evidence": "In frames 7-12, all three pens are oriented with their caps pointing downwards (towards the bottom of the frame)."
+      },
+      {
+        "question_id": 3,
+        "answer": "NO",
+        "evidence": "In frames 7-12, the leftmost pen has a blue barrel and cap, while the middle and rightmost pens have black caps and clear/dark barrels. They are not all the same color."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "All visible pens appear to have their caps on; no bare writing tips are exposed."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board translates smoothly from left to right across the sequence of frames without visible stopping or reversing."
+      },
+      {
+        "question_id": 6,
+        "answer": "YES",
+        "evidence": "The relative positions of the pens on the board remain constant throughout the visible duration."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "wrong_color",
+    "anomaly_score": 1.0,
+    "confidence": "HIGH",
+    "reason": "The video shows three pens on the board, but one pen is blue while the other two are black/clear, violating the requirement that all pens be identical in color."
+  },
+  "usage": {
+    "input_tokens": 15167,
+    "output_tokens": 1934,
+    "characters": 0,
+    "image_tokens": 14112,
+    "input_tokens_details": {
+      "image_tokens": 14112,
+      "text_tokens": 1055
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 1500,
+      "text_tokens": 434
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 17101
+  },
+  "request_id": "b72810d0-c81e-94c6-b8ab-2ced50fef3b6",
+  "id": "wrong_color_01",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "wrong_color",
+  "description": "One pen differs in color from the other two.",
+  "correct": true
+}

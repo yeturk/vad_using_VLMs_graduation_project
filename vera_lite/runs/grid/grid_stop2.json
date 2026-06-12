@@ -1,0 +1,60 @@
+{
+  "video": "data/pens_small/pens_conveyor_stops_and_continues.mp4",
+  "grid": "3x3",
+  "raw_text": "{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"In cells 4, 5, 6, and 7, the board is fully visible and clearly holds exactly three pens arranged in a row.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"YES\",\n      \"evidence\": \"In all cells where pens are visible (3-8), the pens are oriented vertically with the black cap at the bottom and the clear barrel at the top. They are all aligned identically.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All visible pens (cells 3-8) have identical black caps and clear/translucent barrels. There is no color mismatch.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"All pens appear fully capped with black caps at the bottom. They are of equal length and complete.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves progressively from left to right across the frames. Cell 1 (left edge) -> Cell 5 (center) -> Cell 9 (right edge). The position of the board relative to the rail screws advances steadily.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"YES\",\n      \"evidence\": \"The pens remain fixed in their relative positions on the board throughout the sequence. The spacing between them is constant.\"\n    }\n  ],\n  \"verdict\": \"NORMAL\",\n  \"anomaly_type\": \"none\",\n  \"anomaly_score\": 0.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The board moves smoothly from left to right carrying three identical, correctly oriented pens. All conditions for a normal sequence are met.\"\n}",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "In cells 4, 5, 6, and 7, the board is fully visible and clearly holds exactly three pens arranged in a row."
+      },
+      {
+        "question_id": 2,
+        "answer": "YES",
+        "evidence": "In all cells where pens are visible (3-8), the pens are oriented vertically with the black cap at the bottom and the clear barrel at the top. They are all aligned identically."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All visible pens (cells 3-8) have identical black caps and clear/translucent barrels. There is no color mismatch."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "All pens appear fully capped with black caps at the bottom. They are of equal length and complete."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves progressively from left to right across the frames. Cell 1 (left edge) -> Cell 5 (center) -> Cell 9 (right edge). The position of the board relative to the rail screws advances steadily."
+      },
+      {
+        "question_id": 6,
+        "answer": "YES",
+        "evidence": "The pens remain fixed in their relative positions on the board throughout the sequence. The spacing between them is constant."
+      }
+    ],
+    "verdict": "NORMAL",
+    "anomaly_type": "none",
+    "anomaly_score": 0.0,
+    "confidence": "HIGH",
+    "reason": "The board moves smoothly from left to right carrying three identical, correctly oriented pens. All conditions for a normal sequence are met."
+  },
+  "usage": {
+    "input_tokens": 1956,
+    "output_tokens": 1952,
+    "characters": 0,
+    "image_tokens": 860,
+    "input_tokens_details": {
+      "image_tokens": 860,
+      "text_tokens": 1096
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 1500,
+      "text_tokens": 452
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 3908
+  }
+}

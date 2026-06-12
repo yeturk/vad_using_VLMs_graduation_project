@@ -1,0 +1,76 @@
+{
+  "video": "data/pens_small/pens_normal_3.mp4",
+  "input_mode": "16 frames [0.05-0.95]",
+  "expected": "NORMAL",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+    "Are all three pens aligned identically, all pointing the same way, including any pen near the left or right frame edge as it enters or exits?",
+    "Do all three pens share identical barrel and cap colors, with no mismatch?",
+    "Is every pen fully capped with no exposed writing tip, and are all three pens equal in length?",
+    "Does the board advance steadily from left to right at EVERY moment, never halting, freezing, or pausing even briefly (1-3 seconds) at any point in the video?",
+    "Do all pens stay fixed in their positions on the board, with no pen shifting, sliding, or moving on its own relative to the board mid-clip?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"NO\",\n      \"evidence\": \"In frames 6-11, there are three pens. However, in frame 12, only two pens are visible on the board while it is still largely in frame. In frame 14, only one pen is visible.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"YES\",\n      \"evidence\": \"When visible, the pens are aligned vertically in a row, pointing the same direction (caps down).\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All visible pens have translucent barrels and black caps/bodies, appearing identical in color.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"All visible pens appear capped and of equal length.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves steadily from left to right across the frames without stopping or reversing.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"NO\",\n      \"evidence\": \"Pens disappear from the board as the clip progresses. In frame 11 there are 3 pens, in frame 12 there are 2, and in frame 14 there is 1. This indicates pens are falling off or missing, which is unexpected movement/loss.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"missing_pen\",\n  \"anomaly_score\": 0.9,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The board starts with three pens, but as it moves to the right, pens disappear (frame 12 has two pens, frame 14 has one pen), violating the condition that the board carries exactly three pens when fully in view.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "NO",
+        "evidence": "In frames 6-11, there are three pens. However, in frame 12, only two pens are visible on the board while it is still largely in frame. In frame 14, only one pen is visible."
+      },
+      {
+        "question_id": 2,
+        "answer": "YES",
+        "evidence": "When visible, the pens are aligned vertically in a row, pointing the same direction (caps down)."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All visible pens have translucent barrels and black caps/bodies, appearing identical in color."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "All visible pens appear capped and of equal length."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves steadily from left to right across the frames without stopping or reversing."
+      },
+      {
+        "question_id": 6,
+        "answer": "NO",
+        "evidence": "Pens disappear from the board as the clip progresses. In frame 11 there are 3 pens, in frame 12 there are 2, and in frame 14 there is 1. This indicates pens are falling off or missing, which is unexpected movement/loss."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "missing_pen",
+    "anomaly_score": 0.9,
+    "confidence": "HIGH",
+    "reason": "The board starts with three pens, but as it moves to the right, pens disappear (frame 12 has two pens, frame 14 has one pen), violating the condition that the board carries exactly three pens when fully in view."
+  },
+  "usage": {
+    "input_tokens": 15167,
+    "output_tokens": 1971,
+    "characters": 0,
+    "image_tokens": 14112,
+    "input_tokens_details": {
+      "image_tokens": 14112,
+      "text_tokens": 1055
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 1500,
+      "text_tokens": 471
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 17138
+  },
+  "request_id": "40e8ccf2-66ab-9d52-8b84-82cca2aa94fa",
+  "id": "normal_03",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "none",
+  "description": "Three identical pens, normal pass.",
+  "correct": false
+}

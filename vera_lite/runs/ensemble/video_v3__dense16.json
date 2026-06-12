@@ -1,0 +1,150 @@
+{
+  "runs": {
+    "video_v3": "vera_lite/runs/blind/20260609_121427/learner_results.json",
+    "dense16": "vera_lite/runs/blind_frames/20260609_160454/learner_results.json"
+  },
+  "metrics": {
+    "total": 13,
+    "correct": 13,
+    "accuracy": 1.0,
+    "tp": 10,
+    "tn": 3,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+  },
+  "per_clip": [
+    {
+      "id": "combined_01",
+      "expected": "ANOMALY",
+      "per_run": {
+        "video_v3": "ANOMALY",
+        "dense16": "ANOMALY"
+      },
+      "ensemble": "ANOMALY",
+      "correct": true
+    },
+    {
+      "id": "missing_cap_01",
+      "expected": "ANOMALY",
+      "per_run": {
+        "video_v3": "ANOMALY",
+        "dense16": "ANOMALY"
+      },
+      "ensemble": "ANOMALY",
+      "correct": true
+    },
+    {
+      "id": "missing_cap_02",
+      "expected": "ANOMALY",
+      "per_run": {
+        "video_v3": "ANOMALY",
+        "dense16": "ANOMALY"
+      },
+      "ensemble": "ANOMALY",
+      "correct": true
+    },
+    {
+      "id": "missing_pen_01",
+      "expected": "ANOMALY",
+      "per_run": {
+        "video_v3": "ANOMALY",
+        "dense16": "ANOMALY"
+      },
+      "ensemble": "ANOMALY",
+      "correct": true
+    },
+    {
+      "id": "motion_stop_01",
+      "expected": "ANOMALY",
+      "per_run": {
+        "video_v3": "ANOMALY",
+        "dense16": "ANOMALY"
+      },
+      "ensemble": "ANOMALY",
+      "correct": true
+    },
+    {
+      "id": "motion_stop_02",
+      "expected": "ANOMALY",
+      "per_run": {
+        "video_v3": "ANOMALY",
+        "dense16": "NORMAL"
+      },
+      "ensemble": "ANOMALY",
+      "correct": true
+    },
+    {
+      "id": "motion_temporal_01",
+      "expected": "ANOMALY",
+      "per_run": {
+        "video_v3": "NORMAL",
+        "dense16": "ANOMALY"
+      },
+      "ensemble": "ANOMALY",
+      "correct": true
+    },
+    {
+      "id": "normal_01",
+      "expected": "NORMAL",
+      "per_run": {
+        "video_v3": "NORMAL",
+        "dense16": "NORMAL"
+      },
+      "ensemble": "NORMAL",
+      "correct": true
+    },
+    {
+      "id": "normal_02",
+      "expected": "NORMAL",
+      "per_run": {
+        "video_v3": "NORMAL",
+        "dense16": "NORMAL"
+      },
+      "ensemble": "NORMAL",
+      "correct": true
+    },
+    {
+      "id": "normal_03",
+      "expected": "NORMAL",
+      "per_run": {
+        "video_v3": "NORMAL",
+        "dense16": "NORMAL"
+      },
+      "ensemble": "NORMAL",
+      "correct": true
+    },
+    {
+      "id": "wrong_color_01",
+      "expected": "ANOMALY",
+      "per_run": {
+        "video_v3": "ANOMALY",
+        "dense16": "ANOMALY"
+      },
+      "ensemble": "ANOMALY",
+      "correct": true
+    },
+    {
+      "id": "wrong_orientation_01",
+      "expected": "ANOMALY",
+      "per_run": {
+        "video_v3": "ANOMALY",
+        "dense16": "ANOMALY"
+      },
+      "ensemble": "ANOMALY",
+      "correct": true
+    },
+    {
+      "id": "wrong_orientation_02",
+      "expected": "ANOMALY",
+      "per_run": {
+        "video_v3": "ANOMALY",
+        "dense16": "NORMAL"
+      },
+      "ensemble": "ANOMALY",
+      "correct": true
+    }
+  ]
+}

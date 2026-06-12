@@ -1,0 +1,60 @@
+{
+  "video": "data/pens_small/pens_temporal_anomaly.mp4",
+  "grid": "3x3",
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"NO\",\n      \"evidence\": \"In cell 4, there are 3 pens. In cell 5, there are 3 pens but bunched. In cell 7, only 2 pens are visible. In cells 8 and 9, 0 pens are visible. The count changes drastically.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"In cell 4, pens are spread evenly. In cell 5 and 6, pens are bunched together on the right side of the board. This indicates they are not fixed.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All visible pens appear to have the same dark cap and translucent barrel.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"Pens appear capped and of equal length in cells 3, 4, 5, 6.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves steadily from left to right across cells 1 through 9.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"NO\",\n      \"evidence\": \"Between cell 4 and cell 5, the pens shift from being evenly spaced to being bunched together on the right side of the board. This is unexpected movement.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"unexpected_pen_movement\",\n  \"anomaly_score\": 0.9,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The pens slide on the board; they are evenly spaced in cell 4 but bunched together in cells 5 and 6, indicating they are not fixed. Additionally, the number of visible pens drops to 2 in cell 7 and 0 in cells 8-9 while the board is still largely visible, suggesting pens fell off or slid off.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "NO",
+        "evidence": "In cell 4, there are 3 pens. In cell 5, there are 3 pens but bunched. In cell 7, only 2 pens are visible. In cells 8 and 9, 0 pens are visible. The count changes drastically."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "In cell 4, pens are spread evenly. In cell 5 and 6, pens are bunched together on the right side of the board. This indicates they are not fixed."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All visible pens appear to have the same dark cap and translucent barrel."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "Pens appear capped and of equal length in cells 3, 4, 5, 6."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves steadily from left to right across cells 1 through 9."
+      },
+      {
+        "question_id": 6,
+        "answer": "NO",
+        "evidence": "Between cell 4 and cell 5, the pens shift from being evenly spaced to being bunched together on the right side of the board. This is unexpected movement."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "unexpected_pen_movement",
+    "anomaly_score": 0.9,
+    "confidence": "HIGH",
+    "reason": "The pens slide on the board; they are evenly spaced in cell 4 but bunched together in cells 5 and 6, indicating they are not fixed. Additionally, the number of visible pens drops to 2 in cell 7 and 0 in cells 8-9 while the board is still largely visible, suggesting pens fell off or slid off."
+  },
+  "usage": {
+    "input_tokens": 1956,
+    "output_tokens": 2005,
+    "characters": 0,
+    "image_tokens": 860,
+    "input_tokens_details": {
+      "image_tokens": 860,
+      "text_tokens": 1096
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 1500,
+      "text_tokens": 505
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 3961
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "video": "data/pens_small/pens_missing_cap.mp4",
+  "input_mode": "16 frames [0.05-0.95]",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+    "Are all three pens aligned identically, all pointing the same way, including any pen near the left or right frame edge as it enters or exits?",
+    "Do all three pens share identical barrel and cap colors, with no mismatch?",
+    "Is every pen fully capped with no exposed writing tip, and are all three pens equal in length?",
+    "Does the board advance steadily from left to right at EVERY moment, never halting, freezing, or pausing even briefly (1-3 seconds) at any point in the video?",
+    "Do all pens stay fixed in their positions on the board, with no pen shifting, sliding, or moving on its own relative to the board mid-clip?"
+  ],
+  "raw_text": "{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"NO\",\n      \"evidence\": \"In frames 13 and 14, only two pens are visible on the board, whereas three were present in previous frames (7-12). By frame 15, only one pen is visible.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"In frames 7-12 where three pens are visible, the leftmost pen is oriented with the tip pointing down, while the middle and right pens are oriented with the cap pointing down. They are not all aligned identically.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All visible pens appear to have the same translucent barrel and black cap/end.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"NO\",\n      \"evidence\": \"The leftmost pen (visible in frames 7-12) clearly shows a writing tip pointing down, indicating it is uncapped or at least oriented differently (tip down vs cap down) compared to the others which show the capped end down.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves steadily from left to right across the frames without stopping or reversing.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"YES\",\n      \"evidence\": \"The pens that remain on the board stay fixed in their relative positions.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"multiple\",\n  \"anomaly_score\": 0.9,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The video shows multiple anomalies: the pens are not all aligned in the same orientation (one points tip-down while others point cap-down), and the count of pens drops from three to two and then one as the video progresses, indicating missing pens.\"\n}",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "NO",
+        "evidence": "In frames 13 and 14, only two pens are visible on the board, whereas three were present in previous frames (7-12). By frame 15, only one pen is visible."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "In frames 7-12 where three pens are visible, the leftmost pen is oriented with the tip pointing down, while the middle and right pens are oriented with the cap pointing down. They are not all aligned identically."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All visible pens appear to have the same translucent barrel and black cap/end."
+      },
+      {
+        "question_id": 4,
+        "answer": "NO",
+        "evidence": "The leftmost pen (visible in frames 7-12) clearly shows a writing tip pointing down, indicating it is uncapped or at least oriented differently (tip down vs cap down) compared to the others which show the capped end down."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves steadily from left to right across the frames without stopping or reversing."
+      },
+      {
+        "question_id": 6,
+        "answer": "YES",
+        "evidence": "The pens that remain on the board stay fixed in their relative positions."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "multiple",
+    "anomaly_score": 0.9,
+    "confidence": "HIGH",
+    "reason": "The video shows multiple anomalies: the pens are not all aligned in the same orientation (one points tip-down while others point cap-down), and the count of pens drops from three to two and then one as the video progresses, indicating missing pens."
+  },
+  "usage": {
+    "input_tokens": 15167,
+    "output_tokens": 1980,
+    "characters": 0,
+    "image_tokens": 14112,
+    "input_tokens_details": {
+      "image_tokens": 14112,
+      "text_tokens": 1055
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 1500,
+      "text_tokens": 480
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 17147
+  },
+  "request_id": "5aa5ccf8-3269-9650-a90b-f0d5f6591817",
+  "id": "missing_cap_01",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "missing_cap",
+  "description": "One pen is missing its cap while the others are capped.",
+  "correct": true
+}
