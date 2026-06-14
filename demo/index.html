@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VAD Live Demo — CSE 496</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config = { theme: { extend: {
+  fontFamily: { sans: ['Inter','sans-serif'], mono: ['JetBrains Mono','monospace'] },
+  colors: { dark:'#020617', panel:'#0f172a', card:'#1e293b', primary:'#38bdf8',
+            success:'#34d399', warning:'#fbbf24', danger:'#f87171' } } } }
+</script>
+<style>
+  body { background:#020617; color:#e2e8f0; font-family:'Inter',sans-serif; }
+  .glass { background:rgba(30,41,59,0.7); border:1px solid rgba(255,255,255,0.06); border-radius:1rem; }
+  .chip { transition:all .15s ease; }
+  .chip.active { background:#38bdf8; color:#020617; font-weight:700; }
+  .spin { animation: spin 1s linear infinite; } @keyframes spin { to { transform:rotate(360deg);} }
+  ::-webkit-scrollbar{width:8px} ::-webkit-scrollbar-thumb{background:#334155;border-radius:4px}
+</style>
+</head>
+<body class="antialiased">
+
+<div class="max-w-7xl mx-auto px-6 py-6">
+
+  <!-- Header -->
+  <header class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-2xl font-extrabold text-white flex items-center gap-3">
+        <i class="fa-solid fa-eye text-primary"></i> Video Anomaly Detection — Live Demo
+      </h1>
+      <p class="text-sm text-slate-400">Production/assembly-line inspection with a frozen VLM (VERA-lite)</p>
+    </div>
+    <div class="text-right text-xs text-slate-500">
+      <span class="font-mono" id="model-tag">model: …</span><br>
+      CSE 496 · Güler &amp; Türk
+    </div>
+  </header>
+
+  <!-- Clip selector -->
+  <div class="glass p-4 mb-6">
+    <p class="text-xs uppercase tracking-widest text-slate-400 mb-3">Select a clip</p>
+    <div id="clips" class="flex flex-wrap gap-2"></div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+    <!-- Left: video + controls -->
+    <div class="glass p-5">
+      <div class="rounded-xl overflow-hidden bg-black mb-4 flex items-center justify-center" style="aspect-ratio:9/12; max-height:60vh; margin:auto;">
+        <video id="player" class="h-full" controls autoplay muted loop></video>
+      </div>
+      <div class="flex gap-3">
+        <button id="btn-cached" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 rounded-xl transition">
+          <i class="fa-solid fa-bolt mr-2"></i> Show Result (instant)
+        </button>
+        <button id="btn-live" class="flex-1 bg-primary hover:bg-sky-400 text-dark font-bold py-3 rounded-xl transition">
+          <i class="fa-solid fa-satellite-dish mr-2"></i> Run Live (API)
+        </button>
+      </div>
+      <p id="status" class="text-sm text-slate-400 mt-3 h-5"></p>
+    </div>
+
+    <!-- Right: result -->
+    <div class="glass p-5" id="result-panel">
+      <div id="result-empty" class="h-full flex flex-col items-center justify-center text-center text-slate-500 py-20">
+        <i class="fa-regular fa-clipboard text-5xl mb-4"></i>
+        <p>Select a clip and run inference to see the model's verdict and reasoning.</p>
+      </div>
+      <div id="result" class="hidden">
+        <!-- verdict header -->
+        <div class="flex items-center justify-between mb-5">
+          <div id="verdict-badge" class="px-4 py-2 rounded-xl text-lg font-extrabold"></div>
+          <div class="text-right text-xs text-slate-400">
+            <div>type: <span id="r-type" class="font-mono text-slate-200"></span></div>
+            <div>score: <span id="r-score" class="font-mono text-slate-200"></span> ·
+                 conf: <span id="r-conf" class="font-mono text-slate-200"></span></div>
+            <div id="r-source" class="mt-1"></div>
+          </div>
+        </div>
+        <!-- per-question answers -->
+        <div id="qa" class="space-y-2 mb-4"></div>
+        <!-- reason -->
+        <div class="glass p-4 border-l-4 border-l-primary">
+          <p class="text-xs uppercase tracking-widest text-slate-400 mb-1">Reason</p>
+          <p id="r-reason" class="text-sm text-slate-200"></p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let CLIPS = [];
+let current = null;
+const $ = (id) => document.getElementById(id);
+
+async function init() {
+  const r = await fetch('/api/clips').then(x => x.json());
+  CLIPS = r.clips;
+  $('model-tag').textContent = 'model: ' + r.model;
+  const box = $('clips');
+  CLIPS.forEach((c, i) => {
+    const b = document.createElement('button');
+    b.className = 'chip px-3 py-2 rounded-lg text-sm bg-slate-800 hover:bg-slate-700 border border-slate-700';
+    const exp = c.expected === 'ANOMALY' ? '🔴' : '🟢';
+    b.innerHTML = `${exp} ${c.label}`;
+    b.onclick = () => select(c, b);
+    box.appendChild(b);
+    if (i === 0) b._first = b;
+  });
+  if (CLIPS.length) select(CLIPS[0], box.firstChild);
+}
+
+function select(clip, btn) {
+  current = clip;
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  $('player').src = '/video/' + clip.id;
+  $('result').classList.add('hidden');
+  $('result-empty').classList.remove('hidden');
+  $('status').textContent = '';
+}
+
+async function run(mode) {
+  if (!current) return;
+  setBusy(true, mode);
+  try {
+    const r = await fetch(`/api/run?id=${current.id}&mode=${mode}`).then(x => x.json());
+    if (r.error) { $('status').innerHTML = `<span class="text-danger">Error: ${r.error}</span>`; }
+    else render(r);
+  } catch (e) {
+    $('status').innerHTML = `<span class="text-danger">Request failed: ${e}</span>`;
+  } finally { setBusy(false, mode); }
+}
+
+function setBusy(busy, mode) {
+  $('btn-live').disabled = busy; $('btn-cached').disabled = busy;
+  $('btn-live').classList.toggle('opacity-50', busy);
+  $('btn-cached').classList.toggle('opacity-50', busy);
+  if (busy) {
+    $('status').innerHTML = mode === 'live'
+      ? `<i class="fa-solid fa-circle-notch spin mr-2 text-primary"></i> The model is watching the video… (~50s, please wait)`
+      : `<i class="fa-solid fa-circle-notch spin mr-2"></i> Loading…`;
+  }
+}
+
+function render(r) {
+  const p = r.parsed || {};
+  const qmap = r.questions || [];
+  $('result-empty').classList.add('hidden');
+  $('result').classList.remove('hidden');
+
+  const anom = (p.verdict || 'UNCLEAR') === 'ANOMALY';
+  const vb = $('verdict-badge');
+  vb.textContent = p.verdict || 'UNCLEAR';
+  vb.className = 'px-4 py-2 rounded-xl text-lg font-extrabold ' +
+    (anom ? 'bg-danger/20 text-danger border border-danger/40'
+          : (p.verdict === 'NORMAL' ? 'bg-success/20 text-success border border-success/40'
+                                    : 'bg-slate-700 text-slate-300'));
+  $('r-type').textContent = p.anomaly_type ?? '—';
+  $('r-score').textContent = (p.anomaly_score ?? '—');
+  $('r-conf').textContent = p.confidence ?? '—';
+  $('r-source').innerHTML = r.source === 'live'
+    ? '<span class="text-primary">● live API</span>'
+    : '<span class="text-slate-500">● cached</span>';
+  $('r-reason').textContent = p.reason || '—';
+
+  const qa = $('qa'); qa.innerHTML = '';
+  (p.question_answers || []).forEach(a => {
+    const yes = String(a.answer).toUpperCase() === 'YES';
+    const no = String(a.answer).toUpperCase() === 'NO';
+    const qtext = qmap[(a.question_id || 1) - 1] || ('Question ' + a.question_id);
+    const color = no ? 'text-danger' : (yes ? 'text-success' : 'text-warning');
+    const bg = no ? 'bg-danger/10 border-danger/30' : 'bg-slate-800/40 border-slate-700';
+    const row = document.createElement('div');
+    row.className = `border rounded-lg p-3 ${bg}`;
+    row.innerHTML = `
+      <div class="flex items-start gap-3">
+        <span class="font-bold ${color} font-mono text-sm w-10">${a.answer}</span>
+        <div class="text-sm">
+          <div class="text-slate-300">${qtext}</div>
+          <div class="text-xs text-slate-400 mt-1"><i class="fa-solid fa-eye mr-1"></i>${a.evidence || ''}</div>
+        </div>
+      </div>`;
+    qa.appendChild(row);
+  });
+}
+
+$('btn-cached').onclick = () => run('cached');
+$('btn-live').onclick = () => run('live');
+init();
+</script>
+</body>
+</html>
