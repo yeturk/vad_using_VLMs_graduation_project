@@ -1,0 +1,40 @@
+\chapter*{Özet}
+\addcontentsline{toc}{chapter}{Özet}
+
+%% Edit below this line
+Bu projede, üretim ve montaj hatlarındaki video anomali tespiti (VAD), göreve özel hiçbir
+eğitim gerektirmeden, Görü-Dil Modelleri (VLM) ile ele alınmıştır. İncelenen sahne, bir
+parçanın konveyör üzerinde soldan sağa ilerleyişidir; amaç, kısa bir video klibinin
+``normal'' mi yoksa bir ``anomali'' mi içerdiğine karar vermektir.
+
+Üç farklı yöntem ailesi denenmiştir. İlki, modele doğrudan yapılandırılmış istemlerin
+(prompt) verildiği temel yaklaşımdır; bu yaklaşım, modelin kliplere yersizce ``normal''
+deme eğilimini açığa çıkarmıştır. İkincisi, yerelde çalıştırılan açık ağırlıklı bir model
+(Qwen3-VL-8B) üzerine kurulan çok-persona oylama sistemidir: aynı klip, farklı bakış
+açılarına sahip birden çok ``denetçi persona'' tarafından incelenir ve karar, çoğunluk
+oyuyla verilir. Burada, modeli önce gördüğünü betimlemeye, sonra karar vermeye zorlayan
+çıktı biçiminin, sistematik ``yanlış-normal'' hatalarını ortadan kaldırdığı görülmüştür.
+Üçüncüsü, VERA yönteminden uyarlanan VERA-lite akışıdır; bu akış, modelin ağırlıklarını
+değiştirmeden yönlendirici soruları iyileştiren bir öğrenen--eniyileyen döngüsünün yanı
+sıra, etiket sızdırmayan (kör) bir değerlendirme yöntemi, farklı girdi temsilleri,
+muhakeme bütçesi denetimi ve iki görüşü birleştiren bir topluluğu (ensemble) içerir.
+
+Özel olarak hazırlanan $13$ kliplik kalem-konveyör veri setinde, sürekli video görüşü ile
+ayrık yoğun-kare görüşünü birleştiren topluluk, iki görüşün birbirini tamamlayan kör
+noktaları sayesinde $13/13$ doğruluğa ve sıfır yanlış pozitife ulaşmıştır. Tek başına
+hiçbir temsil bu sonucu verememiştir; bu durum, zamansal (temporal) anomaliler için
+sürekli video ile ayrık kare temsilleri arasında içsel bir ödünleşim bulunduğunu gösterir.
+Koşuların tekrarlanması, tek bir görüşün gerçek doğruluğunun, şanslı bir tek koşuda
+görülen $0.92$ yerine $0.846$ (üç koşunun da $11/13$'ü) olduğunu ortaya koymuştur. Ayrıca,
+modelin muhakeme bütçesini sınırlamanın doğruluğu değiştirmeden gecikmeyi yaklaşık \%41
+azalttığı ve klip bazındaki kararları tamamen kararlı (deterministik) hâle getirdiği
+gözlenmiştir. Çalışmada olumsuz sonuçlar da dürüstçe raporlanmış; daha büyük veri setleri,
+klasik bilgisayarla görü temel yöntemleri ve kare düzeyinde değerlendirme gibi
+sınırlılıklar ile gelecek çalışmalar tartışılmıştır.
+
+%% Until here
+\vfill
+%% Edit after {Anahtar Kelimeler:}
+\textbf{Anahtar Kelimeler:} video anomali tespiti, görü-dil modelleri, sıfır-atış,
+prompting, topluluk (ensemble), endüstriyel muayene.
+\clearpage

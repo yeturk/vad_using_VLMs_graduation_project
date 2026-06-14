@@ -1,0 +1,61 @@
+\chapter{Background and Related Work}
+\label{chap:background}
+
+\section{Video Anomaly Detection}
+Video Anomaly Detection aims to localise, in time and sometimes in space, events that
+deviate from a notion of normality. In the industrial setting the IPAD benchmark
+\cite{ipad} formalises process-level anomalies on conveyor scenes and provides
+frame-level ground truth. Traditional approaches learn a model of normal appearance or
+motion (e.g.\ reconstruction- or prediction-based networks) and flag high-error frames;
+a representative training-free, CLIP-based zero-shot detector is AnomalyCLIP
+\cite{anomalyclip}. Surveys such as \cite{quovadis} discuss the recent shift toward
+language-model-based reasoning for anomaly detection, and recent work uses natural-language
+guidance for open-world VAD under weak supervision \cite{langguided}.
+
+\section{Vision-Language Models}
+Vision-Language Models couple a visual encoder with a large language model, enabling
+open-ended description and reasoning over images and video. The Qwen2.5-VL family
+\cite{qwen25vl} extends visual understanding to video with dynamic frame sampling and
+long-context temporal reasoning. In this project we use both an API-served model
+(\texttt{qwen3.6-plus}) and a locally deployed open-weight model
+(\texttt{Qwen3-VL-8B-Instruct}).
+
+\section{Prompting and Verbalized Learning for Anomaly Detection}
+Because frozen VLMs are not trained on the specific inspection task, performance depends
+heavily on the prompt. A recent survey of VLM-based anomaly detection \cite{vtadsurvey}
+groups methods into three families --- prompt-learning-based, end-to-end
+fine-tuning-based, and feature-adapter-based --- of which our work belongs to the first,
+training-free family. Fine-grained prompting \cite{finegrained} decomposes a vague
+``is this anomalous?'' question into focused, visually checkable sub-questions, and
+multi-stage reasoning with multimodal LLMs is explored in \cite{towardszeroshot}.
+
+\subsection{VERA}
+The method most directly related to ours is VERA \cite{vera}, which our VERA-lite pipeline
+adapts. VERA targets \emph{explainable} VAD with a frozen VLM, without any instruction
+tuning or external reasoning module. Its key observation is that prompting a frozen VLM
+with abstract questions such as ``is there any anomaly?'' yields poor accuracy (on
+UCF-Crime, such questions give only $53$--$65\%$ AUC); VERA instead replaces them with
+concrete, learned \emph{guiding questions} that characterise specific abnormal patterns.
+
+VERA treats these guiding questions as \emph{learnable parameters} and optimises them
+through \emph{verbalized learning}. During training, a \emph{learner} VLM answers the
+current questions to perform an intermediate binary video-classification subtask, and an
+\emph{optimiser} VLM inspects the learner's mistakes and proposes improved question
+wording; this loop is driven only by coarse, video-level labels, and the model weights
+stay frozen. At inference, VERA applies the learned questions in a coarse-to-fine manner:
+it first produces \emph{segment-level} anomaly scores, then incorporates scene context by
+ensembling, and finally derives \emph{frame-level} scores by fusing temporal context
+through Gaussian smoothing and frame-level position weighting. VERA reports
+state-of-the-art explainable VAD on UCF-Crime and XD-Violence and transfers across models
+and datasets. The framework is inspired by verbalized machine learning and is related to
+prompt-optimisation methods such as TextGrad.
+
+\subsection{Relation to This Work}
+Our VERA-lite pipeline (Chapter~\ref{chap:method}) adopts VERA's central mechanism --- the
+learner/optimiser loop over natural-language guiding questions on a frozen VLM --- but
+simplifies and re-targets it for an industrial setting. We use a small, purpose-built
+conveyor dataset and a \emph{clip-level binary} verdict rather than VERA's frame-level
+coarse-to-fine scoring; and we add a blind evaluation protocol, a study of input
+representations (video vs.\ dense frames vs.\ grid), a reasoning-budget control, and a
+two-view ensemble. Our persona approach is complementary: it replaces question
+\emph{optimisation} with prompt \emph{diversity} and majority voting.

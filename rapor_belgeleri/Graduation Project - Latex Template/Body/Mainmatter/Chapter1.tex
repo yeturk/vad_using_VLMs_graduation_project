@@ -1,0 +1,51 @@
+\chapter{Introduction}
+
+\section{Problem Statement}
+Production and assembly lines rely on continuous visual inspection to detect defective
+or mis-handled parts before they propagate downstream. Video Anomaly Detection (VAD) in
+this setting is the task of deciding, for a short video clip of a part moving along the
+line, whether the clip is \emph{normal} or contains an \emph{anomaly} (e.g.\ a wrong
+orientation, a missing component, a colour mismatch, or a motion failure such as the line
+stopping). Such lines typically transport parts on a conveyor, which is the concrete
+scene studied in this work. Classical VAD methods are data-hungry: they require large
+labelled datasets and per-deployment training, which is expensive for a plant that may
+have many short-lived inspection scenarios.
+
+\section{Motivation}
+Recent Vision-Language Models (VLMs) can describe and reason about images and video
+without task-specific training. This makes a \emph{training-free} (zero-/few-shot) VAD
+pipeline attractive: instead of training a detector, we \emph{prompt} a VLM with a
+description of the scene and the anomaly rules, and let it deliver a verdict together
+with a human-readable justification. Explainability is a practical advantage on the
+factory floor, where an operator must understand \emph{why} a part was flagged.
+
+\section{Scope and Contributions}
+This project studies Video Anomaly Detection in production and assembly line settings,
+adopting a training-free approach based on VLMs so that no per-deployment training is
+required. We explore three families of methods of increasing sophistication and report
+their findings honestly, including negative results. Our contributions are:
+
+\begin{itemize}
+  \item A \textbf{direct-prompting} exploration (zero-shot, few-shot, multi-frame and
+        video prompting) that establishes baselines and failure modes.
+  \item A \textbf{multi-persona majority-voting} approach on a local open-weight model
+        (Qwen3-VL-8B), with three checklist-breadth ablations and the
+        \emph{articulate-first} finding that suppresses the model's bias toward
+        ``normal''.
+  \item A \textbf{VERA-lite} pipeline (guiding-question optimisation, blind evaluation,
+        alternative input representations, and a two-view ensemble) on a purpose-built
+        pen-conveyor dataset, supported with repeated, statistically reported
+        experiments.
+  \item Methodological findings that recur across approaches: the model's
+        ``normal''-bias and how question decomposition / articulation counters it;
+        the intrinsic \emph{continuous-video vs.\ discrete-frame} trade-off for temporal
+        anomalies; and the role of voting/ensembling and of reasoning-budget control
+        for speed.
+\end{itemize}
+
+\section{Thesis Outline}
+Chapter~\ref{chap:background} reviews VAD, VLMs and the related literature.
+Chapter~\ref{chap:method} describes the three approaches, the datasets and the
+evaluation protocol. Chapter~\ref{chap:results} presents the experiments and results
+with tables and numerical evidence. Chapter~\ref{chap:conclusion} concludes and lists
+limitations and future work.

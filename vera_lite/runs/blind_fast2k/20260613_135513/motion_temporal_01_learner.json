@@ -1,0 +1,76 @@
+{
+  "video": "data/pens_small/pens_temporal_anomaly.mp4",
+  "input_mode": "video",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+    "Are all three pens aligned identically, all pointing the same way, including any pen near the left or right frame edge as it enters or exits?",
+    "Do all three pens share identical barrel and cap colors, with no mismatch?",
+    "Is every pen fully capped with no exposed writing tip, and are all three pens equal in length?",
+    "Does the board advance steadily from left to right at EVERY moment, never halting, freezing, or pausing even briefly (1-3 seconds) at any point in the video?",
+    "Do all pens stay fixed in their positions on the board, with no pen shifting, sliding, or moving on its own relative to the board mid-clip?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"NO\",\n      \"evidence\": \"Initially three pens are visible, but from 00:13 onwards, the board is empty as it continues to slide right. The pens disappear while the board is still fully in view.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"YES\",\n      \"evidence\": \"While visible (00:05-00:12), all three pens are aligned vertically and point in the same direction (caps down).\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three visible pens appear to be identical black gel pens with translucent barrels.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"The visible pens appear fully capped and of equal length.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves smoothly from left to right throughout the clip without stopping or reversing.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"NO\",\n      \"evidence\": \"The pens disappear from the board between 00:12 and 00:13 while the board is still moving and visible, indicating they are no longer fixed in position or present.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"missing_pen\",\n  \"anomaly_score\": 1.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The video shows three pens initially, but they vanish from the board around the 13-second mark while the board continues to slide across the frame, leaving the board empty. This violates the condition that the board must carry exactly three pens when fully in view.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "NO",
+        "evidence": "Initially three pens are visible, but from 00:13 onwards, the board is empty as it continues to slide right. The pens disappear while the board is still fully in view."
+      },
+      {
+        "question_id": 2,
+        "answer": "YES",
+        "evidence": "While visible (00:05-00:12), all three pens are aligned vertically and point in the same direction (caps down)."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All three visible pens appear to be identical black gel pens with translucent barrels."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "The visible pens appear fully capped and of equal length."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves smoothly from left to right throughout the clip without stopping or reversing."
+      },
+      {
+        "question_id": 6,
+        "answer": "NO",
+        "evidence": "The pens disappear from the board between 00:12 and 00:13 while the board is still moving and visible, indicating they are no longer fixed in position or present."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "missing_pen",
+    "anomaly_score": 1.0,
+    "confidence": "HIGH",
+    "reason": "The video shows three pens initially, but they vanish from the board around the 13-second mark while the board continues to slide across the frame, leaving the board empty. This violates the condition that the board must carry exactly three pens when fully in view."
+  },
+  "usage": {
+    "input_tokens": 11080,
+    "output_tokens": 2455,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 980,
+      "video_tokens": 10100
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 2000,
+      "text_tokens": 455
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 13535,
+    "video_tokens": 10100
+  },
+  "request_id": "39b1f57c-0fee-9bd5-be64-d9d0af9ba98c",
+  "id": "motion_temporal_01",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "unexpected_pen_movement",
+  "description": "Mid-clip, the pens themselves shift/move on their own due to an unseen external force; the board moves normally and no cause is visible in the scene.",
+  "correct": true
+}

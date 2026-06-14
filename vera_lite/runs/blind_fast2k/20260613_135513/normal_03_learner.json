@@ -1,0 +1,76 @@
+{
+  "video": "data/pens_small/pens_normal_3.mp4",
+  "input_mode": "video",
+  "expected": "NORMAL",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+    "Are all three pens aligned identically, all pointing the same way, including any pen near the left or right frame edge as it enters or exits?",
+    "Do all three pens share identical barrel and cap colors, with no mismatch?",
+    "Is every pen fully capped with no exposed writing tip, and are all three pens equal in length?",
+    "Does the board advance steadily from left to right at EVERY moment, never halting, freezing, or pausing even briefly (1-3 seconds) at any point in the video?",
+    "Do all pens stay fixed in their positions on the board, with no pen shifting, sliding, or moving on its own relative to the board mid-clip?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"When the board is fully visible (approx 00:08-00:12), exactly three pens are clearly arranged in a row.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens are oriented with the cap/clip end at the bottom and the barrel pointing up; they are perfectly aligned.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens share the same dark/black barrel and cap coloration; no color mismatch is observed.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"Every pen is fully capped with the clip visible at the bottom; all pens appear to be the same length.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves continuously and smoothly from the left edge to the right edge without pausing or jamming.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"YES\",\n      \"evidence\": \"The pens remain fixed in their slots/positions on the white board throughout the entire transit.\"\n    }\n  ],\n  \"verdict\": \"NORMAL\",\n  \"anomaly_type\": \"none\",\n  \"anomaly_score\": 0.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The video shows a standard production pass with three identical, correctly oriented pens moving smoothly on the carrier board.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "When the board is fully visible (approx 00:08-00:12), exactly three pens are clearly arranged in a row."
+      },
+      {
+        "question_id": 2,
+        "answer": "YES",
+        "evidence": "All three pens are oriented with the cap/clip end at the bottom and the barrel pointing up; they are perfectly aligned."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All three pens share the same dark/black barrel and cap coloration; no color mismatch is observed."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "Every pen is fully capped with the clip visible at the bottom; all pens appear to be the same length."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves continuously and smoothly from the left edge to the right edge without pausing or jamming."
+      },
+      {
+        "question_id": 6,
+        "answer": "YES",
+        "evidence": "The pens remain fixed in their slots/positions on the white board throughout the entire transit."
+      }
+    ],
+    "verdict": "NORMAL",
+    "anomaly_type": "none",
+    "anomaly_score": 0.0,
+    "confidence": "HIGH",
+    "reason": "The video shows a standard production pass with three identical, correctly oriented pens moving smoothly on the carrier board."
+  },
+  "usage": {
+    "input_tokens": 11674,
+    "output_tokens": 977,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 980,
+      "video_tokens": 10694
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 572,
+      "text_tokens": 405
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 12651,
+    "video_tokens": 10694
+  },
+  "request_id": "d4d857a6-9559-91d5-ba7d-88031578aec5",
+  "id": "normal_03",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "none",
+  "description": "Three identical pens, normal pass.",
+  "correct": true
+}

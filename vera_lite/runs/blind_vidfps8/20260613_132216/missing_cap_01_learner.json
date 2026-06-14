@@ -1,0 +1,76 @@
+{
+  "video": "data/pens_small/pens_missing_cap.mp4",
+  "input_mode": "video fps=8.0",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+    "Are all three pens aligned identically, all pointing the same way, including any pen near the left or right frame edge as it enters or exits?",
+    "Do all three pens share identical barrel and cap colors, with no mismatch?",
+    "Is every pen fully capped with no exposed writing tip, and are all three pens equal in length?",
+    "Does the board advance steadily from left to right at EVERY moment, never halting, freezing, or pausing even briefly (1-3 seconds) at any point in the video?",
+    "Do all pens stay fixed in their positions on the board, with no pen shifting, sliding, or moving on its own relative to the board mid-clip?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"When the board is fully visible (around 00:09), there are exactly three pen-like objects arranged in a row.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three items are oriented vertically with their writing ends (or capped ends) pointing towards the bottom of the frame.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"NO\",\n      \"evidence\": \"The leftmost item is a bare pen refill or uncapped pen, lacking the black cap present on the other two pens, making it not identical in appearance.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"NO\",\n      \"evidence\": \"The leftmost item clearly shows a bare writing tip and grip texture, indicating it is uncapped or just a refill, while the other two are fully capped.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves smoothly and continuously from left to right throughout the entire clip without stopping or jamming.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"YES\",\n      \"evidence\": \"The pens remain fixed in their relative positions on the board as it slides.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"missing_cap\",\n  \"anomaly_score\": 0.9,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The leftmost item is an uncapped pen (or refill) showing a bare tip, while the other two pens are capped, violating the condition that all pens must be identical and fully capped.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "When the board is fully visible (around 00:09), there are exactly three pen-like objects arranged in a row."
+      },
+      {
+        "question_id": 2,
+        "answer": "YES",
+        "evidence": "All three items are oriented vertically with their writing ends (or capped ends) pointing towards the bottom of the frame."
+      },
+      {
+        "question_id": 3,
+        "answer": "NO",
+        "evidence": "The leftmost item is a bare pen refill or uncapped pen, lacking the black cap present on the other two pens, making it not identical in appearance."
+      },
+      {
+        "question_id": 4,
+        "answer": "NO",
+        "evidence": "The leftmost item clearly shows a bare writing tip and grip texture, indicating it is uncapped or just a refill, while the other two are fully capped."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves smoothly and continuously from left to right throughout the entire clip without stopping or jamming."
+      },
+      {
+        "question_id": 6,
+        "answer": "YES",
+        "evidence": "The pens remain fixed in their relative positions on the board as it slides."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "missing_cap",
+    "anomaly_score": 0.9,
+    "confidence": "HIGH",
+    "reason": "The leftmost item is an uncapped pen (or refill) showing a bare tip, while the other two pens are capped, violating the condition that all pens must be identical and fully capped."
+  },
+  "usage": {
+    "input_tokens": 43156,
+    "output_tokens": 1939,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 980,
+      "video_tokens": 42176
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 1500,
+      "text_tokens": 439
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 45095,
+    "video_tokens": 42176
+  },
+  "request_id": "0c993e05-4258-95c0-8c2f-ad62b7af4d7a",
+  "id": "missing_cap_01",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "missing_cap",
+  "description": "One pen is missing its cap while the others are capped.",
+  "correct": true
+}

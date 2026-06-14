@@ -1,0 +1,29 @@
+{
+  "video": "data/pens_small/pens_normal.mp4",
+  "fps": 8.0,
+  "raw_text": "{\n  \"observations\": \"The white board translates from left to right across the frame. Three pens are visible on the board. As the board moves, the pens maintain a fixed, parallel arrangement relative to each other and the board. The spacing between the pens remains constant throughout the video. There is no independent movement, rotation, or shifting of any single pen relative to the group.\",\n  \"relative_movement_detected\": false,\n  \"verdict\": \"NORMAL\",\n  \"anomaly_score\": 0.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"All three pens move rigidly together with the board, maintaining constant spacing and orientation relative to each other.\"\n}",
+  "parsed": {
+    "observations": "The white board translates from left to right across the frame. Three pens are visible on the board. As the board moves, the pens maintain a fixed, parallel arrangement relative to each other and the board. The spacing between the pens remains constant throughout the video. There is no independent movement, rotation, or shifting of any single pen relative to the group.",
+    "relative_movement_detected": false,
+    "verdict": "NORMAL",
+    "anomaly_score": 0.0,
+    "confidence": "HIGH",
+    "reason": "All three pens move rigidly together with the board, maintaining constant spacing and orientation relative to each other."
+  },
+  "usage": {
+    "input_tokens": 41952,
+    "output_tokens": 1649,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 370,
+      "video_tokens": 41582
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 1500,
+      "text_tokens": 149
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 43601,
+    "video_tokens": 41582
+  }
+}

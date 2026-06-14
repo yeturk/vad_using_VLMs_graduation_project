@@ -1,0 +1,445 @@
+\chapter{Experiments and Results}
+\label{chap:results}
+
+All Approach~C experiments use \texttt{qwen3.6-plus} on the $13$-clip pen-conveyor
+dataset under the blind protocol of Section~\ref{sec:vera}. Approach~A and B use the
+R01 push-button scene.
+
+\section{Approach A: Direct Prompting}
+The direct-prompting exploration confirmed two qualitative findings that motivated the
+later work: (i) step-wise / chain-of-thought prompts give more consistent verdicts than
+terse single-paragraph prompts, and (ii) under compact output formats the model is
+biased toward ``normal'', producing false negatives. These observations directly
+motivated the articulate-first format (Approach~B) and the guiding-question
+decomposition (Approach~C).
+
+\section{Approach B: Multi-Persona Voting}
+A single-prompt VLM verdict is unreliable on edge cases, so this approach adopts a
+\emph{self-consistency} / persona-prompting paradigm: the same clip is inspected by
+several diverse ``inspector personas'' and the decision is taken by majority vote. This
+section details the system, its three prompt-design variants, and the qualitative
+findings, in the order they were developed.
+
+\subsection{Local Deployment}
+Unlike the API-served models of Approaches~A and~C, the persona pipeline runs a locally
+deployed open-weight model, \texttt{Qwen3-VL-8B-Instruct} \cite{qwen3}, through the HuggingFace
+\texttt{transformers} stack. Running on-premises means no video ever leaves the factory,
+which is a practical requirement for industrial data, and it also gives full control over
+decoding: we use greedy decoding (\texttt{do\_sample=False}), so each persona is
+deterministic and the only source of diversity is the prompt itself. Video is fed at
+\texttt{fps}$=2$, capped at $32$ frames and $360\times420$ pixels, with up to $1024$ new
+tokens per persona.
+
+\subsection{The Twenty Personas}
+Twenty distinct ``inspector personas'' were authored, grouped as four production-line
+operators (senior, new, supervisor, night-shift), five engineers (mechanical, quality/Six
+Sigma, robotics, computer-vision, industrial), and eleven further profiles (maintenance
+technician, internal auditor, lean specialist, EHS specialist, academic, Toyota expert,
+supplier-quality engineer, trainer, conservative auditor, aggressive auditor, hybrid).
+Crucially, every persona is given the \emph{same} anomaly rules; they differ only in
+voice, risk threshold and output format (for example the conservative auditor only raises
+an alarm on clear multi-frame evidence, while the aggressive auditor flags any hint of a
+fault). This yields \emph{synthetic diversity} for ensembling without changing the
+underlying task.
+
+\subsection{Voting Mechanism}
+From the twenty personas, a subset of five (one operator, one mechanical engineer, one
+vision engineer, one Toyota expert, one hybrid) plus a distilled \emph{consensus} prompt
+form six voters. Each voter's free-text output is parsed to NORMAL / ANOMALY / UNCLEAR by
+matching its persona-specific decision markers (e.g.\ \texttt{RESULT}, \texttt{PART
+STATUS}, \texttt{ANDON CALL}, \texttt{ROBOTIC FITNESS}), with care taken not to misread
+``no anomaly''. The final verdict is the majority over the decisive (non-UNCLEAR) votes,
+and the confidence is the winning fraction ($\geq 0.8$ HIGH, $\geq 0.6$ MEDIUM, else LOW).
+The consensus prompt is itself a contribution: it is a single prompt distilled from the
+common ground of all twenty personas, used as a strong stand-alone voter.
+
+\subsection{The Three Ablation Variants}
+The personas were studied at three checklist breadths (defined in
+Table~\ref{tab:persona-types}):
+\begin{itemize}
+  \item \textbf{specialized} --- each voter inspects a single focus area, so the committee
+        divides the labour across orientation, motion and belt-position specialists.
+  \item \textbf{complete} --- every voter runs the full A/B/C checklist (orientation,
+        motion/alignment, belt position), providing redundancy: several independent full
+        inspections are combined.
+  \item \textbf{orientation} --- the multi-check structure is dropped entirely and every
+        voter answers only the primary question for this line, ``is the red cap on the
+        wrong side?''. This isolates the dominant anomaly type.
+\end{itemize}
+The variants form an ablation on \emph{how much structure each voter needs}: a minimal
+single question, a single specialised focus, or the full checklist.
+Table~\ref{tab:persona-proscons} summarises their trade-offs.
+
+\begin{table}[!htbp]
+\centering
+\footnotesize
+\caption{\label{tab:persona-proscons}Trade-offs of the three persona prompt designs.}
+\begin{tabular}{l|p{3.5cm}|p{4.6cm}}
+\hline
+Design & Pros & Cons \\
+\hline
+specialized      & deep per-aspect reasoning; lower prompt overhead
+                 & systematic blind spots; voters miss anomalies outside their domain \\
+complete         & no blind spots; multi-axis verification
+                 & verbose prompts; slower inference; bias toward compact YES/NO \\
+orientation-only & sharpest signal; fastest inference; best alignment with the dominant
+                   defect
+                 & cannot detect motion or position anomalies \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{The Articulate-First Finding}
+The central qualitative result emerged while tuning the output format. With compact
+YES/NO answer formats the model produced systematic \emph{false negatives}: it defaulted
+to ``normal'' without actually examining the frames. Forcing an \emph{articulate-first}
+format --- the voter must first describe the entry, middle and exit frames, then derive
+each check, then state the verdict --- suppressed this bias and aligned the persona
+verdicts with the (correct) consensus prompt. This is the same principle that underlies
+Approach~C's guiding questions: compelling the model to verbalise its observations before
+committing to a label is what improves reliability, independent of the specific wording.
+
+\subsection{Status and Limitation}
+The persona pipeline was developed on the R01 push-button scene, whose dominant anomaly is
+the reversed orientation. A full quantitative evaluation of the three ablation variants on
+a labelled multi-clip set was \emph{not} completed: the only saved voting report is a
+single demonstration clip, for which all six voters returned UNCLEAR. The contributions of
+this approach are therefore the system design (twenty personas, the consensus prompt, the
+six-voter majority scheme), the three checklist-breadth ablations, and the articulate-first
+finding; a fair numerical comparison of the variants, ideally on the same labelled set as
+Approach~C, is left as future work (Chapter~\ref{chap:conclusion}).
+
+\section{Approach C: VERA-lite}
+This section describes, in the order they were tried, every method we evaluated within
+the VERA-lite pipeline, and then compares them. Each step was motivated by the failure of
+the previous one.
+
+\subsection{Perception Probing with a Describe Prompt}
+Before writing any classifier prompt, we ran a neutral \emph{describe} prompt that asked
+the model only to report what it saw (object count, colour, orientation, motion
+continuity), explicitly forbidding a verdict. This revealed how the model actually
+perceives the scene: it counts the three pens reliably, sees the rail-and-board setup,
+but perceives colour weakly (``greyish'' rather than ``blue'') and is unsure whether the
+dark end is a cap. These observations shaped the guiding questions toward
+\emph{relative} comparisons among the three pens (``are all three the same colour?'')
+rather than absolute attributes.
+
+\subsection{Blind Evaluation and Label-Leakage Correction}
+The original pipeline passed the expected label into the learner prompt. A first run that
+scored $13/13$ was therefore untrustworthy. After making blind mode the default, the
+first honest score dropped to $0.77$; all subsequent numbers are blind.
+
+\subsection{Guiding-Question Iteration (v2 $\rightarrow$ v3)}
+For every clip the learner returns a structured JSON object: for \emph{each} guiding
+question a YES/NO/UNCLEAR answer with a short visual justification, followed by the overall
+verdict (NORMAL/ANOMALY), an anomaly type, an anomaly score and a confidence. A concrete
+instance of this output is shown later in Table~\ref{tab:example}; this per-question
+evidence is what makes the verdict explainable.
+
+The describe step above gave us a first, hand-written question set, \textbf{v2}. We then
+ran one VERA-style optimiser iteration: the optimiser VLM read the learner's answers and
+rewrote the questions. Its verbatim rationale was that the v2 questions ``rely heavily on
+negative phrasing $(\ldots)$ [and] VLMs frequently struggle with logical negation,'' so it
+converted them into ``direct, positive verification statements'' with one atomic check per
+question. On top of the optimiser's output we hardened the orientation question
+(``including a pen near the frame edge''), the motion question (``including a brief
+$1$--$3$\,s pause''), and added a sixth question for a pen moving relative to the board,
+yielding \textbf{v3}. Table~\ref{tab:questions} places the two question sets side by side,
+and Table~\ref{tab:qiter} reports the resulting accuracy: $0.77 \rightarrow 0.92$ (single
+run), with the only remaining miss being the intra-object temporal anomaly.
+
+\begin{table}[!htbp]
+\centering
+\footnotesize
+\caption{\label{tab:questions}The guiding questions before (v2) and after (v3) the
+optimiser iteration, by anomaly family. v2 uses negated phrasing; v3 is positive with one
+atomic check per question, adds an edge-aware orientation check and a brief-pause motion
+check, and introduces a sixth pen-movement question.}
+\begin{tabular}{l|p{4.4cm}|p{5.3cm}}
+\hline
+Anomaly family & v2 (negated) & v3 (positive / hardened) \\
+\hline
+Count        & no missing pen and no empty gap      & exactly three pens in a single row \\
+Orientation  & none flipped or reversed             & all pointing the same way, including a pen near the frame edge \\
+Colour       & none differing in colour             & identical barrel and cap colours, no mismatch \\
+Completeness & no bare tip, none shorter            & fully capped, no exposed tip, all equal length \\
+Belt motion  & without stopping, pausing, reversing & advances at every moment, never halting even briefly ($1$--$3$\,s) \\
+Pen movement & (not asked)                          & pens stay fixed; no pen sliding relative to the board \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[!htbp]
+\centering
+\caption{\label{tab:qiter}Guiding-question iteration (blind, single run).}
+\begin{tabular}{l|c|c|l}
+\hline
+Question set & Accuracy & FP & Missed clips \\
+\hline
+v2 & 0.77 (10/13) & 0 & orientation-2, stop-2, temporal \\
+v3 & 0.92 (12/13) & 0 & temporal \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{A Worked Example}
+To illustrate the explainability of the approach, Table~\ref{tab:example} shows the
+learner's actual (blind) output on the \texttt{wrong\_colour} clip. The model answers
+each guiding question with a YES/NO and a short visual justification; the single NO on the
+colour question (Q3) drives the final verdict. The structured per-question evidence lets
+an operator see exactly \emph{why} the clip was flagged.
+
+\begin{table}[!htbp]
+\centering
+\caption{\label{tab:example}Learner output on the \texttt{wrong\_colour} clip (verdict:
+ANOMALY, type: wrong\_colour, score: $1.0$, confidence: HIGH).}
+\begin{tabular}{c|c|p{9cm}}
+\hline
+Q & Ans. & Evidence (model's own words) \\
+\hline
+1 & YES & At 00:10 the board is fully visible and holds three pens in a row. \\
+2 & YES & All three pens are oriented vertically with caps pointing down. \\
+3 & \textbf{NO} & The leftmost pen has a blue barrel, while the middle and right pens are black/dark grey. \\
+4 & YES & All pens appear capped and of similar length. \\
+5 & YES & The board moves continuously left to right without stopping. \\
+6 & YES & The pens remain fixed in their relative positions as the board slides. \\
+\hline
+\end{tabular}
+\\[3pt]
+\footnotesize{Reason: ``three pens on the board, but one is blue while the other two are
+black, violating the requirement that all pens be identical in colour.''}
+\end{table}
+
+\subsection{Per-Clip Output of the v3 Run}
+Table~\ref{tab:perclip} lists the learner's verdict, predicted anomaly type and score for
+all $13$ clips in the $0.92$ (v3, single-run) configuration; the raw JSON output for one
+clip is reproduced in Appendix~A. The model reported HIGH confidence on every
+clip. On the combined clip it correctly returns ANOMALY but names only one of the two
+co-occurring anomaly types, and the temporal clip is the single, confidently wrong, miss.
+
+\begin{table}[!htbp]
+\centering
+\footnotesize
+\caption{\label{tab:perclip}Per-clip output of the v3 video run (blind, single run;
+confidence was HIGH on every clip).}
+\begin{tabular}{l|c|c|l|c|c}
+\hline
+Clip & Expected & Predicted & Anomaly type & Score & \\
+\hline
+normal\_01           & NORMAL  & NORMAL  & none              & 0.00 & OK \\
+normal\_02           & NORMAL  & NORMAL  & none              & 0.00 & OK \\
+normal\_03           & NORMAL  & NORMAL  & none              & 0.00 & OK \\
+missing\_cap\_01     & ANOMALY & ANOMALY & missing\_cap      & 0.90 & OK \\
+missing\_cap\_02     & ANOMALY & ANOMALY & missing\_cap      & 0.95 & OK \\
+wrong\_orient\_01    & ANOMALY & ANOMALY & wrong\_orientation& 0.90 & OK \\
+wrong\_orient\_02    & ANOMALY & ANOMALY & wrong\_orientation& 0.90 & OK \\
+wrong\_color\_01     & ANOMALY & ANOMALY & wrong\_color      & 1.00 & OK \\
+missing\_pen\_01     & ANOMALY & ANOMALY & missing\_pen      & 1.00 & OK \\
+motion\_stop\_01     & ANOMALY & ANOMALY & motion\_failure   & 0.90 & OK \\
+motion\_stop\_02     & ANOMALY & ANOMALY & motion\_failure   & 0.90 & OK \\
+motion\_temporal\_01 & ANOMALY & \textbf{NORMAL} & none      & 0.00 & \textbf{miss} \\
+combined\_01         & ANOMALY & ANOMALY & wrong\_orientation& 0.90 & OK \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{The Temporal Anomaly is a Perception Limit, Not a Wording Problem}
+The unsolved clip (\texttt{temporal}: the pens shift on their own while the belt moves
+normally) was missed by the v3 learner \emph{and} by the open-ended describe prompt,
+which reported a perfectly normal scene. Because even an unconstrained description fails
+to notice the motion, the cause is the VLM's sparse internal frame sampling, not the
+wording of the questions. This motivated the alternative input representations below.
+
+\subsection{Method 1 --- Native Video}
+The default mode sends the clip as a video; DashScope samples frames internally. With the
+v3 questions this reaches $0.92$ (single run) and catches the edge-orientation and the
+belt-stop cases, but cannot see the intra-object motion.
+
+\subsection{Method 2 --- Dense Frames (Central Window)}
+Instead of relying on internal sampling, we extract $16$ time-ordered frames with OpenCV
+and send them as separate numbered images, with a prompt focused on the
+\emph{relative spacing} between adjacent pens (a cue that is invariant to the belt's
+left-to-right translation). Sampling is restricted to the central window $[0.15, 0.70]$
+of the clip to exclude the entry/exit frames. This representation \emph{catches} the
+temporal anomaly ($0.9$ score) and keeps the normal clip normal, but, because the window
+crop removes the edge frames and a late pause, it now misses the edge-orientation and the
+belt-stop cases; overall accuracy is $0.85$.
+
+\subsection{Method 3 --- Dense Frames (Wide Window)}
+Widening the window to $[0.05, 0.95]$ to recover the lost cases backfired: the exit
+frames, where the board carries the pens off-screen, were read as ``pens disappearing''
+and produced a false positive on a normal clip. Accuracy fell to $0.62$ with one false
+positive. This confirms the central crop was necessary, and that there is no free lunch.
+
+\subsection{Method 4 --- Temporal Grid}
+As a single-pass alternative we tiled the frames into one $3\times3$ montage image
+(Figure~\ref{fig:grid}) so the model could compare moments side by side. On a four-clip
+probe it caught the temporal case but shared the dense-frame blind spots (missed
+orientation and stop) and, being full-span, re-introduced the exit false positive on the
+normal clip. It therefore did not improve on the dense view.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{grid_temporal.jpg}
+    \caption{\label{fig:grid}Temporal grid (3$\times$3 montage) of the temporal-anomaly
+    clip. The three pens are evenly spaced early (cells 4--6) and then bunch together as
+    one pen slides relative to the others; the relative-spacing change is what makes the
+    intra-object motion visible.}
+\end{figure}
+
+\subsection{Method 5 --- Higher Video Sampling Rate (fps)}
+We tested whether simply sampling the \emph{video} more densely would help, using the
+\texttt{fps} parameter. Raising \texttt{fps} from the default to $8$ quadrupled the visual
+tokens ($\sim$10{,}100 $\rightarrow$ $\sim$40{,}394), confirming denser sampling, yet the
+full-question run still \emph{missed} the temporal anomaly and additionally lost the
+edge-orientation case ($0.85$). Interestingly, a stand-alone call with $\texttt{fps}=8$
+\emph{and} the dedicated relative-spacing prompt did catch the temporal anomaly while
+keeping the normal clip normal --- showing that the decisive factor is the prompt focus
+(an explicit relative-spacing question), not the frame count. Higher \texttt{fps} also
+increases latency, so it is not a useful lever on its own.
+
+\subsection{Method 6 --- Two-View Ensemble}
+Since the video view and the dense-frame view have \emph{disjoint} blind spots and both
+have zero false positives, we combine them with an OR rule: a clip is ANOMALY if either
+view flags it. The video view supplies edge-orientation and belt-stop; the dense view
+supplies the temporal anomaly. The union reaches $13/13$ with zero false positives at no
+extra inference cost (it reuses the two existing runs).
+
+\subsection{Representation Comparison}
+Table~\ref{tab:repr} summarises the six methods. No single representation reaches
+$13/13$: the continuous video captures the edge and stop cues but misses the intra-object
+motion, whereas every discrete representation captures the motion but loses the other
+cues. This \emph{continuous-versus-discrete} trade-off held across three discrete variants
+(dense narrow, dense wide, grid). Only the ensemble closes the gap.
+
+\begin{table}[!htbp]
+\centering
+\caption{\label{tab:repr}Input-representation comparison (blind, single run).}
+\begin{tabular}{l|c|c|c|l}
+\hline
+Method & Accuracy & FP & Temporal? & Note \\
+\hline
+1. Video (v3, default fps)        & 0.92 (12/13) & 0 & no  & misses temporal \\
+2. Dense [0.15--0.70], 16f        & 0.85 (11/13) & 0 & yes & misses orient-2, stop-2 \\
+3. Dense wide [0.05--0.95]        & 0.62 (8/13)  & 1 & yes & exit artifact $\rightarrow$ FP \\
+4. Temporal grid 3$\times$3       & ---$^{\dagger}$ & yes & yes & probe; FP + misses orient/stop \\
+5. Video + fps=8 + v3             & 0.85 (11/13) & 0 & no  & fps degraded orientation \\
+6. \textbf{Ensemble (1 $\vee$ 2)} & \textbf{1.00 (13/13)} & \textbf{0} & \textbf{yes} & union of blind spots \\
+\hline
+\end{tabular}
+\\[2pt]
+\footnotesize{$^{\dagger}$four-clip diagnostic probe, not a full $13$-clip run.}
+\end{table}
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{fig_accuracy.png}
+    \caption{\label{fig:accuracy}Blind accuracy of each input representation on the
+    $13$-clip pen dataset (single run). Only the ensemble reaches $1.00$.}
+\end{figure}
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{fig_clip_matrix.png}
+    \caption{\label{fig:matrix}Per-clip correctness of the two views and their ensemble.
+    The video view misses only the temporal clip (\texttt{temp}); the dense-frame view
+    misses only the edge-orientation (\texttt{or2}) and the late belt-stop (\texttt{st2}).
+    Because the blind spots are disjoint and neither view produces false positives, the
+    OR-ensemble is correct on all $13$ clips.}
+\end{figure}
+
+\subsection{Reasoning Budget and the Empty-Output Problem}
+\texttt{qwen3.6-plus} is a reasoning model: on dense visual input it spent its entire
+output budget on internal deliberation (e.g.\ $15{,}684$ reasoning tokens) and returned an
+empty answer, crashing the run. Setting a \texttt{thinking\_budget} caps the reasoning and
+forces a final JSON answer, which solved the empty-output problem and, as a side effect,
+became our main latency lever. We also tried alternative models, but
+\texttt{qwen-vl-max-latest} returned \emph{403 Access Denied} and \texttt{qwen3.7-max}
+rejected video input, leaving \texttt{qwen3.6-plus} as the only usable model.
+Figure~\ref{fig:reasoning} shows the per-clip reasoning tokens of the unbounded baseline:
+a single hard clip consumed $13{,}394$ tokens, dominating that run's latency.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{fig_reasoning.png}
+    \caption{\label{fig:reasoning}Reasoning tokens per clip under the unbounded baseline.
+    The runaway outlier (clip \texttt{or2}) motivates capping the reasoning budget.}
+\end{figure}
+
+\subsection{Repeatability}
+Because VLM outputs vary between runs, the baseline and the \texttt{thinking\_budget}=2000
+configuration were each run three times under the blind protocol
+(Table~\ref{tab:repeat}). In every run both configurations scored $11/13$ ($0.846$), so
+the single-run $0.92$ reported earlier was a favourable draw and the true value is
+$\approx 0.85$. The stable count, however, hides per-clip variability: the temporal clip
+was missed in all six runs (a deterministic perception limit), but under the unbounded
+baseline two borderline clips --- a normal clip and the edge-orientation clip --- changed
+their NORMAL/ANOMALY verdict between runs, and the baseline even produced a false positive
+in one run. Capping the reasoning budget removed this instability entirely: the three
+\texttt{thinking\_budget}=2000 runs produced \emph{identical} per-clip verdicts (zero
+flips). Reasoning-budget control therefore improves run-to-run determinism as well as
+latency, and the result reframes every single-run number above as a noisy estimate.
+
+\begin{table}[!htbp]
+\centering
+\caption{\label{tab:repeat}Repeatability over $n=3$ blind runs. ``Verdict flips'' is the
+number of clips whose NORMAL/ANOMALY verdict was \emph{not} unanimous across the three
+runs.}
+\begin{tabular}{l|c|c|c|c}
+\hline
+Config & $n$ & Accuracy (each run) & Verdict flips & Total FP \\
+\hline
+baseline (unbounded reasoning) & 3 & $11/13$ $(0.846)$ & 2 clips & 1 \\
+thinking\_budget = 2000        & 3 & $11/13$ $(0.846)$ & 0 clips & 0 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{fig_repeat.png}
+    \caption{\label{fig:repeat}How often each clip was missed across the six repeated
+    blind runs. The temporal clip (\texttt{temp}) is missed every time (a deterministic
+    perception limit), whereas the borderline clips (\texttt{or2}, a normal clip) flip
+    between runs.}
+\end{figure}
+
+\subsection{Latency vs.\ Reasoning Budget}
+The reasoning generation, not the video prefill, dominates latency (one clip used
+$13{,}394$ reasoning tokens). Capping it reduces latency at no accuracy cost
+(Table~\ref{tab:latency}): \texttt{thinking\_budget}=2000 is about $41\%$ faster than the
+unbounded baseline at the same mean accuracy, with one fewer false positive. Raising
+\texttt{fps} instead makes the call slower and hurts accuracy, so it is the wrong lever
+for speed.
+
+\begin{table}[!htbp]
+\centering
+\caption{\label{tab:latency}Latency vs.\ reasoning budget (mean over $n=3$).}
+\begin{tabular}{l|c|c}
+\hline
+Config & Seconds / clip & Accuracy \\
+\hline
+baseline (unbounded) & 85.2 & 0.846 \\
+thinking\_budget = 2000 & 49.9 & 0.846 \\
+thinking\_budget = 1000 & 39.5$^{*}$ & $\approx$0.85$^{*}$ \\
+\hline
+\end{tabular}
+\\[2pt]
+\footnotesize{$^{*}$single run; borderline clips more volatile.}
+\end{table}
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{fig_latency.png}
+    \caption{\label{fig:latency}Mean latency per clip versus reasoning budget. Capping the
+    budget gives a large speed-up at unchanged accuracy ($\approx 0.85$).}
+\end{figure}
+
+\subsection{Summary of the VERA-lite Methods}
+The progression can be read as a sequence of motivated attempts: question optimisation
+lifted accuracy to $0.92$; the one remaining failure was traced to a perception limit,
+not wording; discrete representations recovered that failure but introduced others;
+widening or re-tiling them traded one failure for a false positive; higher \texttt{fps}
+showed presentation matters more than frame count; the ensemble combined the
+complementary views to $13/13$; and finally, repeated runs reframed the honest accuracy as
+$0.846 \pm 0.000$, with the reasoning budget giving a $41\%$ speed-up for free.

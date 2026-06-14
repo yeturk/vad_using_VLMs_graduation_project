@@ -1,0 +1,76 @@
+{
+  "video": "data/pens_small/pens_conveyor_stops_and_continues.mp4",
+  "input_mode": "video",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+    "Are all three pens aligned identically, all pointing the same way, including any pen near the left or right frame edge as it enters or exits?",
+    "Do all three pens share identical barrel and cap colors, with no mismatch?",
+    "Is every pen fully capped with no exposed writing tip, and are all three pens equal in length?",
+    "Does the board advance steadily from left to right at EVERY moment, never halting, freezing, or pausing even briefly (1-3 seconds) at any point in the video?",
+    "Do all pens stay fixed in their positions on the board, with no pen shifting, sliding, or moving on its own relative to the board mid-clip?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"When the board is fully in frame (00:07-00:13), exactly three pens are visible in a row.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens are oriented vertically with the black caps at the bottom, pointing the same direction.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens have identical black caps and translucent grey/clear barrels.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"All pens appear fully capped and are of equal length.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"NO\",\n      \"evidence\": \"The board stops moving completely from approximately 00:14 to 00:21, pausing mid-travel before resuming motion.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"YES\",\n      \"evidence\": \"The pens remain fixed in their positions on the board throughout the clip.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"motion_failure\",\n  \"anomaly_score\": 0.95,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The board pauses and remains stationary for several seconds (approx. 00:14-00:21) instead of moving smoothly and continuously from left to right.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "When the board is fully in frame (00:07-00:13), exactly three pens are visible in a row."
+      },
+      {
+        "question_id": 2,
+        "answer": "YES",
+        "evidence": "All three pens are oriented vertically with the black caps at the bottom, pointing the same direction."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All three pens have identical black caps and translucent grey/clear barrels."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "All pens appear fully capped and are of equal length."
+      },
+      {
+        "question_id": 5,
+        "answer": "NO",
+        "evidence": "The board stops moving completely from approximately 00:14 to 00:21, pausing mid-travel before resuming motion."
+      },
+      {
+        "question_id": 6,
+        "answer": "YES",
+        "evidence": "The pens remain fixed in their positions on the board throughout the clip."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "motion_failure",
+    "anomaly_score": 0.95,
+    "confidence": "HIGH",
+    "reason": "The board pauses and remains stationary for several seconds (approx. 00:14-00:21) instead of moving smoothly and continuously from left to right."
+  },
+  "usage": {
+    "input_tokens": 17020,
+    "output_tokens": 1455,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 980,
+      "video_tokens": 16040
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 1049,
+      "text_tokens": 406
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 18475,
+    "video_tokens": 16040
+  },
+  "request_id": "716b9e43-2666-9493-ba21-2269b9f6a9fb",
+  "id": "motion_stop_02",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "motion_failure",
+  "description": "The board pauses mid-travel, then continues.",
+  "correct": true
+}

@@ -1,0 +1,76 @@
+{
+  "video": "data/pens_small/pens_normal_3.mp4",
+  "input_mode": "video",
+  "expected": "NORMAL",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+    "Are all three pens aligned identically, all pointing the same way, including any pen near the left or right frame edge as it enters or exits?",
+    "Do all three pens share identical barrel and cap colors, with no mismatch?",
+    "Is every pen fully capped with no exposed writing tip, and are all three pens equal in length?",
+    "Does the board advance steadily from left to right at EVERY moment, never halting, freezing, or pausing even briefly (1-3 seconds) at any point in the video?",
+    "Do all pens stay fixed in their positions on the board, with no pen shifting, sliding, or moving on its own relative to the board mid-clip?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"From 00:07 to 00:11, the board is fully visible and clearly displays exactly three pens arranged in a vertical row.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens are oriented with the black cap at the bottom and the translucent barrel pointing upwards, maintaining consistent alignment throughout the clip.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens share the same appearance: a dark/black cap and a translucent greyish barrel. No color mismatch is observed.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"Every pen has a cap visible at the bottom end. No writing tips are exposed, and all pens appear to be of equal length.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves continuously from the left side of the frame to the right side without any noticeable stops, freezes, or reversals.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"YES\",\n      \"evidence\": \"The pens remain fixed in their relative positions on the white board throughout the entire duration of the video.\"\n    }\n  ],\n  \"verdict\": \"NORMAL\",\n  \"anomaly_type\": \"none\",\n  \"anomaly_score\": 0.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The video shows a white board carrying exactly three identical, capped pens moving smoothly from left to right. All guiding criteria for a normal condition are met.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "From 00:07 to 00:11, the board is fully visible and clearly displays exactly three pens arranged in a vertical row."
+      },
+      {
+        "question_id": 2,
+        "answer": "YES",
+        "evidence": "All three pens are oriented with the black cap at the bottom and the translucent barrel pointing upwards, maintaining consistent alignment throughout the clip."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All three pens share the same appearance: a dark/black cap and a translucent greyish barrel. No color mismatch is observed."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "Every pen has a cap visible at the bottom end. No writing tips are exposed, and all pens appear to be of equal length."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves continuously from the left side of the frame to the right side without any noticeable stops, freezes, or reversals."
+      },
+      {
+        "question_id": 6,
+        "answer": "YES",
+        "evidence": "The pens remain fixed in their relative positions on the white board throughout the entire duration of the video."
+      }
+    ],
+    "verdict": "NORMAL",
+    "anomaly_type": "none",
+    "anomaly_score": 0.0,
+    "confidence": "HIGH",
+    "reason": "The video shows a white board carrying exactly three identical, capped pens moving smoothly from left to right. All guiding criteria for a normal condition are met."
+  },
+  "usage": {
+    "input_tokens": 11674,
+    "output_tokens": 1086,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 980,
+      "video_tokens": 10694
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 653,
+      "text_tokens": 433
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 12760,
+    "video_tokens": 10694
+  },
+  "request_id": "266fdb25-0e78-964e-ae89-905649671db4",
+  "id": "normal_03",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "none",
+  "description": "Three identical pens, normal pass.",
+  "correct": true
+}

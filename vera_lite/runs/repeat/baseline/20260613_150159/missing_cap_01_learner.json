@@ -1,0 +1,76 @@
+{
+  "video": "data/pens_small/pens_missing_cap.mp4",
+  "input_mode": "video",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+    "Are all three pens aligned identically, all pointing the same way, including any pen near the left or right frame edge as it enters or exits?",
+    "Do all three pens share identical barrel and cap colors, with no mismatch?",
+    "Is every pen fully capped with no exposed writing tip, and are all three pens equal in length?",
+    "Does the board advance steadily from left to right at EVERY moment, never halting, freezing, or pausing even briefly (1-3 seconds) at any point in the video?",
+    "Do all pens stay fixed in their positions on the board, with no pen shifting, sliding, or moving on its own relative to the board mid-clip?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"When the board is fully in view (around 00:08-00:10), there are clearly three writing instruments arranged in a row.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"The leftmost item has its writing tip pointing down, while the middle and right pens have their caps pointing down (meaning their tips are pointing up inside the barrel). Thus, they are not all aligned identically.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"NO\",\n      \"evidence\": \"The leftmost item is a grey/translucent ink refill tube, while the other two pens have black caps and dark barrels.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"NO\",\n      \"evidence\": \"The leftmost item is a bare ink refill showing a writing tip and lacking a cap/barrel, whereas the other two pens are fully capped.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves continuously from left to right throughout the clip without stopping or reversing.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"YES\",\n      \"evidence\": \"The items remain fixed in their positions on the board relative to each other.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"multiple\",\n  \"anomaly_score\": 1.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The leftmost item is a bare ink refill (grey, tip-down) while the other two are capped pens (black, cap-down/tip-up). This represents a combination of missing cap, wrong color, and wrong orientation anomalies.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "When the board is fully in view (around 00:08-00:10), there are clearly three writing instruments arranged in a row."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "The leftmost item has its writing tip pointing down, while the middle and right pens have their caps pointing down (meaning their tips are pointing up inside the barrel). Thus, they are not all aligned identically."
+      },
+      {
+        "question_id": 3,
+        "answer": "NO",
+        "evidence": "The leftmost item is a grey/translucent ink refill tube, while the other two pens have black caps and dark barrels."
+      },
+      {
+        "question_id": 4,
+        "answer": "NO",
+        "evidence": "The leftmost item is a bare ink refill showing a writing tip and lacking a cap/barrel, whereas the other two pens are fully capped."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves continuously from left to right throughout the clip without stopping or reversing."
+      },
+      {
+        "question_id": 6,
+        "answer": "YES",
+        "evidence": "The items remain fixed in their positions on the board relative to each other."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "multiple",
+    "anomaly_score": 1.0,
+    "confidence": "HIGH",
+    "reason": "The leftmost item is a bare ink refill (grey, tip-down) while the other two are capped pens (black, cap-down/tip-up). This represents a combination of missing cap, wrong color, and wrong orientation anomalies."
+  },
+  "usage": {
+    "input_tokens": 11674,
+    "output_tokens": 4524,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 980,
+      "video_tokens": 10694
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 4066,
+      "text_tokens": 458
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 16198,
+    "video_tokens": 10694
+  },
+  "request_id": "2a0acc77-c9f8-99f2-8140-5468b731bc2d",
+  "id": "missing_cap_01",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "missing_cap",
+  "description": "One pen is missing its cap while the others are capped.",
+  "correct": true
+}

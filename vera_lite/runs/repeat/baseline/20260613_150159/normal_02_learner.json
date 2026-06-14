@@ -1,0 +1,41 @@
+{
+  "video": "data/pens_small/pens_normal_2.mp4",
+  "input_mode": "video",
+  "expected": "NORMAL",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+    "Are all three pens aligned identically, all pointing the same way, including any pen near the left or right frame edge as it enters or exits?",
+    "Do all three pens share identical barrel and cap colors, with no mismatch?",
+    "Is every pen fully capped with no exposed writing tip, and are all three pens equal in length?",
+    "Does the board advance steadily from left to right at EVERY moment, never halting, freezing, or pausing even briefly (1-3 seconds) at any point in the video?",
+    "Do all pens stay fixed in their positions on the board, with no pen shifting, sliding, or moving on its own relative to the board mid-clip?"
+  ],
+  "raw_text": "",
+  "parsed": {
+    "verdict": "UNCLEAR",
+    "parse_error": "Could not parse JSON object from model output:\n"
+  },
+  "usage": {
+    "input_tokens": 11674,
+    "output_tokens": 16863,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 980,
+      "video_tokens": 10694
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 16862,
+      "text_tokens": 1
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 28537,
+    "video_tokens": 10694
+  },
+  "request_id": "b77e2ce8-dce4-981c-a0a5-8361bb22af28",
+  "id": "normal_02",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "none",
+  "description": "Three identical pens, normal pass.",
+  "correct": false
+}

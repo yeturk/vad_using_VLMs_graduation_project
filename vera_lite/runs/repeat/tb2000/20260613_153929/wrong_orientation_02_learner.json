@@ -1,0 +1,76 @@
+{
+  "video": "data/pens_small/pens_wrong_direction_2.mp4",
+  "input_mode": "video",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+    "Are all three pens aligned identically, all pointing the same way, including any pen near the left or right frame edge as it enters or exits?",
+    "Do all three pens share identical barrel and cap colors, with no mismatch?",
+    "Is every pen fully capped with no exposed writing tip, and are all three pens equal in length?",
+    "Does the board advance steadily from left to right at EVERY moment, never halting, freezing, or pausing even briefly (1-3 seconds) at any point in the video?",
+    "Do all pens stay fixed in their positions on the board, with no pen shifting, sliding, or moving on its own relative to the board mid-clip?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"When the board is fully in view (around 00:08-00:11), there are exactly three pens arranged in a row.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"The rightmost pen is tilted diagonally, while the other two are vertical. They are not all aligned identically.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens appear to be black ink pens with black caps and translucent barrels.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"All pens have caps on the bottom end. None show an exposed tip. They appear to be equal length.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves steadily from left to right throughout the clip without stopping or reversing.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"YES\",\n      \"evidence\": \"The pens remain fixed in their relative positions on the board as it moves.\"\n    }\n  ],\n  \"verdict\": \"NORMAL\",\n  \"anomaly_type\": \"none\",\n  \"anomaly_score\": 0.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The board carries three identical, capped pens. While one pen is slightly tilted, it is not flipped (cap is down like the others) and the motion is smooth. The tilt is a minor spacing/alignment difference which the instructions say not to flag.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "When the board is fully in view (around 00:08-00:11), there are exactly three pens arranged in a row."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "The rightmost pen is tilted diagonally, while the other two are vertical. They are not all aligned identically."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All three pens appear to be black ink pens with black caps and translucent barrels."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "All pens have caps on the bottom end. None show an exposed tip. They appear to be equal length."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves steadily from left to right throughout the clip without stopping or reversing."
+      },
+      {
+        "question_id": 6,
+        "answer": "YES",
+        "evidence": "The pens remain fixed in their relative positions on the board as it moves."
+      }
+    ],
+    "verdict": "NORMAL",
+    "anomaly_type": "none",
+    "anomaly_score": 0.0,
+    "confidence": "HIGH",
+    "reason": "The board carries three identical, capped pens. While one pen is slightly tilted, it is not flipped (cap is down like the others) and the motion is smooth. The tilt is a minor spacing/alignment difference which the instructions say not to flag."
+  },
+  "usage": {
+    "input_tokens": 11080,
+    "output_tokens": 2423,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 980,
+      "video_tokens": 10100
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 2000,
+      "text_tokens": 423
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 13503,
+    "video_tokens": 10100
+  },
+  "request_id": "dab8acdf-3471-92ff-9d49-71c0df20bea0",
+  "id": "wrong_orientation_02",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "wrong_orientation",
+  "description": "One pen is flipped relative to the others (variant).",
+  "correct": false
+}

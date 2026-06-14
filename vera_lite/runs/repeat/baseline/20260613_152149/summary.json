@@ -1,0 +1,104 @@
+{
+  "run_id": "20260613_152149",
+  "model": "qwen3.6-plus",
+  "optimizer_model": "qwen3.6-plus",
+  "label_revealed_to_learner": false,
+  "frames": 0,
+  "frame_window": null,
+  "manifest": "/mnt/c/Users/Alper Kaan/Desktop/vad_using_VLMs_graduation_project/vera_lite/dataset_manifest.json",
+  "questions": "vera_lite/guiding_questions_v3.json",
+  "learner_results_path": "vera_lite/runs/repeat/baseline/20260613_152149/learner_results.json",
+  "optimizer_result_written": false,
+  "metrics": {
+    "total": 13,
+    "correct": 11,
+    "accuracy": 0.8461538461538461,
+    "tp": 9,
+    "tn": 2,
+    "fp": 1,
+    "fn": 1,
+    "precision": 0.9,
+    "recall": 0.9,
+    "f1": 0.9
+  },
+  "per_clip": [
+    {
+      "id": "normal_01",
+      "expected": "NORMAL",
+      "predicted": "NORMAL",
+      "correct": true
+    },
+    {
+      "id": "normal_02",
+      "expected": "NORMAL",
+      "predicted": "ANOMALY",
+      "correct": false
+    },
+    {
+      "id": "normal_03",
+      "expected": "NORMAL",
+      "predicted": "NORMAL",
+      "correct": true
+    },
+    {
+      "id": "missing_cap_01",
+      "expected": "ANOMALY",
+      "predicted": "ANOMALY",
+      "correct": true
+    },
+    {
+      "id": "missing_cap_02",
+      "expected": "ANOMALY",
+      "predicted": "ANOMALY",
+      "correct": true
+    },
+    {
+      "id": "wrong_orientation_01",
+      "expected": "ANOMALY",
+      "predicted": "ANOMALY",
+      "correct": true
+    },
+    {
+      "id": "wrong_orientation_02",
+      "expected": "ANOMALY",
+      "predicted": "ANOMALY",
+      "correct": true
+    },
+    {
+      "id": "wrong_color_01",
+      "expected": "ANOMALY",
+      "predicted": "ANOMALY",
+      "correct": true
+    },
+    {
+      "id": "missing_pen_01",
+      "expected": "ANOMALY",
+      "predicted": "ANOMALY",
+      "correct": true
+    },
+    {
+      "id": "motion_stop_01",
+      "expected": "ANOMALY",
+      "predicted": "ANOMALY",
+      "correct": true
+    },
+    {
+      "id": "motion_stop_02",
+      "expected": "ANOMALY",
+      "predicted": "ANOMALY",
+      "correct": true
+    },
+    {
+      "id": "motion_temporal_01",
+      "expected": "ANOMALY",
+      "predicted": "NORMAL",
+      "correct": false
+    },
+    {
+      "id": "combined_01",
+      "expected": "ANOMALY",
+      "predicted": "ANOMALY",
+      "correct": true
+    }
+  ]
+}

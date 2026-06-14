@@ -12,12 +12,16 @@ Usage:
 """
 
 import argparse
+import atexit
 import os
 import re
 import sys
+import tempfile
 import time
 from collections import Counter
+from urllib.parse import urlparse
 
+import requests
 import torch
 from transformers import Qwen3VLForConditionalGeneration, AutoProcessor
 from qwen_vl_utils import process_vision_info
@@ -28,7 +32,7 @@ from qwen_vl_utils import process_vision_info
 # =============================================================================
 parser = argparse.ArgumentParser()
 parser.add_argument("video", nargs="?",
-                    default="https://help-static-aliyun-doc.aliyuncs.com/file-manage-files/zh-CN/20241127/5hnfnc/3.mp4",
+                    default="../data/r01_clip06_angle_anomaly.mp4",
                     help="Path or URL to the video clip")
 parser.add_argument("--personas", choices=["specialized", "complete"],
                     default="specialized",
@@ -55,6 +59,7 @@ else:
 # CONFIG
 # =============================================================================
 MODEL_NAME = os.getenv("QWEN_MODEL", "Qwen/Qwen3-VL-8B-Instruct")
+DOWNLOADED_VIDEO_PATHS = []
 
 
 # =============================================================================
@@ -64,6 +69,8 @@ print(f"Video source: {VIDEO_SOURCE}")
 print(f"Model:        {MODEL_NAME}")
 print(f"Persona mode: {PERSONA_MODE}")
 print(f"CUDA:         {torch.cuda.is_available()}")
+print(f"Script path:  {os.path.abspath(__file__)}")
+print(f"Working dir:  {os.getcwd()}")
 print("\nLoading model...")
 t0 = time.time()
 
@@ -75,6 +82,46 @@ model = Qwen3VLForConditionalGeneration.from_pretrained(
 )
 model.eval()
 print(f"Model loaded in {time.time() - t0:.1f}s\n")
+
+
+def prepare_video_source(video_source: str) -> str:
+    parsed = urlparse(video_source)
+    if parsed.scheme not in ("http", "https"):
+        return video_source
+
+    suffix = os.path.splitext(parsed.path)[1] or ".mp4"
+    tmp = tempfile.NamedTemporaryFile(delete=False, suffix=suffix)
+    tmp.close()
+
+    try:
+        with requests.get(video_source, stream=True, timeout=60) as response:
+            response.raise_for_status()
+            with open(tmp.name, "wb") as f:
+                for chunk in response.iter_content(chunk_size=1024 * 1024):
+                    if chunk:
+                        f.write(chunk)
+    except Exception:
+        if os.path.exists(tmp.name):
+            os.remove(tmp.name)
+        raise
+
+    DOWNLOADED_VIDEO_PATHS.append(tmp.name)
+    return tmp.name
+
+
+def cleanup_temp_videos() -> None:
+    for path in DOWNLOADED_VIDEO_PATHS:
+        try:
+            if os.path.exists(path):
+                os.remove(path)
+        except OSError:
+            pass
+
+
+atexit.register(cleanup_temp_videos)
+VIDEO_SOURCE_FOR_MODEL = prepare_video_source(VIDEO_SOURCE)
+if VIDEO_SOURCE_FOR_MODEL != VIDEO_SOURCE:
+    print(f"Downloaded remote video to: {VIDEO_SOURCE_FOR_MODEL}\n")
 
 
 # =============================================================================
@@ -104,7 +151,15 @@ def run_inference(video_source: str, prompt_text: str) -> str:
         messages,
         image_patch_size=processor.image_processor.patch_size,
         return_video_kwargs=True,
+        return_video_metadata=True,
     )
+
+    if video_inputs is not None:
+        video_tensors, video_metadatas = zip(*video_inputs)
+        video_inputs = list(video_tensors)
+        video_metadatas = list(video_metadatas)
+    else:
+        video_metadatas = None
 
     for k, v in list(video_kwargs.items()):
         if isinstance(v, list) and len(v) == 1:
@@ -114,7 +169,9 @@ def run_inference(video_source: str, prompt_text: str) -> str:
         text=[text],
         images=image_inputs,
         videos=video_inputs,
+        video_metadata=video_metadatas,
         padding=True,
+        do_resize=False,
         return_tensors="pt",
         **video_kwargs,
     ).to(model.device)
@@ -233,7 +290,7 @@ for i, voter in enumerate(voters, 1):
 
     t0 = time.time()
     try:
-        response = run_inference(VIDEO_SOURCE, voter["prompt"])
+        response = run_inference(VIDEO_SOURCE_FOR_MODEL, voter["prompt"])
         elapsed = time.time() - t0
         verdict = parse_verdict(response)
         print(f"done ({elapsed:.1f}s) -> {verdict}")

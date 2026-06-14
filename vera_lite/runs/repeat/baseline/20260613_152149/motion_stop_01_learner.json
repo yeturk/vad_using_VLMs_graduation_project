@@ -1,0 +1,76 @@
+{
+  "video": "data/pens_small/pens_conveyor_stops.mp4",
+  "input_mode": "video",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+    "Are all three pens aligned identically, all pointing the same way, including any pen near the left or right frame edge as it enters or exits?",
+    "Do all three pens share identical barrel and cap colors, with no mismatch?",
+    "Is every pen fully capped with no exposed writing tip, and are all three pens equal in length?",
+    "Does the board advance steadily from left to right at EVERY moment, never halting, freezing, or pausing even briefly (1-3 seconds) at any point in the video?",
+    "Do all pens stay fixed in their positions on the board, with no pen shifting, sliding, or moving on its own relative to the board mid-clip?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"From 00:06 onwards, three distinct pens are visible on the white board.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens are aligned vertically with the black caps at the bottom and barrels pointing up.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens have identical black caps and translucent dark barrels.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"All pens appear fully capped and of equal length.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"NO\",\n      \"evidence\": \"The board enters from the left and moves right until roughly 00:07, then stops completely and remains stationary until the end of the video (00:17).\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"YES\",\n      \"evidence\": \"The pens remain fixed in their slots on the board throughout the movement and the stop.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"motion_failure\",\n  \"anomaly_score\": 0.9,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The board stops moving mid-travel around 00:07 and remains frozen in place for the remainder of the video, violating the requirement for smooth, continuous motion.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "From 00:06 onwards, three distinct pens are visible on the white board."
+      },
+      {
+        "question_id": 2,
+        "answer": "YES",
+        "evidence": "All three pens are aligned vertically with the black caps at the bottom and barrels pointing up."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All three pens have identical black caps and translucent dark barrels."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "All pens appear fully capped and of equal length."
+      },
+      {
+        "question_id": 5,
+        "answer": "NO",
+        "evidence": "The board enters from the left and moves right until roughly 00:07, then stops completely and remains stationary until the end of the video (00:17)."
+      },
+      {
+        "question_id": 6,
+        "answer": "YES",
+        "evidence": "The pens remain fixed in their slots on the board throughout the movement and the stop."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "motion_failure",
+    "anomaly_score": 0.9,
+    "confidence": "HIGH",
+    "reason": "The board stops moving mid-travel around 00:07 and remains frozen in place for the remainder of the video, violating the requirement for smooth, continuous motion."
+  },
+  "usage": {
+    "input_tokens": 11674,
+    "output_tokens": 3216,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 980,
+      "video_tokens": 10694
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 2817,
+      "text_tokens": 399
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 14890,
+    "video_tokens": 10694
+  },
+  "request_id": "2200049d-bccc-90af-9d97-5d4708455fb4",
+  "id": "motion_stop_01",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "motion_failure",
+  "description": "The board stops mid-travel and stays frozen.",
+  "correct": true
+}

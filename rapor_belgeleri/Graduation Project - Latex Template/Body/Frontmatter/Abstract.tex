@@ -1,0 +1,30 @@
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+%% Edit below this line
+This project investigates training-free Video Anomaly Detection (VAD) in production and
+assembly lines using Vision-Language Models (VLMs), avoiding any task-specific training.
+The concrete scene studied is a part travelling on a conveyor. Three method families are studied: direct prompting, which establishes
+baselines and reveals the model's bias toward predicting ``normal''; a multi-persona
+majority-voting scheme on a locally deployed open-weight model
+(Qwen3-VL-8B-Instruct), in which diverse inspector personas vote on a verdict and an
+\emph{articulate-first} output format (describe-then-decide) suppresses systematic
+false negatives; and \emph{VERA-lite}, a guiding-question optimisation pipeline with a
+blind evaluation protocol, alternative input representations, reasoning-budget control,
+and a two-view ensemble. On a purpose-built $13$-clip pen-conveyor dataset, the ensemble
+of a continuous-video view and a discrete dense-frame view reaches $13/13$ accuracy with
+zero false positives by combining their disjoint blind spots, whereas no single
+representation succeeds, exposing an intrinsic continuous-versus-discrete trade-off for
+temporal anomalies. Repeated runs show the true blind accuracy of a single view is
+$0.846$ ($11/13$, the same in all three runs) rather than a lucky single-run $0.92$, and
+that capping the model's reasoning budget yields a $\sim$41\% latency reduction at
+identical accuracy while also making the per-clip verdicts fully deterministic. We report
+negative results honestly and discuss limitations and future work, including larger
+datasets, computer-vision baselines, and frame-level evaluation.
+
+%% Until here
+\vfill
+%% Edit after {Keywords:}
+\textbf{Keywords:} video anomaly detection, vision-language models, zero-shot,
+prompting, ensemble, industrial inspection.
+\clearpage

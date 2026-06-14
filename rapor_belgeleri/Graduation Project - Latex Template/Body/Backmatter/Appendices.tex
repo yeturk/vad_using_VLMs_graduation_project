@@ -1,0 +1,46 @@
+\chapter*{Appendices}
+\addcontentsline{toc}{chapter}{Appendices}
+
+\section*{Appendix A: Example Learner Output (raw JSON)}
+\label{app:json}
+
+The listing below is the verbatim structured output produced by the learner VLM
+(\texttt{qwen3.6-plus}) on the \texttt{wrong\_color} clip in the blind v3 run. For each
+guiding question the model returns an answer and a short visual justification, then the
+overall verdict, anomaly type, score, confidence and a one-sentence reason. This is the
+per-question evidence that makes the decision explainable, summarised in
+Table~\ref{tab:example}.
+
+\footnotesize
+\begin{verbatim}
+{
+  "question_answers": [
+    { "question_id": 1, "answer": "YES",
+      "evidence": "At timestamp 00:10, the board is fully visible and clearly
+                   holds three pens in a row." },
+    { "question_id": 2, "answer": "YES",
+      "evidence": "All three pens are oriented vertically with the caps
+                   pointing downwards." },
+    { "question_id": 3, "answer": "NO",
+      "evidence": "The leftmost pen has a blue barrel, while the middle and
+                   right pens have black/dark grey barrels." },
+    { "question_id": 4, "answer": "YES",
+      "evidence": "All pens appear to have caps on the bottom and are of
+                   similar length." },
+    { "question_id": 5, "answer": "YES",
+      "evidence": "The board moves continuously from left to right throughout
+                   the clip without stopping." },
+    { "question_id": 6, "answer": "YES",
+      "evidence": "The pens remain fixed in their relative positions on the
+                   board as it slides." }
+  ],
+  "verdict": "ANOMALY",
+  "anomaly_type": "wrong_color",
+  "anomaly_score": 1.0,
+  "confidence": "HIGH",
+  "reason": "The video shows three pens on the board, but one is blue while the
+             other two are black, violating the requirement that all pens be
+             identical in color."
+}
+\end{verbatim}
+\normalsize

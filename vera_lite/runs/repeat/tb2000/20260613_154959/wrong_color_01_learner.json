@@ -1,0 +1,76 @@
+{
+  "video": "data/pens_small/pens_wrong_color.mp4",
+  "input_mode": "video",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+    "Are all three pens aligned identically, all pointing the same way, including any pen near the left or right frame edge as it enters or exits?",
+    "Do all three pens share identical barrel and cap colors, with no mismatch?",
+    "Is every pen fully capped with no exposed writing tip, and are all three pens equal in length?",
+    "Does the board advance steadily from left to right at EVERY moment, never halting, freezing, or pausing even briefly (1-3 seconds) at any point in the video?",
+    "Do all pens stay fixed in their positions on the board, with no pen shifting, sliding, or moving on its own relative to the board mid-clip?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"When the board is fully visible (e.g., around 00:09), there are exactly three pens arranged in a row.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"YES\",\n      \"evidence\": \"All three pens are oriented vertically with their caps pointing downwards.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"NO\",\n      \"evidence\": \"The leftmost pen has a blue barrel, while the middle and right pens have black barrels.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"YES\",\n      \"evidence\": \"All pens appear to have caps on the bottom end; no bare writing tips are exposed.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves smoothly and continuously from left to right throughout the clip without stopping.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"YES\",\n      \"evidence\": \"The pens remain fixed in their positions on the white board relative to each other.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"wrong_color\",\n  \"anomaly_score\": 1.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The leftmost pen is blue while the other two are black, violating the requirement that all three pens must be identical in color.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "When the board is fully visible (e.g., around 00:09), there are exactly three pens arranged in a row."
+      },
+      {
+        "question_id": 2,
+        "answer": "YES",
+        "evidence": "All three pens are oriented vertically with their caps pointing downwards."
+      },
+      {
+        "question_id": 3,
+        "answer": "NO",
+        "evidence": "The leftmost pen has a blue barrel, while the middle and right pens have black barrels."
+      },
+      {
+        "question_id": 4,
+        "answer": "YES",
+        "evidence": "All pens appear to have caps on the bottom end; no bare writing tips are exposed."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves smoothly and continuously from left to right throughout the clip without stopping."
+      },
+      {
+        "question_id": 6,
+        "answer": "YES",
+        "evidence": "The pens remain fixed in their positions on the white board relative to each other."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "wrong_color",
+    "anomaly_score": 1.0,
+    "confidence": "HIGH",
+    "reason": "The leftmost pen is blue while the other two are black, violating the requirement that all three pens must be identical in color."
+  },
+  "usage": {
+    "input_tokens": 11080,
+    "output_tokens": 1811,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 980,
+      "video_tokens": 10100
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 1425,
+      "text_tokens": 386
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 12891,
+    "video_tokens": 10100
+  },
+  "request_id": "9bd97870-6a5b-9f64-a773-53fb9b67d28e",
+  "id": "wrong_color_01",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "wrong_color",
+  "description": "One pen differs in color from the other two.",
+  "correct": true
+}

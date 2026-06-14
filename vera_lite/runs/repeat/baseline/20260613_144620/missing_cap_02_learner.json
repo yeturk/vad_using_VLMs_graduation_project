@@ -1,0 +1,76 @@
+{
+  "video": "data/pens_small/pens_missing_cap_2.mp4",
+  "input_mode": "video",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+    "Are all three pens aligned identically, all pointing the same way, including any pen near the left or right frame edge as it enters or exits?",
+    "Do all three pens share identical barrel and cap colors, with no mismatch?",
+    "Is every pen fully capped with no exposed writing tip, and are all three pens equal in length?",
+    "Does the board advance steadily from left to right at EVERY moment, never halting, freezing, or pausing even briefly (1-3 seconds) at any point in the video?",
+    "Do all pens stay fixed in their positions on the board, with no pen shifting, sliding, or moving on its own relative to the board mid-clip?"
+  ],
+  "raw_text": "{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"When the board is fully visible (around 00:07-00:11), there are three writing instruments arranged in a row.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"The middle writing instrument points downwards with a tip, while the left and right instruments have caps at the bottom, indicating they are not all aligned identically.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"NO\",\n      \"evidence\": \"The middle instrument appears to be a pencil or a different type of pen (thinner, no cap), differing in appearance from the two identical capped pens on the sides.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"NO\",\n      \"evidence\": \"The middle instrument shows a bare writing tip (or pencil lead) at the bottom, whereas the other two are fully capped.\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves continuously from left to right throughout the clip without stopping or jamming.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"YES\",\n      \"evidence\": \"The writing instruments remain fixed in their positions on the board as it moves.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"multiple\",\n  \"anomaly_score\": 0.95,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The middle item is visually distinct (likely a pencil or uncapped pen) showing a bare tip, while the other two are identical capped pens. This violates the conditions for identical color, orientation, and capping.\"\n}",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "When the board is fully visible (around 00:07-00:11), there are three writing instruments arranged in a row."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "The middle writing instrument points downwards with a tip, while the left and right instruments have caps at the bottom, indicating they are not all aligned identically."
+      },
+      {
+        "question_id": 3,
+        "answer": "NO",
+        "evidence": "The middle instrument appears to be a pencil or a different type of pen (thinner, no cap), differing in appearance from the two identical capped pens on the sides."
+      },
+      {
+        "question_id": 4,
+        "answer": "NO",
+        "evidence": "The middle instrument shows a bare writing tip (or pencil lead) at the bottom, whereas the other two are fully capped."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves continuously from left to right throughout the clip without stopping or jamming."
+      },
+      {
+        "question_id": 6,
+        "answer": "YES",
+        "evidence": "The writing instruments remain fixed in their positions on the board as it moves."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "multiple",
+    "anomaly_score": 0.95,
+    "confidence": "HIGH",
+    "reason": "The middle item is visually distinct (likely a pencil or uncapped pen) showing a bare tip, while the other two are identical capped pens. This violates the conditions for identical color, orientation, and capping."
+  },
+  "usage": {
+    "input_tokens": 11674,
+    "output_tokens": 4576,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 980,
+      "video_tokens": 10694
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 4134,
+      "text_tokens": 442
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 16250,
+    "video_tokens": 10694
+  },
+  "request_id": "abc53317-ac14-90ac-8569-51d9ac584183",
+  "id": "missing_cap_02",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "missing_cap",
+  "description": "One pen is missing its cap (variant).",
+  "correct": true
+}

@@ -1,0 +1,76 @@
+{
+  "video": "data/pens_small/pens_wrong_direction_and_missing_cap.mp4",
+  "input_mode": "video",
+  "expected": "ANOMALY",
+  "model": "qwen3.6-plus",
+  "questions": [
+    "When the board is fully visible, does it hold exactly three pens arranged in a single row?",
+    "Are all three pens aligned identically, all pointing the same way, including any pen near the left or right frame edge as it enters or exits?",
+    "Do all three pens share identical barrel and cap colors, with no mismatch?",
+    "Is every pen fully capped with no exposed writing tip, and are all three pens equal in length?",
+    "Does the board advance steadily from left to right at EVERY moment, never halting, freezing, or pausing even briefly (1-3 seconds) at any point in the video?",
+    "Do all pens stay fixed in their positions on the board, with no pen shifting, sliding, or moving on its own relative to the board mid-clip?"
+  ],
+  "raw_text": "```json\n{\n  \"question_answers\": [\n    {\n      \"question_id\": 1,\n      \"answer\": \"YES\",\n      \"evidence\": \"When the board is fully in view (around 00:08-00:10), there are clearly three pens arranged in a row.\"\n    },\n    {\n      \"question_id\": 2,\n      \"answer\": \"NO\",\n      \"evidence\": \"The pens are not aligned identically. The rightmost pen has its cap at the top, while the middle pen has its cap at the bottom. The leftmost pen has a pointed tip at the bottom.\"\n    },\n    {\n      \"question_id\": 3,\n      \"answer\": \"YES\",\n      \"evidence\": \"All pens appear to have translucent grey barrels and black components (caps or tips), so the base colors are consistent, though the configuration differs.\"\n    },\n    {\n      \"question_id\": 4,\n      \"answer\": \"NO\",\n      \"evidence\": \"The leftmost pen shows a bare pointed tip at the bottom, unlike the middle pen which has a black cap at the bottom. It appears uncapped or is a different type of instrument (refill).\"\n    },\n    {\n      \"question_id\": 5,\n      \"answer\": \"YES\",\n      \"evidence\": \"The board moves smoothly from left to right throughout the clip without stopping or jamming.\"\n    },\n    {\n      \"question_id\": 6,\n      \"answer\": \"YES\",\n      \"evidence\": \"The pens remain fixed in their relative positions on the board as it slides.\"\n    }\n  ],\n  \"verdict\": \"ANOMALY\",\n  \"anomaly_type\": \"multiple\",\n  \"anomaly_score\": 1.0,\n  \"confidence\": \"HIGH\",\n  \"reason\": \"The video shows multiple anomalies: the pens are not oriented in the same direction (the middle pen is flipped relative to the right pen), and the leftmost pen appears to be uncapped or missing its cap compared to the others.\"\n}\n```",
+  "parsed": {
+    "question_answers": [
+      {
+        "question_id": 1,
+        "answer": "YES",
+        "evidence": "When the board is fully in view (around 00:08-00:10), there are clearly three pens arranged in a row."
+      },
+      {
+        "question_id": 2,
+        "answer": "NO",
+        "evidence": "The pens are not aligned identically. The rightmost pen has its cap at the top, while the middle pen has its cap at the bottom. The leftmost pen has a pointed tip at the bottom."
+      },
+      {
+        "question_id": 3,
+        "answer": "YES",
+        "evidence": "All pens appear to have translucent grey barrels and black components (caps or tips), so the base colors are consistent, though the configuration differs."
+      },
+      {
+        "question_id": 4,
+        "answer": "NO",
+        "evidence": "The leftmost pen shows a bare pointed tip at the bottom, unlike the middle pen which has a black cap at the bottom. It appears uncapped or is a different type of instrument (refill)."
+      },
+      {
+        "question_id": 5,
+        "answer": "YES",
+        "evidence": "The board moves smoothly from left to right throughout the clip without stopping or jamming."
+      },
+      {
+        "question_id": 6,
+        "answer": "YES",
+        "evidence": "The pens remain fixed in their relative positions on the board as it slides."
+      }
+    ],
+    "verdict": "ANOMALY",
+    "anomaly_type": "multiple",
+    "anomaly_score": 1.0,
+    "confidence": "HIGH",
+    "reason": "The video shows multiple anomalies: the pens are not oriented in the same direction (the middle pen is flipped relative to the right pen), and the leftmost pen appears to be uncapped or missing its cap compared to the others."
+  },
+  "usage": {
+    "input_tokens": 11080,
+    "output_tokens": 3052,
+    "characters": 0,
+    "input_tokens_details": {
+      "text_tokens": 980,
+      "video_tokens": 10100
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 2581,
+      "text_tokens": 471
+    },
+    "prompt_tokens_details": {},
+    "total_tokens": 14132,
+    "video_tokens": 10100
+  },
+  "request_id": "6e9e2e16-a7af-983c-a45c-83024542b56b",
+  "id": "combined_01",
+  "label_revealed_to_learner": false,
+  "anomaly_type": "multiple",
+  "description": "One pen is flipped and a pen is missing its cap (combined anomaly).",
+  "correct": true
+}

@@ -1,0 +1,148 @@
+\chapter{Methodology}
+\label{chap:method}
+
+\section{Overview: A Progression of Approaches}
+We investigated three method families of increasing sophistication. Approach~A
+(direct prompting) established baselines and exposed failure modes. Approach~B
+(multi-persona voting) addressed output bias and single-pass variance through prompt
+diversity and majority voting on a local model. Approach~C (VERA-lite) introduced
+guiding-question optimisation, a blind evaluation protocol, alternative input
+representations, and ensembling, evaluated with repeated runs.
+
+\section{Datasets}
+
+\subsection{IPAD and the Motivation for a Custom Dataset}
+Our early experiments (Approaches~A and~B) used the IPAD industrial benchmark, in
+particular its \textbf{R01 push-button} scene, in which a small cylindrical push-button
+travels on a belt and the dominant anomaly is a reversed orientation (the red cap on the
+wrong side). IPAD has two drawbacks for our purposes. First, its frames are low
+resolution ($256\times256$), which limits the visibility of the fine-grained cues we care
+about, such as a missing cap or a subtle colour difference on a small part. Second, and
+more decisively, the benchmark does not let us control the specific anomaly types we wanted
+to study, nor does it provide a small, cleanly labelled set tailored to a focused,
+per-anomaly-type quantitative analysis. For these reasons we recorded our own dataset
+under controlled conditions, with a fixed camera and a documented protocol, which also let
+us define the anomaly taxonomy and obtain reliable ground-truth labels.
+
+\subsection{The Pen-Conveyor Dataset}
+The \textbf{pen-conveyor} scene is the purpose-built dataset used for the main (VERA-lite)
+experiments: a white board slides left-to-right on a linear rail carrying three identical
+pens. It contains $13$ clips ($3$ normal and $10$ anomalous) spanning seven anomaly types:
+missing cap, wrong orientation, wrong colour, missing pen, belt stop/freeze, unexpected
+(intra-object) pen movement, and a combined case. Clips were recorded at 4K and downscaled
+to $720\times1280$ for API use; ground-truth labels follow the documented recording
+protocol. Figure~\ref{fig:dataset} shows a representative frame for the normal class and
+for each anomaly type.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{fig_dataset.jpg}
+    \caption{\label{fig:dataset}The pen-conveyor dataset: a representative frame for the
+    normal class and for each anomaly type (missing cap, wrong orientation, wrong colour,
+    missing pen, belt stop, and unexpected intra-object movement).}
+\end{figure}
+
+\section{Approach A: Direct Prompting}
+We first prompted an API-served Qwen-VL model directly, in four modes: (i) zero-shot
+single frame, (ii) few-shot with a normal reference frame, (iii) a multi-frame sequence
+sent as separate images with a sliding window, and (iv) a frame-to-video clip. Three
+prompt styles were compared (plain, chain-of-thought~\cite{cot}, and attribute-based). This phase
+showed that chain-of-thought / step-wise prompts are the most consistent and that the
+model tends to default to ``normal'' under terse output formats.
+
+\section{Approach B: Multi-Persona Majority Voting}
+\label{sec:persona}
+To reduce single-pass variance and the ``normal''-bias, we run the same clip through
+several \emph{inspector personas} and decide by majority vote. This runs on a locally
+deployed open-weight model (\texttt{Qwen3-VL-8B-Instruct}), so data never leaves the
+premises.
+
+\subsection{Voting Procedure}
+Twenty personas were authored (line operators, mechanical/quality/vision/robotics
+engineers, auditors, lean and Toyota experts, conservative and aggressive auditors,
+etc.). All share the \emph{same} anomaly rules but differ in voice, threshold and output
+format. A voting subset of five personas plus one distilled \emph{consensus} prompt
+forms six voters; verdicts are parsed to NORMAL/ANOMALY/UNCLEAR and combined by majority
+vote, with confidence given by the winning fraction.
+
+\subsection{The Three Persona Types (Ablation)}
+The personas were studied at three checklist breadths
+(Table~\ref{tab:persona-types}): every voter checks a single focus area
+(\emph{specialized}), every voter checks the full A/B/C checklist (\emph{complete}), or
+every voter answers only the orientation question (\emph{orientation}).
+
+\begin{table}[!htbp]
+\centering
+\caption{\label{tab:persona-types}The three persona ablations.}
+\begin{tabular}{l|l|l}
+\hline
+Type & What each voter checks & Rationale \\
+\hline
+specialized & A single focus area & Committee of specialists \\
+complete    & Full A/B/C checklist & Redundancy (full inspection each) \\
+orientation & Orientation only     & Minimal / primary-anomaly focus \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{The Articulate-First Finding}
+Compact YES/NO output formats produced false negatives: the model assigned ``normal''
+without actually examining the frames. Forcing an \emph{articulate-first} format --- the
+model first describes the entry/middle/exit frames, then derives each check, then gives
+the verdict --- suppressed this bias. This mirrors the question-decomposition principle
+of Approach~C: making the model verbalise its observations before deciding improves
+reliability.
+
+\section{Approach C: VERA-lite}
+\label{sec:vera}
+VERA-lite keeps the model frozen and improves the \emph{guiding questions}.
+
+\subsection{Pipeline}
+A \emph{learner} VLM answers the guiding questions for a clip and outputs a JSON verdict
+(NORMAL/ANOMALY), an anomaly type, a score and a confidence. An \emph{optimiser} VLM
+inspects the learner's mistakes and proposes improved questions. One iteration runs the
+learner over all clips, then the optimiser.
+
+The final (v3) guiding questions used for the pen-conveyor scene are:
+\begin{enumerate}
+  \item When the board is fully visible, does it hold exactly three pens arranged in a
+        single row?
+  \item Are all three pens aligned identically, all pointing the same way, including any
+        pen near the left or right frame edge as it enters or exits?
+  \item Do all three pens share identical barrel and cap colours, with no mismatch?
+  \item Is every pen fully capped with no exposed writing tip, and are all three pens
+        equal in length?
+  \item Does the board advance steadily from left to right at every moment, never
+        halting, freezing, or pausing even briefly (1--3\,s) at any point?
+  \item Do all pens stay fixed in their positions on the board, with no pen shifting,
+        sliding, or moving on its own relative to the board mid-clip?
+\end{enumerate}
+Each question targets one anomaly family (count, orientation, colour, cap/completeness,
+belt motion, and intra-object movement, respectively).
+
+\subsection{Blind Evaluation Protocol}
+The original pipeline leaked the expected label into the learner prompt. We made
+\emph{blind} mode the default: the learner never sees the ground-truth label, which is
+used only for scoring. All reported accuracies are blind. We added accuracy, precision,
+recall, $F_1$ and a confusion matrix to the run summary, plus retry/back-off for
+transient API errors.
+
+\subsection{Input Representations}
+Because a single video call samples frames sparsely, we compared representations:
+the native \textbf{video} call (with a controllable sampling rate \texttt{fps}); a
+\textbf{dense-frame} mode that sends $N$ time-ordered frames as separate numbered images
+with a relative-spacing prompt, restricted to a central window to avoid entry/exit
+artifacts; and a \textbf{temporal grid} that tiles frames into a single montage image.
+
+\subsection{Reasoning-Budget Control and Ensembling}
+The reasoning model can exhaust its output budget on internal deliberation and return an
+empty answer; a \texttt{thinking\_budget} caps the reasoning and forces a final answer,
+which also controls latency. Finally, a two-view \textbf{OR-ensemble} combines the video
+and dense-frame verdicts (ANOMALY if either flags), exploiting their disjoint blind
+spots.
+
+\section{Evaluation Metrics}
+We report clip-level binary accuracy and, treating ANOMALY as the positive class,
+precision, recall and $F_1$, together with the confusion counts (TP/TN/FP/FN). Because
+VLM outputs are non-deterministic, key configurations are run multiple times and we
+report the mean and standard deviation. Latency is reported as seconds per clip.

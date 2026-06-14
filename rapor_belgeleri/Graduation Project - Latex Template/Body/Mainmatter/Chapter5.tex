@@ -1,0 +1,51 @@
+\chapter{Conclusion}
+\label{chap:conclusion}
+
+\section{Summary}
+We studied training-free Video Anomaly Detection on industrial conveyor scenes with
+Vision-Language Models through three approaches. Direct prompting established baselines
+and exposed the model's bias toward ``normal''. Multi-persona majority voting on a local
+open-weight model addressed this bias through prompt diversity and the articulate-first
+format. VERA-lite optimised the guiding questions, introduced a blind evaluation
+protocol, compared input representations, and combined two views into an ensemble that
+reached $13/13$ on the pen dataset with zero false positives.
+
+\section{Key Findings}
+\begin{itemize}
+  \item \textbf{Articulation / question decomposition counters the ``normal''-bias.}
+        Forcing the model to describe what it sees before deciding --- whether via the
+        articulate-first persona format or via VERA guiding questions --- improves
+        reliability.
+  \item \textbf{A continuous-vs-discrete trade-off is intrinsic for temporal anomalies.}
+        Continuous video captures edge-orientation and belt-stop cues but misses subtle
+        intra-object motion; discrete frame representations capture the motion but lose
+        the other cues. The trade-off held across three discrete representations.
+  \item \textbf{Ensembling recovers the union.} Because the video and dense-frame views
+        have disjoint blind spots and zero false positives, their OR-ensemble reaches
+        $13/13$ at no extra precision cost.
+  \item \textbf{Single-run accuracy is misleading.} Repeated runs put the true accuracy
+        at $0.846$ ($11/13$ in all three runs), not the lucky single-run $0.92$; the
+        temporal limit is deterministic while two borderline clips flip between runs
+        under the unbounded baseline but not under a capped reasoning budget.
+  \item \textbf{Reasoning-budget control is a safe speed lever.} Capping the reasoning
+        budget gave a $\sim$41\% speed-up at identical accuracy and made the per-clip
+        verdicts deterministic, whereas raising the sampling rate was counter-productive.
+\end{itemize}
+
+\section{Limitations}
+The pen-conveyor dataset is a $13$-clip pilot recorded under controlled, fixed
+conditions; reaching $13/13$ by tuning on these exact clips risks overfitting, and the
+controlled setup hides robustness to lighting, angle and resolution changes. Only one
+API-served model was reliably accessible. The three approaches used different models and
+scenes, so their numbers are not directly comparable. The persona approach lacks a
+multi-clip quantitative evaluation.
+
+\section{Future Work}
+Priorities are: (i) a larger dataset with a proper train/test split and statistical
+confidence intervals; (ii) simple computer-vision baselines (frame differencing, optical
+flow) to quantify what the VLM adds; (iii) frame-level metrics (AUROC/AP) using the
+available frame-level ground truth; (iv) a fair head-to-head evaluation of all three
+approaches on the same labelled set, including the three persona ablations; (v) a
+calibration analysis, since the model can be confidently wrong; and (vi) a cascade
+architecture (cheap detector first, VLM only on flagged segments) for real-time
+deployment.
