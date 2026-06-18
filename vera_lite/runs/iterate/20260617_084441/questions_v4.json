@@ -1,0 +1,12 @@
+{
+  "version": "v4-iter",
+  "source": "iterative_optimizer_qwen3.6-plus",
+  "questions": [
+    "When the white board is fully visible in the center of the frame, are exactly three pens present in a single row with no missing or extra objects?",
+    "Are all three pens aligned identically, with none flipped upside-down, tilted at a different angle, or rotated relative to the board?",
+    "Do all three pens share the exact same barrel and cap colors, and is each pen fully capped with no exposed writing tip visible?",
+    "Does the board advance continuously from left to right across the entire video duration, with its position changing steadily and never stopping or pausing at any timestamp?",
+    "Do the pens remain rigidly fixed in their slots throughout the motion, with no independent sliding, wobbling, or shifting relative to the board surface?"
+  ],
+  "reasoning": "The learner produced false negatives on subtle orientation deviations (wrong_direction_02) and intermittent motion breaks (motion_stop_02, motion_temporal_01). The original Q2 included distracting edge-case phrasing that caused the VLM to overlook a tilted pen, while the original Q5 relied on temporal absolutes that VLMs often gloss over due to keyframe sampling, leading them to rationalize brief stops as 'overall smooth'. To fix this, the new questions remove ambiguous qualifiers, explicitly call out 180-degree flips and angular tilts for orientation, and demand checking for continuous positional displacement to force temporal scrutiny. Redundant checks are consolidated to directly map to the five target anomaly categories (count, orientation, uniformity/cap status, motion continuity, and relative stability), making each question highly actionable, visually verifiable, and robust across variations of this production-line setup."
+}
