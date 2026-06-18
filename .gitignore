@@ -48,3 +48,5 @@ data/
 # Debug / generated images
 qwen_vl/captured_frame.jpg
 qwen_vl/temporal_grid.jpg
+
+sp.txt

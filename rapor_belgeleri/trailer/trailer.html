@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero-Shot Video Anomaly Detection - CSE 496</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        dark: '#020617', // slate-950
+                        panel: '#0f172a', // slate-900
+                        card: '#1e293b', // slate-800
+                        primary: '#38bdf8', // sky-400
+                        success: '#34d399', // emerald-400
+                        warning: '#fbbf24', // amber-400
+                        danger: '#f87171', // red-400
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #020617;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* Snap Scrolling Configuration */
+        .snap-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        .slide-section {
+            min-height: 100vh;
+            width: 100vw;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            padding: 4rem 8%;
+        }
+
+        /* Backgrounds */
+        .bg-mesh {
+            background-image:
+                radial-gradient(at 0% 0%, rgba(15, 23, 42, 1) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(30, 58, 138, 0.4) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(15, 23, 42, 1) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(17, 24, 39, 1) 0px, transparent 50%);
+        }
+
+        /* Navigation Dots */
+        .nav-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 50;
+        }
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .nav-dot.active {
+            background-color: #38bdf8;
+            transform: scale(1.5);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+
+        /* UI Elements */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+        }
+
+        .highlight-text {
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(to right, #38bdf8, #34d399);
+            z-index: 100;
+            transition: width 0.2s ease-out;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    </style>
+</head>
+<body class="bg-dark font-sans antialiased text-slate-300">
+
+    <div id="progress-bar" style="width: 0%;"></div>
+
+    <div class="nav-dots" id="nav-dots">
+        <a href="#slide-1" class="nav-dot active" title="Title"></a>
+        <a href="#slide-2" class="nav-dot" title="Problem"></a>
+        <a href="#slide-3" class="nav-dot" title="Dataset"></a>
+        <a href="#slide-4" class="nav-dot" title="Personas"></a>
+        <a href="#slide-5" class="nav-dot" title="VERA Paper"></a>
+        <a href="#slide-6" class="nav-dot" title="VERA-lite"></a>
+        <a href="#slide-7" class="nav-dot" title="Model Output"></a>
+        <a href="#slide-8" class="nav-dot" title="Ensemble"></a>
+        <a href="#slide-9" class="nav-dot" title="Results"></a>
+    </div>
+
+    <div class="snap-container" id="snap-container">
+
+        <!-- SLIDE 1: HERO / TITLE -->
+        <section id="slide-1" class="slide-section bg-mesh text-center items-center">
+            <div class="mb-6">
+                <i class="fa-solid fa-microchip text-6xl text-primary mb-4"></i>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight text-white">
+                Video Anomaly Detection in <br>
+                <span class="highlight-text">Assembly/Production Lines</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-400 mb-10 max-w-4xl mx-auto font-light leading-relaxed">
+                A Training-Free, Explainable Approach Using Zero-Shot Vision-Language Models — Multi-Persona Voting and VERA-lite.
+            </p>
+
+            <div class="glass-panel p-8 inline-block text-left mx-auto shadow-2xl border-t border-slate-700">
+                <p class="text-xs text-primary font-bold uppercase tracking-widest mb-4">CSE 496 - Graduation Project</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <p class="text-sm text-slate-400 mb-1">Authors</p>
+                        <p class="font-semibold text-white text-lg">Alper Kaan Güler</p>
+                        <p class="font-semibold text-white text-lg">Yunus Emre Türk</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-slate-400 mb-1">Advisor</p>
+                        <p class="font-semibold text-white text-lg">Asst. Prof. Habil Kalkan</p>
+                        <p class="text-sm text-primary mt-1">Gebze Technical University</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="absolute bottom-8 animate-bounce text-slate-500">
+                <i class="fa-solid fa-arrow-down text-xl"></i>
+            </div>
+        </section>
+
+        <!-- SLIDE 2: THE PROBLEM -->
+        <section id="slide-2" class="slide-section bg-dark">
+            <div class="max-w-7xl mx-auto w-full">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white flex items-center gap-4">
+                    <i class="fa-solid fa-circle-exclamation text-danger"></i>
+                    Problem & Motivation
+                </h2>
+                <p class="text-xl text-slate-400 mb-12 max-w-4xl">
+                    Why does traditional Computer Vision (CV) struggle in modern, agile manufacturing environments?
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="glass-panel p-8 hover:-translate-y-1 transition-transform border-t-4 border-t-primary">
+                        <i class="fa-solid fa-database text-3xl text-primary mb-4"></i>
+                        <h3 class="text-xl font-bold text-white mb-3">The Data Hunger</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Classical models require thousands of labeled "defect" images. In highly optimized factories, anomalies are exceedingly rare, making data collection slow and expensive.
+                        </p>
+                    </div>
+
+                    <div class="glass-panel p-8 hover:-translate-y-1 transition-transform border-t-4 border-t-warning">
+                        <i class="fa-solid fa-rotate text-3xl text-warning mb-4"></i>
+                        <h3 class="text-xl font-bold text-white mb-3">Retraining Costs</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Every time a product design changes on the assembly line, custom models must be re-trained. We need a system that adapts via natural-language defect specifications.
+                        </p>
+                    </div>
+
+                    <div class="glass-panel p-8 hover:-translate-y-1 transition-transform border-t-4 border-t-danger">
+                        <i class="fa-solid fa-box-open text-3xl text-danger mb-4"></i>
+                        <h3 class="text-xl font-bold text-white mb-3">The Black Box</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Standard models flag an anomaly but cannot answer <em>"Why?"</em>. On a factory floor, operators need human-readable justifications to trust the AI's decision.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-8 glass-panel p-6 border-l-4 border-l-success flex items-center gap-6">
+                    <i class="fa-solid fa-lightbulb text-4xl text-success"></i>
+                    <div>
+                        <h4 class="text-lg font-bold text-white mb-1">Our Approach: Zero-Shot Prompting</h4>
+                        <p class="text-sm text-slate-300">
+                            Instead of training a detector, we prompt a frozen Vision-Language Model (VLM) — specifically <strong>qwen3.6-plus</strong> — with scene descriptions and anomaly rules. Zero training, full explainability.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 3: DATASET JOURNEY (IPAD -> custom) -->
+        <section id="slide-3" class="slide-section bg-panel">
+            <div class="max-w-7xl mx-auto w-full">
+                <p class="text-sm text-primary font-bold uppercase tracking-widest mb-2">From a public benchmark to a dataset we trust</p>
+                <h2 class="text-3xl md:text-4xl font-bold mb-3 text-white">The Dataset Journey</h2>
+                <p class="text-lg text-slate-400 mb-8 max-w-4xl">
+                    We started on the public <strong>IPAD</strong> industrial benchmark. But its low-resolution clips made fine-grained colour &amp; orientation verdicts unreliable — so we built our own high-resolution conveyor rig.
+                </p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-[1fr_auto_1.25fr] gap-6 items-stretch">
+
+                    <!-- Phase 1: IPAD -->
+                    <div class="glass-panel p-6 border-t-4 border-t-slate-500">
+                        <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Phase 1 · Starting point</span>
+                        <h3 class="text-xl font-bold text-white mb-3 mt-1">IPAD Benchmark <span class="text-slate-500 text-sm font-normal">— button conveyor</span></h3>
+                        <div class="grid grid-cols-2 gap-2 mb-3">
+                            <img src="trailer_assets/ipad_button_1.jpg" alt="IPAD R01 push-button frame" class="w-full h-28 object-cover rounded-lg border border-slate-700">
+                            <img src="trailer_assets/ipad_button_2.jpg" alt="IPAD R01 push-button frame" class="w-full h-28 object-cover rounded-lg border border-slate-700">
+                        </div>
+                        <ul class="text-sm text-slate-400 space-y-1.5">
+                            <li><i class="fa-solid fa-circle-dot text-slate-600 text-[7px] mr-2 align-middle"></i>R01 push-button &amp; S08 sorting scenes</li>
+                            <li><i class="fa-solid fa-circle-dot text-slate-600 text-[7px] mr-2 align-middle"></i>Anomalies: pin angle, cap colour, sorting / clog</li>
+                            <li><i class="fa-solid fa-triangle-exclamation text-warning mr-2"></i><span class="text-warning">Only ~256×256 — too coarse for subtle defects</span></li>
+                        </ul>
+                        <p class="text-xs text-slate-500 mt-3 pt-3 border-t border-slate-700/60">Used for our early experiments — including the multi-persona ensemble (next slide).</p>
+                    </div>
+
+                    <!-- Arrow / pivot -->
+                    <div class="flex lg:flex-col items-center justify-center text-center px-1">
+                        <i class="fa-solid fa-arrow-right-long text-3xl text-primary rotate-90 lg:rotate-0"></i>
+                        <p class="text-xs text-slate-500 mt-3 max-w-[9rem] leading-snug">"Too low-res to judge colour &amp; angle reliably"</p>
+                    </div>
+
+                    <!-- Phase 2: Ours -->
+                    <div class="glass-panel p-6 border-t-4 border-t-primary">
+                        <span class="text-xs font-bold uppercase tracking-widest text-primary">Phase 2 · Our own dataset</span>
+                        <h3 class="text-xl font-bold text-white mb-3 mt-1">Custom Pen-Conveyor Rig</h3>
+                        <div class="grid grid-cols-3 gap-2 mb-2">
+                            <div class="relative rounded-lg overflow-hidden border-2 border-emerald-500/60">
+                                <video src="trailer_assets/videos/normal.mp4" class="w-full h-32 object-cover" autoplay muted loop playsinline></video>
+                                <span class="absolute bottom-1 left-1 bg-emerald-500 text-dark text-[10px] font-bold px-1.5 py-0.5 rounded">NORMAL</span>
+                            </div>
+                            <div class="relative rounded-lg overflow-hidden border-2 border-red-500/60">
+                                <video src="trailer_assets/videos/wrong_color.mp4" class="w-full h-32 object-cover" autoplay muted loop playsinline></video>
+                                <span class="absolute bottom-1 left-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">COLOUR</span>
+                            </div>
+                            <div class="relative rounded-lg overflow-hidden border-2 border-red-500/60">
+                                <video src="trailer_assets/videos/wrong_direction.mp4" class="w-full h-32 object-cover" autoplay muted loop playsinline></video>
+                                <span class="absolute bottom-1 left-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">ORIENT.</span>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-slate-500 mb-3"><i class="fa-solid fa-circle-play text-primary mr-1"></i>Real clips from our rig — playing live.</p>
+                        <div class="flex flex-wrap gap-x-4 gap-y-1.5 text-sm text-slate-400 mb-3">
+                            <span><i class="fa-solid fa-video text-primary mr-1"></i>13 clips · 4K → 720×1280</span>
+                            <span><i class="fa-solid fa-bug text-danger mr-1"></i>7 controlled anomaly types</span>
+                            <span><i class="fa-solid fa-camera text-primary mr-1"></i>3 identical pens · fixed camera</span>
+                        </div>
+                        <p class="text-xs text-slate-500">
+                            7 types: missing cap · wrong orientation · wrong colour · missing pen · belt stop · unexpected movement · combined.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 4: PERSONAS & VOTING (first approach) -->
+        <section id="slide-4" class="slide-section bg-dark">
+            <div class="max-w-7xl mx-auto w-full text-center">
+                <p class="text-sm text-primary font-bold uppercase tracking-widest mb-2">Approach 1 · on the IPAD button footage</p>
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-white">Robustness via Multi-Persona Ensemble</h2>
+                <p class="text-lg text-slate-400 mb-10 max-w-4xl mx-auto">
+                    Our first experiments ran on the <strong>IPAD push-button conveyor</strong>. A single prompt is unreliable on edge cases, so we adopt a <strong>self-consistency / persona-prompting</strong> paradigm: 20 synthetic "inspector personas" share the same anomaly rules but inspect each frame through a different professional lens, and vote.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 text-left">
+                    <div class="glass-panel p-6 border-t-4 border-t-blue-500">
+                        <h4 class="font-bold text-white mb-2">Naive Operator</h4>
+                        <p class="text-xs text-slate-400">Focuses purely on obvious visuals. "Is the button's cap the right colour? Which way do the connector pins point?" Sensitive to major structural breaks.</p>
+                    </div>
+
+                    <div class="glass-panel p-6 border-t-4 border-t-emerald-500">
+                        <h4 class="font-bold text-white mb-2">Mechanical Engineer</h4>
+                        <p class="text-xs text-slate-400">Examines how the part sits and travels on the belt — whether the connector's orientation matches normal factory operation.</p>
+                    </div>
+
+                    <div class="glass-panel p-6 border-t-4 border-t-purple-500">
+                        <h4 class="font-bold text-white mb-2">Vision Engineer</h4>
+                        <p class="text-xs text-slate-400">Focuses on pixel-level cues: subtle cap-colour shifts, pin-angle misalignment, lighting artifacts and geometry in the frame.</p>
+                    </div>
+
+                    <div class="glass-panel p-6 bg-slate-800/80 flex flex-col justify-center items-center text-center">
+                        <i class="fa-solid fa-scale-balanced text-4xl text-primary mb-3"></i>
+                        <h4 class="font-bold text-white mb-1">Majority Voting</h4>
+                        <p class="text-xs text-slate-400">5 maximally-diverse voters + 1 consensus prompt. Tie = LOW confidence flag.</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 glass-panel p-5 border-l-4 border-l-warning text-left max-w-4xl mx-auto">
+                    <p class="text-sm text-slate-300">
+                        <strong class="text-warning">Key finding:</strong> compact YES/NO formats caused systematic false negatives. Forcing an <strong>"articulate-first"</strong> output (describe each frame, then decide) suppressed the model's bias toward "normal".
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 5: THE VERA PAPER -->
+        <section id="slide-5" class="slide-section bg-panel">
+            <div class="max-w-7xl mx-auto w-full">
+                <p class="text-sm text-primary font-bold uppercase tracking-widest mb-2">The Academic Foundation</p>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white">VERA: Verbalized Learning for VAD <span class="text-slate-500 text-2xl font-normal">(CVPR 2025)</span></h2>
+                <p class="text-lg text-slate-400 mb-10 max-w-5xl">
+                    Ye, Liu &amp; He — <em>Explainable Video Anomaly Detection via Verbalized Learning of Vision-Language Models.</em>
+                    Its insight: an abstract prompt ("is there any anomaly?") gives only <strong class="text-danger">53–65% AUC</strong>; concrete, <strong class="text-primary">learned guiding questions</strong> do far better — with the model weights frozen.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="glass-panel p-7 border-t-4 border-t-primary">
+                        <i class="fa-solid fa-snowflake text-3xl text-primary mb-4"></i>
+                        <h3 class="text-lg font-bold text-white mb-2">1. Frozen VLM</h3>
+                        <p class="text-sm text-slate-400">No fine-tuning and no external reasoning module. The model is adapted purely through the prompt.</p>
+                    </div>
+                    <div class="glass-panel p-7 border-t-4 border-t-warning">
+                        <i class="fa-solid fa-comments text-3xl text-warning mb-4"></i>
+                        <h3 class="text-lg font-bold text-white mb-2">2. Verbalized Learning</h3>
+                        <p class="text-sm text-slate-400">Questions are <em>learnable parameters</em>: a <strong>learner</strong> VLM answers them, an <strong>optimiser</strong> VLM rewrites them from mistakes — using only coarse video-level labels.</p>
+                    </div>
+                    <div class="glass-panel p-7 border-t-4 border-t-success">
+                        <i class="fa-solid fa-layer-group text-3xl text-success mb-4"></i>
+                        <h3 class="text-lg font-bold text-white mb-2">3. Coarse-to-Fine Scoring</h3>
+                        <p class="text-sm text-slate-400">At inference: segment scores → add scene context by ensembling → frame-level scores via temporal Gaussian smoothing. SOTA on UCF-Crime &amp; XD-Violence.</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 glass-panel p-5 border-l-4 border-l-primary flex items-center gap-4">
+                    <i class="fa-solid fa-arrow-right-long text-2xl text-primary"></i>
+                    <p class="text-sm text-slate-300">We keep VERA's <strong>learner/optimiser question-learning core</strong>, but simplify it to clip-level verdicts for the factory setting → <strong class="text-white">VERA-lite</strong>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 6: VERA-LITE PIPELINE -->
+        <section id="slide-6" class="slide-section bg-dark">
+            <div class="max-w-7xl mx-auto w-full">
+                <p class="text-sm text-primary font-bold uppercase tracking-widest mb-2">Approach 2 — our adaptation</p>
+                <h2 class="text-3xl md:text-4xl font-bold mb-8 text-white">The VERA-lite Pipeline</h2>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Column 1: Concept -->
+                    <div class="lg:col-span-1 space-y-6">
+                        <p class="text-slate-400">
+                            We first prototyped VERA-lite on IPAD too, but moved to our <strong>custom pen dataset</strong> once we saw IPAD was too coarse for fine-grained verdicts. Here we run VERA's <strong>Verbalized Learning</strong> loop on that data, then read a single <strong>clip-level verdict</strong>.
+                        </p>
+                        <ul class="space-y-4">
+                            <li class="flex gap-3">
+                                <div class="mt-1 w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xs"><i class="fa-solid fa-1"></i></div>
+                                <div><strong class="text-white">Learner VLM:</strong> Evaluates the video against concrete Guiding Questions and returns a structured JSON verdict.</div>
+                            </li>
+                            <li class="flex gap-3">
+                                <div class="mt-1 w-6 h-6 rounded-full bg-warning/20 flex items-center justify-center text-warning text-xs"><i class="fa-solid fa-2"></i></div>
+                                <div><strong class="text-white">Optimiser VLM:</strong> Analyzes learner mistakes and rewrites the questions (without touching model weights).</div>
+                            </li>
+                            <li class="flex gap-3">
+                                <div class="mt-1 w-6 h-6 rounded-full bg-success/20 flex items-center justify-center text-success text-xs"><i class="fa-solid fa-eye-slash"></i></div>
+                                <div><strong class="text-white">Blind evaluation:</strong> the learner never sees the label — an early leak had to be fixed; the first honest score was 0.77.</div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Column 2: Question Evolution Table -->
+                    <div class="lg:col-span-2 glass-panel p-6 overflow-x-auto">
+                        <h3 class="text-lg font-bold text-white mb-4">Optimiser at Work: Guiding Questions (v2 → v3)</h3>
+                        <p class="text-xs text-slate-400 mb-4">The optimiser noted: "VLMs struggle with logical negation." It shifted prompts from negative constraints to positive verification, boosting accuracy from <strong>0.77 to 0.92</strong>.</p>
+
+                        <table class="w-full text-sm text-left text-slate-300">
+                            <thead class="text-xs text-slate-400 uppercase bg-slate-800/50">
+                                <tr>
+                                    <th class="px-4 py-3 rounded-tl-lg">Anomaly Family</th>
+                                    <th class="px-4 py-3">v2 (Negated / Weak)</th>
+                                    <th class="px-4 py-3 rounded-tr-lg text-primary">v3 (Positive / Hardened)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-700/50">
+                                <tr class="bg-slate-800/20">
+                                    <td class="px-4 py-3 font-medium text-white">Count</td>
+                                    <td class="px-4 py-3">no missing pen and no empty gap</td>
+                                    <td class="px-4 py-3 text-primary">exactly three pens in a single row</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-medium text-white">Colour</td>
+                                    <td class="px-4 py-3">none differing in colour</td>
+                                    <td class="px-4 py-3 text-primary">identical barrel and cap colours, no mismatch</td>
+                                </tr>
+                                <tr class="bg-slate-800/20">
+                                    <td class="px-4 py-3 font-medium text-white">Belt Motion</td>
+                                    <td class="px-4 py-3">without stopping, pausing, reversing</td>
+                                    <td class="px-4 py-3 text-primary">advances at every moment, never halting even briefly (1–3 s)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 7: INSIDE A VERDICT (JSON OUTPUT) -->
+        <section id="slide-7" class="slide-section bg-panel">
+            <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-5 gap-10 items-center">
+                <div class="lg:col-span-2">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white">Inside a Verdict</h2>
+                    <p class="text-lg text-slate-400 mb-6">
+                        For every clip the model returns <strong>structured JSON</strong>: a YES/NO answer with visual evidence for each guiding question, then the verdict, type, score and confidence.
+                    </p>
+                    <div class="glass-panel p-5 border-l-4 border-l-success">
+                        <p class="text-sm text-slate-300">
+                            On the <span class="text-primary font-mono">wrong_colour</span> clip, a single <strong class="text-danger">"NO"</strong> on the colour question drives the decision. The per-question evidence makes the verdict <strong>auditable</strong> on the factory floor.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-3">
+                    <div class="glass-panel p-5 font-mono text-xs leading-relaxed shadow-2xl border border-slate-700 overflow-x-auto">
+<pre class="whitespace-pre"><span class="text-slate-500">{</span>
+  <span class="text-primary">"question_answers"</span>: [
+    { q:1 <span class="text-success">"YES"</span>  three pens in a row at 00:10 },
+    { q:2 <span class="text-success">"YES"</span>  all caps down, same orientation },
+    <span class="bg-red-500/15 block px-1 rounded">{ q:3 <span class="text-danger font-bold">"NO"</span>   leftmost pen is BLUE, others black }</span>
+    { q:4 <span class="text-success">"YES"</span>  all capped, similar length },
+    { q:5 <span class="text-success">"YES"</span>  board moves smoothly, no stop },
+    { q:6 <span class="text-success">"YES"</span>  pens fixed relative to the board }
+  ],
+  <span class="text-primary">"verdict"</span>:        <span class="text-danger font-bold">"ANOMALY"</span>,
+  <span class="text-primary">"anomaly_type"</span>:   <span class="text-warning">"wrong_color"</span>,
+  <span class="text-primary">"anomaly_score"</span>:  <span class="text-warning">1.0</span>,
+  <span class="text-primary">"confidence"</span>:     <span class="text-warning">"HIGH"</span>,
+  <span class="text-primary">"reason"</span>: <span class="text-slate-300">"one pen is blue while the other two
+            are black — all pens must match"</span>
+<span class="text-slate-500">}</span></pre>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-3 text-center">Verbatim learner output (blind v3 run) — abbreviated for display.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 8: REPRESENTATIONS & ENSEMBLE -->
+        <section id="slide-8" class="slide-section bg-dark">
+            <div class="max-w-7xl mx-auto w-full">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white">The Representation Trade-off</h2>
+                <div class="flex flex-col md:flex-row gap-6 items-center mb-8">
+                    <p class="text-lg text-slate-400 max-w-3xl flex-1">
+                        <strong>The Hard Case:</strong> In <code class="text-primary bg-slate-800 px-1 rounded">motion_temporal_01</code>, pens shift mid-clip while the belt moves normally.
+                        Native video input missed this entirely due to sparse internal frame sampling.
+                    </p>
+                    <div class="relative rounded-lg overflow-hidden border-2 border-warning/60 shrink-0">
+                        <video src="trailer_assets/videos/temporal_anomaly.mp4" class="h-64 md:h-72 object-cover" autoplay muted loop playsinline></video>
+                        <span class="absolute bottom-2 left-2 bg-warning text-dark text-xs font-bold px-2 py-1 rounded">TEMPORAL · watch the pens move</span>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-1 rounded-xl overflow-hidden">
+                    <table class="w-full text-sm text-left text-slate-300">
+                        <thead class="text-xs uppercase bg-slate-800 text-slate-300">
+                            <tr>
+                                <th class="px-6 py-4">Input Method</th>
+                                <th class="px-6 py-4">Accuracy</th>
+                                <th class="px-6 py-4">False Pos.</th>
+                                <th class="px-6 py-4">Catches Temporal?</th>
+                                <th class="px-6 py-4">Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-700">
+                            <tr class="hover:bg-slate-800/50">
+                                <td class="px-6 py-4 font-semibold">Video (Continuous)</td>
+                                <td class="px-6 py-4">12/13 (0.92)</td>
+                                <td class="px-6 py-4">0</td>
+                                <td class="px-6 py-4 text-danger font-bold"><i class="fa-solid fa-xmark mr-1"></i> No</td>
+                                <td class="px-6 py-4 text-xs">Catches belt stops & edges, misses intra-object shift.</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50">
+                                <td class="px-6 py-4 font-semibold">Dense Frames (16f)</td>
+                                <td class="px-6 py-4">11/13 (0.85)</td>
+                                <td class="px-6 py-4">0</td>
+                                <td class="px-6 py-4 text-success font-bold"><i class="fa-solid fa-check mr-1"></i> Yes</td>
+                                <td class="px-6 py-4 text-xs">Catches shift, misses subtle orientation/stop.</td>
+                            </tr>
+                            <tr class="bg-primary/10 border-l-4 border-primary">
+                                <td class="px-6 py-4 font-bold text-white">OR-Ensemble (Video ∨ Dense)</td>
+                                <td class="px-6 py-4 font-bold text-primary">13/13 (1.00)</td>
+                                <td class="px-6 py-4 font-bold text-primary">0</td>
+                                <td class="px-6 py-4 text-success font-bold"><i class="fa-solid fa-check mr-1"></i> Yes</td>
+                                <td class="px-6 py-4 text-xs text-white">Disjoint blind spots! The union solves all cases.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-6 glass-panel p-4">
+                    <p class="text-sm text-slate-300 mb-3 text-center font-semibold">
+                        Per-clip correctness: the two views have <span class="text-primary">disjoint blind spots</span> — only the ensemble (bottom row) is fully green.
+                    </p>
+                    <img src="trailer_assets/fig_clip_matrix.png" alt="Per-clip correctness: video vs dense vs ensemble" class="w-full rounded-lg border border-slate-700">
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 9: RESULTS & OPTIMIZATION -->
+        <section id="slide-9" class="slide-section bg-mesh">
+            <div class="max-w-7xl mx-auto w-full">
+                <h2 class="text-3xl md:text-4xl font-bold mb-10 text-white text-center">Optimization & Final Results</h2>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                    <!-- Speed & Determinism -->
+                    <div>
+                        <h3 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+                            <i class="fa-solid fa-gauge-high text-warning"></i> Speed & Determinism
+                        </h3>
+                        <p class="text-sm text-slate-400 mb-6">
+                            <code>qwen3.6-plus</code> is a reasoning model. On dense input, it occasionally spent over <strong>15,684 reasoning tokens</strong>, causing latency spikes (85.2s per clip) and timeouts.
+                        </p>
+
+                        <div class="glass-panel p-5 mb-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-slate-300 font-mono text-sm">Baseline (Unbounded)</span>
+                                <span class="text-danger font-bold">85.2 sec</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2 mb-4">
+                                <div class="bg-danger h-2 rounded-full" style="width: 100%"></div>
+                            </div>
+
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-slate-300 font-mono text-sm">thinking_budget = 2000</span>
+                                <span class="text-success font-bold">49.9 sec (-41%)</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="bg-success h-2 rounded-full" style="width: 58%"></div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-primary font-semibold">
+                            Bonus: Capping the budget forced determinism. Verdict flips across 3 runs dropped from 2 clips to exactly 0. The true (repeatable) accuracy is <strong>0.846 — 11/13 in every run</strong>, not the lucky single-run 0.92.
+                        </p>
+                    </div>
+
+                    <!-- Final Metrics -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="glass-panel p-6 flex flex-col items-center justify-center text-center">
+                            <div class="text-5xl font-black text-white mb-2">13/13</div>
+                            <div class="text-sm text-success font-bold tracking-wide uppercase">Ensemble Accuracy</div>
+                        </div>
+                        <div class="glass-panel p-6 flex flex-col items-center justify-center text-center">
+                            <div class="text-5xl font-black text-white mb-2">0</div>
+                            <div class="text-sm text-primary font-bold tracking-wide uppercase">False Positives</div>
+                        </div>
+                        <div class="glass-panel p-6 flex flex-col items-center justify-center text-center col-span-2">
+                            <h4 class="text-lg font-bold text-white mb-2">Conclusion & Future Work</h4>
+                            <p class="text-xs text-slate-400">
+                                VLM-based explainable VAD is viable for industry without labeled data.
+                                <strong>Future:</strong> Deploy a cascade pipeline (cheap CV detector first, VLM only on flagged segments) for real-time factory floor deployment.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        const container = document.getElementById('snap-container');
+        const sections = document.querySelectorAll('.slide-section');
+        const dots = document.querySelectorAll('.nav-dot');
+        const progressBar = document.getElementById('progress-bar');
+
+        // Update active dot and progress bar on scroll
+        container.addEventListener('scroll', () => {
+            let current = '';
+            const scrollPos = container.scrollTop;
+            const containerHeight = container.scrollHeight - container.clientHeight;
+
+            // Calculate Progress
+            const progress = (scrollPos / containerHeight) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            // Active Dot logic
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                // Offset adjustment for smoother transition
+                if (scrollPos >= sectionTop - (window.innerHeight / 2)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            dots.forEach(dot => {
+                dot.classList.remove('active');
+                if (dot.getAttribute('href').substring(1) === current) {
+                    dot.classList.add('active');
+                }
+            });
+        });
+
+        // Keyboard Navigation (Up/Down Arrows)
+        document.addEventListener('keydown', (e) => {
+            const viewHeight = window.innerHeight;
+            if (e.key === 'ArrowDown') {
+                e.preventDefault(); // Prevent default scroll to control snap
+                container.scrollBy({ top: viewHeight, behavior: 'smooth' });
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                container.scrollBy({ top: -viewHeight, behavior: 'smooth' });
+            }
+        });
+    </script>
+</body>
+</html>
