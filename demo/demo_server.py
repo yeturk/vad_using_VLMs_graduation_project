@@ -144,7 +144,10 @@ class Handler(BaseHTTPRequestHandler):
                 clip = clip_by_id(cid)
                 if not clip:
                     return self._json({"error": "unknown clip"}, 404)
-                vpath = ROOT / clip["video"]
+                # Prefer the browser-friendly H.264 copy; the original pens_small
+                # clips are mp4v (OpenCV) which browsers cannot play in <video>.
+                web = HERE / "web_videos" / f"{cid}.mp4"
+                vpath = web if web.exists() else (ROOT / clip["video"])
                 if not vpath.exists():
                     return self._json({"error": "video missing"}, 404)
                 return self._video(vpath)
